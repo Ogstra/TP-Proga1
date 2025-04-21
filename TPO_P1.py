@@ -64,7 +64,7 @@ turnos = [
 ]
 
 # Función para mostrar turnos con información expandida
-def ver_turnos():
+def ver_turnos(turnos):
     print("\nLista de turnos:")
     for turno in turnos:
         id_turno, id_paciente, id_medico, consultorio, fecha, horario = turno
@@ -75,6 +75,36 @@ def ver_turnos():
         print(f"  Médico: {medico['nombre']} {medico['apellido']} - {medico['especialidad']}")
         print(f"  Consultorio: {consultorio}\n")
 
+
+"""         "nombre": "Ana",
+        "apellido": "López",
+        "dni": "23456789",
+        "fecha_nac": "1992-07-24",
+        "domicilio": "Calle Falsa 456",
+        "mail": "ana.lopez@email.com",
+        "num_tel": "555-5678",
+        "obra_social": "Swiss Medical",
+        "nacionalidad": "Argentina",
+        "grupo_sanguineo": "A-" """
+def crear_paciente(pacientes):
+    paciente = {
+    "nombre": input("Nombre: "),
+    "apellido": input("Apellido: "),
+    "dni": input("DNI: "),
+    "fecha_nac": input("Fecha de Nacimento: "),
+    "domicilio": input("Domicilio: "),
+    "mail": input("Mail: "),
+    "num_tel": input("Numero de Telefono: "),
+    "obra_social": input("Obra Social: "),
+    "nacionalidad": input("Nacionalidad: "),
+    "grupo_sanguineo": input("Grupo Sanguineo: ")
+    }
+    pacientes.update(paciente)
+    
+    print(f"--- Paciente agregado ---")
+"""     for clave, valor in paciente.items():
+        print(clave, ": " ,valor)
+ """
 # Función para mostrar el menú
 def mostrar_menu():
     print("\nMenú de Turnos Médicos")
@@ -83,24 +113,26 @@ def mostrar_menu():
     print("3. Modificar turno")
     print("4. Eliminar turno") 
     print("5. Buscar paciente")
-    print("6. Buscar médico")
-    print("7. Salir")
+    print("5. Crear paciente")
+    print("5. Eliminar paciente")
+    print("8. Buscar médico")
+    print("9. Salir")
 
 # Lógica para el menú
 while True:
     mostrar_menu()
-    opcion = input("Seleccione una opción: ")
-
+    opcion = input("\nSeleccione una opción: ")
     if opcion == "1":
-        ver_turnos()
+        ver_turnos(turnos)
     elif opcion == "2":
         print("Función para agregar turno en construcción...")
     elif opcion == "3":
         print("Función para modificar turno en construcción...")
     elif opcion == "4":
         print("Función para eliminar turno en construcción...")
-    elif opcion == "7":
+    elif opcion == "5":
+        crear_paciente(pacientes)
+    elif opcion == "9":
         print("Saliendo del programa.")
-        break
     else:
         print("Opción no válida. Intente de nuevo.")
