@@ -73,7 +73,7 @@ medicos = {
 turnos = [
     (1, 1, 1, "Consultorio 101", "2025-04-15", "10:00"),  # Juan Pérez con Dra. Rodríguez
     (2, 2, 2, "Consultorio 202", "2025-04-16", "11:30")   # Ana López con Dr. Martínez
-]
+]   
 
 # Función para mostrar turnos con información expandida
 def ver_turnos(turnos):
@@ -107,11 +107,31 @@ def crear_paciente(pacientes):
         print(clave, ": " ,valor)
  """
  
-def buscar_paciente_nombre(pacientes, nombre):
-    for clave, valor in pacientes.items():
-        if pacientes[clave]["nombre"] == nombre:
-            print("\n" ,pacientes[clave]["nombre"], pacientes[clave]["apellido"], pacientes[clave]["dni"])
+def buscar_paciente(pacientes):
+    campos = ("nombre", "apellido", "dni", "mail", "grupo_sanguineo")
+    opcion = int(input("Buscar por:\n1) Nombre\n2) Apellido\n3) DNI\n4) Mail\n5) Grupo Sanguíneo\nOpción: "))
 
+    while opcion < 1 or opcion > len(campos):
+        opcion = int(input("Opcion no valida\nBuscar por:\n1) Nombre\n2) Apellido\n3) DNI\n4) Mail\n5) Grupo Sanguíneo\nOpción: "))
+
+
+
+    campo_seleccionado = campos[opcion - 1]
+    valor_buscado = input(f"Ingrese {campo_seleccionado}: ").lower()
+
+    resultados = []
+    for id_paciente, datos_paciente in pacientes.items():
+        valor_actual = str(datos_paciente[campo_seleccionado]).lower()
+        if valor_actual == valor_buscado:
+            resultados.append((id_paciente, datos_paciente))
+
+    if resultados:
+        for id_paciente, datos in resultados:
+            print(f"\nID: {id_paciente}")
+            for clave, valor in datos.items():
+                print(f"{clave.capitalize()}: {valor}")
+    else:
+        print("No se encontraron pacientes con ese dato.")
 
 
 # Función para mostrar el menú
@@ -140,8 +160,7 @@ while True:
     elif opcion == "4":
         print("Función para eliminar turno en construcción...")
     elif opcion == "5":
-        nombre = input("Ingrese nombre a buscar: ")
-        buscar_paciente_nombre(pacientes, nombre)
+        buscar_paciente(pacientes)
     elif opcion == "6":
         crear_paciente(pacientes)
     elif opcion == "9":
