@@ -133,6 +133,47 @@ def buscar_paciente(pacientes):
     else:
         print("No se encontraron pacientes con ese dato.")
 
+def agenda_medico(medicos, turnos):
+    while True:
+        print("\n=== Lista de Médicos ===")
+        for id_medico, datos in medicos.items():
+            print(f"{id_medico}. {datos['nombre']} {datos['apellido']}")
+        print("0. Atras")
+
+        id_elegido = input("Ingrese el ID del médico para ver sus turnos (0 para salir): ")
+
+        if not id_elegido.isdigit():
+            print("❌ ID inválido. Debe ser un número.")
+            continue
+
+        id_elegido = int(id_elegido)
+
+        if id_elegido == 0:
+            print("Saliendo del listado de turnos por médico.")
+            break
+
+        if id_elegido not in medicos:
+            print("❌ No existe un médico con ese ID.")
+            continue
+
+        print(f"\nTurnos asignados al Dr/a. {medicos[id_elegido]['nombre']} {medicos[id_elegido]['apellido']}:")
+
+        turnos_medico = []
+        for turno in turnos:
+            if turno[2] == id_elegido:
+                turnos_medico.append(turno)
+
+        if not turnos_medico:
+            print("No hay turnos asignados.")
+            continue
+
+        for turno in turnos_medico:
+            id_paciente = turno[1]
+            paciente = pacientes.get(id_paciente, {"nombre": "Desconocido", "apellido": ""})
+            print(f"- {paciente['nombre']} {paciente['apellido']} | Consultorio: {turno[3]} | Fecha: {turno[4]} | Hora: {turno[5]}")
+
+
+
 
 # Función para mostrar el menú
 def mostrar_menu():
@@ -145,7 +186,8 @@ def mostrar_menu():
     print("6. Crear paciente")
     print("7. Eliminar paciente")
     print("8. Buscar médico")
-    print("9. Salir")
+    print("9. Ver agenda de médico")
+    print("10. Salir")
 
 # Lógica para el menú
 while True:
@@ -164,6 +206,8 @@ while True:
     elif opcion == "6":
         crear_paciente(pacientes)
     elif opcion == "9":
+        agenda_medico(medicos, turnos)
+    elif opcion == "10":
         print("Saliendo del programa.")
     else:
         print("Opción no válida. Intente de nuevo.")
