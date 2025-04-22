@@ -24,6 +24,18 @@ pacientes = {
         "obra_social": "Swiss Medical",
         "nacionalidad": "Argentina",
         "grupo_sanguineo": "A-"
+    },
+    3: {
+        "nombre": "Ana",
+        "apellido": "Perez",
+        "dni": "28486789",
+        "fecha_nac": "1998-07-24",
+        "domicilio": "Calle Falsa 486",
+        "mail": "ana.lopez@email.com",
+        "num_tel": "555-5278",
+        "obra_social": "Swiss Medical",
+        "nacionalidad": "Argentina",
+        "grupo_sanguineo": "A+"
     }
 }
 
@@ -75,17 +87,6 @@ def ver_turnos(turnos):
         print(f"  Médico: {medico['nombre']} {medico['apellido']} - {medico['especialidad']}")
         print(f"  Consultorio: {consultorio}\n")
 
-
-"""         "nombre": "Ana",
-        "apellido": "López",
-        "dni": "23456789",
-        "fecha_nac": "1992-07-24",
-        "domicilio": "Calle Falsa 456",
-        "mail": "ana.lopez@email.com",
-        "num_tel": "555-5678",
-        "obra_social": "Swiss Medical",
-        "nacionalidad": "Argentina",
-        "grupo_sanguineo": "A-" """
 def crear_paciente(pacientes):
     paciente = {
     "nombre": input("Nombre: "),
@@ -105,6 +106,14 @@ def crear_paciente(pacientes):
 """     for clave, valor in paciente.items():
         print(clave, ": " ,valor)
  """
+ 
+def buscar_paciente_nombre(pacientes, nombre):
+    for clave, valor in pacientes.items():
+        if pacientes[clave]["nombre"] == nombre:
+            print("\n" ,pacientes[clave]["nombre"], pacientes[clave]["apellido"], pacientes[clave]["dni"])
+
+
+
 # Función para mostrar el menú
 def mostrar_menu():
     print("\nMenú de Turnos Médicos")
@@ -113,8 +122,8 @@ def mostrar_menu():
     print("3. Modificar turno")
     print("4. Eliminar turno") 
     print("5. Buscar paciente")
-    print("5. Crear paciente")
-    print("5. Eliminar paciente")
+    print("6. Crear paciente")
+    print("7. Eliminar paciente")
     print("8. Buscar médico")
     print("9. Salir")
 
@@ -131,8 +140,12 @@ while True:
     elif opcion == "4":
         print("Función para eliminar turno en construcción...")
     elif opcion == "5":
+        nombre = input("Ingrese nombre a buscar: ")
+        buscar_paciente_nombre(pacientes, nombre)
+    elif opcion == "6":
         crear_paciente(pacientes)
     elif opcion == "9":
         print("Saliendo del programa.")
     else:
         print("Opción no válida. Intente de nuevo.")
+        
