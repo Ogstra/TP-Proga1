@@ -312,7 +312,7 @@ while True:
     elif opcion == "2":
         agregar_turno(turnos, medicos, pacientes)
     elif opcion == "3":
-        modificar_turno(turnos, medicos, pacientes)
+        modificar_turno(turnos,medicos, pacientes)
     elif opcion == "4":
         eliminar_turno(turnos)
     elif opcion == "5":
