@@ -219,10 +219,11 @@ def eliminar_turno(turnos):
 
 def modificar_turno(turnos, medicos, pacientes):
     id_turno= int(input("Ingrese el ID del turno que quiere modificar: "))
-    for turno in turnos:
-        if turno[0]== id_turno:
-            turnoAModificar=turno
+    for i in range(len(turnos)):
+        if turnos[i][0]== id_turno:
+            turnoAModificar=i
             break
+
     if turnoAModificar is not None:
         print("¿Que desea modificar del turno?")
         print("1. Paciente")
@@ -237,49 +238,49 @@ def modificar_turno(turnos, medicos, pacientes):
         if opcion == 1:
             id_paciente=int(input("Ingrese el nuevo ID del paciente: "))
             if id_paciente in pacientes:
-                turnoAModificar[1]=id_paciente
+                turno[1]=id_paciente
                 print("ID del paciente modificado con éxito.")
         elif opcion ==2:
             id_medico=int(input("Ingrese el nuevo ID del médico: "))
             if id_medico in medicos:
-                turnoAModificar[2]=id_medico
+                turno[2]=id_medico
                 print("ID del médico modificado con éxito.")
             else:
                 print("No existe un médico con ese ID.")
         elif opcion ==3:
             consultorio=input("Ingrese el nuevo nombre del consultorio: ")
-            turnoAModificar[3]=consultorio
+            turno[3]=consultorio
             print("El nuevo nombre del consultorio fue modificado con éxito.")
         elif opcion ==4:
             fecha=input("Ingrese la nueva fecha (AAAA-MM-DD): ")
-            turnoAModificar[4]=fecha
+            turno[4]=fecha
             print("La nueva fecha fue modificada con éxito.")
         elif opcion ==5:
             hora=input("Ingrese la nueva hora (HH:MM): ")
-            turnoAModificar[5]=hora
+            turno[5]=hora
             print("La nueva hora fue modificada con éxito.")
         elif opcion ==6:
             id_paciente=int(input("Ingrese el nuevo ID del paciente: "))
             if id_paciente in pacientes:
-                turnoAModificar[1]=id_paciente
+                turno[1]=id_paciente
             else: 
                 print("No existe un paciente con ese ID.")
                 return
             id_medico=int(input("Ingrese el nuevo ID del médico: "))
             if id_medico in medicos:
-                turnoAModificar[2]=id_medico
+                turno[2]=id_medico
                 print("ID del médico modificado con éxito.")
             else:
                 print("No existe un médico con ese ID.")
                 return
             consultorio=input("Ingrese el nuevo nombre del consultorio: ")
-            turnoAModificar[3]=consultorio
+            turno[3]=consultorio
             print("El nuevo nombre del consultorio fue modificado con éxito.")
             fecha=input("Ingrese la nueva fecha (AAAA-MM-DD): ")
-            turnoAModificar[4]=fecha
+            turno[4]=fecha
             print("La nueva fecha fue modificada con éxito.")
             hora=input("Ingrese la nueva hora (HH:MM): ")
-            turnoAModificar[5]=hora
+            turno[5]=hora
             print("La nueva hora fue modificada con éxito.")
         else:
             print("Opción no válida. Intente de nuevo.")
