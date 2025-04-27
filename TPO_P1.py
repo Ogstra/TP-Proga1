@@ -1,4 +1,3 @@
-
 # Definir la matriz de turnos de ejemplo (id, paciente, médico, consultorio, fecha, hora)
 # Diccionario de pacientes
 from datetime import datetime
@@ -75,7 +74,7 @@ medicos = {
 turnos = [
     (1, 1, 1, "Consultorio 101", "2025-04-15", "10:00"),  # Juan Pérez con Dra. Rodríguez
     (2, 2, 2, "Consultorio 202", "2025-04-16", "11:30")   # Ana López con Dr. Martínez
-]   
+]
 
 def validarFecha(fecha):
     try:
@@ -123,21 +122,16 @@ def crear_paciente(pacientes):
     "nacionalidad": input("Nacionalidad: "),
     "grupo_sanguineo": input("Grupo Sanguineo: ")
     }
-    pacientes.update(paciente)
-    
+    nuevo_id_paciente = max(pacientes.keys()) + 1 if pacientes else 1
+    pacientes[nuevo_id_paciente] = paciente
     print(f"--- Paciente agregado ---")
-"""     for clave, valor in paciente.items():
-        print(clave, ": " ,valor)
- """
- 
+
 def buscar_paciente(pacientes):
     campos = ("nombre", "apellido", "dni", "mail", "grupo_sanguineo")
     opcion = int(input("Buscar por:\n1) Nombre\n2) Apellido\n3) DNI\n4) Mail\n5) Grupo Sanguíneo\nOpción: "))
 
     while opcion < 1 or opcion > len(campos):
         opcion = int(input("Opcion no valida\nBuscar por:\n1) Nombre\n2) Apellido\n3) DNI\n4) Mail\n5) Grupo Sanguíneo\nOpción: "))
-
-
 
     campo_seleccionado = campos[opcion - 1]
     valor_buscado = input(f"Ingrese {campo_seleccionado}: ").lower()
@@ -155,6 +149,62 @@ def buscar_paciente(pacientes):
                 print(f"{clave.capitalize()}: {valor}")
     else:
         print("No se encontraron pacientes con ese dato.")
+
+def eliminar_paciente(pacientes):
+    dni_paciente = input("Ingrese el DNI del paciente que desea eliminar: ")
+    paciente_a_eliminar = None
+    for id_paciente, datos_paciente in pacientes.items():
+        if datos_paciente["dni"] == dni_paciente:
+            paciente_a_eliminar = id_paciente
+            break
+
+    if paciente_a_eliminar:
+        del pacientes[paciente_a_eliminar]
+        print(f"Paciente con DNI {dni_paciente} eliminado con éxito.")
+    else:
+        print(f"No se encontró un paciente con DNI {dni_paciente}.")
+        
+def crear_medico(medicos):
+    medico = {
+        "nombre": input("Nombre del médico: "),
+        "apellido": input("Apellido del médico: "),
+        "especialidad": input("Especialidad: "),
+        "mail": input("Mail: "),
+        "dni": input("DNI: "),
+        "fecha_nac": input("Fecha de Nacimiento: "),
+        "num_tel": input("Número de Teléfono: "),
+        "domicilio": input("Domicilio: "),
+        "nacionalidad": input("Nacionalidad: "),
+        "titulo": input("Título profesional: "),
+        "matricula": input("Matrícula: ")
+    }
+    nuevo_id_medico = max(medicos.keys()) + 1 if medicos else 1
+    medicos[nuevo_id_medico] = medico
+    print(f"\n--- Médico agregado ---")
+
+def buscar_medico(medicos):
+    campos = ("nombre", "apellido", "especialidad", "mail", "dni", "matricula")
+    opcion = int(input("Buscar médico por:\n1) Nombre\n2) Apellido\n3) Especialidad\n4) Mail\n5) DNI\n6) Matrícula\nOpción: "))
+
+    while opcion < 1 or opcion > len(campos):
+        opcion = int(input("Opción no válida\nBuscar médico por:\n1) Nombre\n2) Apellido\n3) Especialidad\n4) Mail\n5) DNI\n6) Matrícula\nOpción: "))
+
+    campo_seleccionado = campos[opcion - 1]
+    valor_buscado = input(f"Ingrese {campo_seleccionado}: ").lower()
+
+    resultados = []
+    for id_medico, datos_medico in medicos.items():
+        valor_actual = str(datos_medico[campo_seleccionado]).lower()
+        if valor_actual == valor_buscado:
+            resultados.append((id_medico, datos_medico))
+
+    if resultados:
+        for id_medico, datos in resultados:
+            print(f"\nID: {id_medico}")
+            for clave, valor in datos.items():
+                print(f"{clave.capitalize()}: {valor}")
+    else:
+        print("No se encontraron médicos con ese dato.")
 
 def agenda_medico(medicos, turnos):
     while True:
@@ -175,8 +225,7 @@ def agenda_medico(medicos, turnos):
             print("Saliendo del listado de turnos por médico.")
             break
 
-        if id_elegido not in medicos:
-            print("❌ No existe un médico con ese ID.")
+        if not verificarSiExiste(id_elegido, medicos, "médico"):
             continue
 
         print(f"\nTurnos asignados al Dr/a. {medicos[id_elegido]['nombre']} {medicos[id_elegido]['apellido']}:")
@@ -205,16 +254,23 @@ def agregar_turno(turnos, medicos, pacientes):
     id_medico = int(input("Ingrese el ID del médico: "))
     if not verificarSiExiste(id_medico, medicos, "médico"):
         return
-   
+
     consultorio = input("Ingrese el nombre del consultorio: ")
     fecha = input("Ingrese la fecha (AAAA-MM-DD): ")
+    while not validarFecha(fecha):
+        print("Formato de fecha inválido. Debe ser AAAA-MM-DD.")
+        fecha = input("Ingrese la fecha (AAAA-MM-DD): ")
+
     hora = input("Ingrese la hora (HH:MM): ")
+    while not validarHora(hora):
+        print("Formato de hora inválido. Debe ser HH:MM.")
+        hora = input("Ingrese la hora (HH:MM): ")
+
     id_turno = max([turno[0] for turno in turnos], default=0) + 1
     turnos.append((id_turno, id_paciente, id_medico, consultorio, fecha, hora))
-    print(f"Turno {len(turnos)} agregado con éxito.")
-           
-    
-    
+    print(f"Turno {id_turno} agregado con éxito.")
+
+
 def eliminar_turno(turnos):
     id_turno= int(input("Ingrese el ID del turno que quiere eliminar: "))
     turnoAEliminar= None
@@ -278,7 +334,7 @@ def modificar_turno(turnos, medicos, pacientes):
         elif opcion ==5:
             hora=input("Ingrese la nueva hora (HH:MM): ")
             if validarHora(hora):
-                turno[5] = fecha
+                turno[5] = hora
                 print("La nueva hora fue modificada con éxito.")
             else:
                 print("Formato de la hora es inválido.")
@@ -286,12 +342,10 @@ def modificar_turno(turnos, medicos, pacientes):
         elif opcion ==6:
             id_paciente=int(input("Ingrese el nuevo ID del paciente: "))
             if not verificarSiExiste(id_paciente, pacientes, "paciente"):
-                print("No existe un paciente con ese ID.")
                 return
             turno[1]=id_paciente
             id_medico=int(input("Ingrese el nuevo ID del médico: "))
             if not verificarSiExiste(id_medico, medicos, "médico"):
-                print("No existe un médico con ese ID.")
                 return
             turno[2]=id_medico
             consultorio=input("Ingrese el nuevo nombre del consultorio: ")
@@ -318,16 +372,17 @@ def modificar_turno(turnos, medicos, pacientes):
 # Función para mostrar el menú
 def mostrar_menu():
     print("\nMenú de Turnos Médicos")
-    print("1. Ver lista de turnos")  
-    print("2. Agregar turno")  
+    print("1. Ver lista de turnos")
+    print("2. Agregar turno")
     print("3. Modificar turno")
-    print("4. Eliminar turno") 
+    print("4. Eliminar turno")
     print("5. Buscar paciente")
     print("6. Crear paciente")
     print("7. Eliminar paciente")
     print("8. Buscar médico")
-    print("9. Ver agenda de médico")
-    print("10. Salir")
+    print("9. Crear médico")
+    print("10. Ver agenda de médico")
+    print("11. Salir")
 
 # Lógica para el menú
 while True:
@@ -345,11 +400,18 @@ while True:
         buscar_paciente(pacientes)
     elif opcion == "6":
         crear_paciente(pacientes)
+    elif opcion == "7":
+        eliminar_paciente(pacientes)
+    elif opcion == "8":
+        buscar_medico(medicos)
     elif opcion == "9":
-        agenda_medico(medicos, turnos)
+        crear_medico(medicos)
     elif opcion == "10":
+        agenda_medico(medicos, turnos)
+    elif opcion == "11":
         print("Saliendo del programa.")
         break
     else:
         print("Opción no válida. Intente de nuevo.")
-        
+        continue
+
