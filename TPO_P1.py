@@ -288,10 +288,12 @@ def agregar_turno(turnos, medicos, pacientes):
     fecha = input("Ingrese la fecha (AAAA-MM-DD): ")
     if not validarFecha(fecha):
         print("El formato de la fecha es inválido.")
+        fecha = input("Ingrese la fecha (AAAA-MM-DD): ")
         return
     hora = input("Ingrese la hora (HH:MM): ")
     if not validarHora(hora):
         print("El formato de la hora es inválido.")
+        hora = input("Ingrese la hora (HH:MM): ")
         return
     id_turno = max([turno[0] for turno in turnos], default=0) + 1
     turnos.append((id_turno, id_paciente, id_medico, consultorio, fecha, hora))
