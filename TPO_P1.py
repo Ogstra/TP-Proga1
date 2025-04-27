@@ -1,6 +1,13 @@
 # Definir la matriz de turnos de ejemplo (id, paciente, médico, consultorio, fecha, hora)
 # Diccionario de pacientes
 from datetime import datetime
+import unicodedata
+
+def quitar_acentos(texto):
+    texto = unicodedata.normalize('NFD', texto)
+    texto = ''.join(c for c in texto if unicodedata.category(c) != 'Mn')
+    return texto
+
 pacientes = {
     1: {
         "nombre": "Juan",
@@ -12,7 +19,7 @@ pacientes = {
         "num_tel": "555-1234",
         "obra_social": "OSDE",
         "nacionalidad": "Argentina",
-        "grupo_sanguineo": "O+"
+            "grupo_sanguineo": "O+"
     },
     2: {
         "nombre": "Ana",
@@ -26,7 +33,7 @@ pacientes = {
         "nacionalidad": "Argentina",
         "grupo_sanguineo": "A-"
     },
-    3: {
+    3: {    
         "nombre": "Ana",
         "apellido": "Perez",
         "dni": "28486789",
@@ -144,21 +151,33 @@ def buscar_paciente(pacientes):
         opcion = int(input("Opcion no valida\nBuscar por:\n1) Nombre\n2) Apellido\n3) DNI\n4) Mail\n5) Grupo Sanguíneo\nOpción: "))
 
     campo_seleccionado = campos[opcion - 1]
-    valor_buscado = input(f"Ingrese {campo_seleccionado}: ").lower()
+    valor_buscado = quitar_acentos(input(f"Ingrese {campo_seleccionado}: ").lower())
 
     resultados = []
     for id_paciente, datos_paciente in pacientes.items():
-        valor_actual = str(datos_paciente[campo_seleccionado]).lower()
+        valor_actual = quitar_acentos(str(datos_paciente[campo_seleccionado]).lower())
         if valor_actual == valor_buscado:
             resultados.append((id_paciente, datos_paciente))
 
-    if resultados:
-        for id_paciente, datos in resultados:
-            print(f"\nID: {id_paciente}")
-            for clave, valor in datos.items():
-                print(f"{clave.capitalize()}: {valor}")
+    if not resultados:
+        print("No se encontraron pacientes.")
+        return
+    elif len(resultados) == 1:
+        id_paciente, datos = resultados[0]
+        print(f"\nID: {id_paciente}")
+        for clave, valor in datos.items():
+            print(f"{clave.capitalize()}: {valor}")
+        return id_paciente
     else:
-        print("No se encontraron pacientes con ese dato.")
+        print("\nSe encontraron varios pacientes:")
+        for id, (id_paciente, datos) in enumerate(resultados, start=1):
+            print(f"{id}) {datos['nombre']} {datos['apellido']} - DNI: {datos['dni']}")
+            
+    pacienteElegido = int(input("Seleccione paciente: "))
+
+    while pacienteElegido < 1 or pacienteElegido > len(resultados):
+        pacienteElegido = int(input(f"Opción inválida: "))
+
 
 def eliminar_paciente(pacientes):
     dni_paciente = input("Ingrese el DNI del paciente que desea eliminar: ")
@@ -267,7 +286,6 @@ def agregar_turno(turnos, medicos, pacientes):
 
     consultorio = input("Ingrese el nombre del consultorio: ")
     fecha = input("Ingrese la fecha (AAAA-MM-DD): ")
-<<<<<<< HEAD
     if not validarFecha(fecha):
         print("El formato de la fecha es inválido.")
         return
@@ -275,17 +293,6 @@ def agregar_turno(turnos, medicos, pacientes):
     if not validarHora(hora):
         print("El formato de la hora es inválido.")
         return
-=======
-    while not validarFecha(fecha):
-        print("Formato de fecha inválido. Debe ser AAAA-MM-DD.")
-        fecha = input("Ingrese la fecha (AAAA-MM-DD): ")
-
-    hora = input("Ingrese la hora (HH:MM): ")
-    while not validarHora(hora):
-        print("Formato de hora inválido. Debe ser HH:MM.")
-        hora = input("Ingrese la hora (HH:MM): ")
-
->>>>>>> f9d5cd30388a6a087ec2da4f724d91ad204183e8
     id_turno = max([turno[0] for turno in turnos], default=0) + 1
     turnos.append((id_turno, id_paciente, id_medico, consultorio, fecha, hora))
     print(f"Turno {id_turno} agregado con éxito.")
@@ -392,12 +399,8 @@ def modificar_turno(turnos, medicos, pacientes):
                 return
             if validarHora(hora):
                 turno[5] = hora
-<<<<<<< HEAD
                 print("La hora fue modificada con éxito.")
                 break
-=======
-                print("La nueva hora fue modificada con éxito.")
->>>>>>> f9d5cd30388a6a087ec2da4f724d91ad204183e8
             else:
                 print("Formato de hora inválido. Intente de nuevo.")
 
@@ -407,7 +410,6 @@ def modificar_turno(turnos, medicos, pacientes):
             if id_paciente == -1:
                 print("Operación cancelada.")
                 return
-<<<<<<< HEAD
             if verificarSiExiste(id_paciente, pacientes, "paciente"):
                 turno[1] = id_paciente
                 break
@@ -429,15 +431,6 @@ def modificar_turno(turnos, medicos, pacientes):
             fecha = input("Ingrese la nueva fecha (AAAA-MM-DD) (o -1 para cancelar): ")
             if fecha == "-1":
                 print("Operación cancelada.")
-=======
-        elif opcion ==6:
-            id_paciente=int(input("Ingrese el nuevo ID del paciente: "))
-            if not verificarSiExiste(id_paciente, pacientes, "paciente"):
-                return
-            turno[1]=id_paciente
-            id_medico=int(input("Ingrese el nuevo ID del médico: "))
-            if not verificarSiExiste(id_medico, medicos, "médico"):
->>>>>>> f9d5cd30388a6a087ec2da4f724d91ad204183e8
                 return
             if validarFecha(fecha):
                 turno[4] = fecha
