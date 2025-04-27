@@ -1,5 +1,7 @@
+
 # Definir la matriz de turnos de ejemplo (id, paciente, médico, consultorio, fecha, hora)
 # Diccionario de pacientes
+from datetime import datetime
 pacientes = {
     1: {
         "nombre": "Juan",
@@ -74,6 +76,27 @@ turnos = [
     (1, 1, 1, "Consultorio 101", "2025-04-15", "10:00"),  # Juan Pérez con Dra. Rodríguez
     (2, 2, 2, "Consultorio 202", "2025-04-16", "11:30")   # Ana López con Dr. Martínez
 ]   
+
+def validarFecha(fecha):
+    try:
+        datetime.strptime(fecha, "%Y-%m-%d")
+        return True
+    except ValueError:
+        return False
+
+def validarHora(hora):
+    try:
+        datetime.strptime(hora, "%H:%M")
+        return True
+    except ValueError:
+        return False
+
+#Funcion para verificar si existe ese id
+def verificarSiExiste(id, diccionario, nombre_objeto):
+    if id not in diccionario:
+        print(f"No existe un {nombre_objeto} con ese ID.")
+        return False
+    return True
 
 # Función para mostrar turnos con información expandida
 def ver_turnos(turnos):
@@ -177,30 +200,20 @@ def agregar_turno(turnos, medicos, pacientes):
     print("\n=== Agregar Turno ===")
 
     id_paciente = int(input("Ingrese el ID del paciente: "))
-
-    if id_paciente not in pacientes:
-        print("No existe un paciente con ese ID.")
+    if not verificarSiExiste(id_paciente, pacientes, "paciente"):
         return
-    if id_paciente in pacientes:
-        id_medico = int(input("Ingrese el ID del médico: "))
-        if id_medico in medicos:
-            ids = [turno[0] for turno in turnos] #recorro toda la lista de turnos y guardo los id en una lista
-            if ids:
-                id_turno = max(ids) + 1
-            else:
-                id_turno = 1
-            consultorio = input("Ingrese el nombre del consultorio: ")
-            fecha = input("Ingrese la fecha (AAAA-MM-DD): ")
-            hora = input("Ingrese la hora (HH:MM): ")
-            turnos.append((len(turnos) + 1, id_paciente, id_medico, consultorio, fecha, hora))
-            print(f"Turno {len(turnos)} agregado con éxito.")
-            return
-        else:
-            print("No existe un médico con ese ID.")
-            return
-    else:
-        print("No existe un paciente con ese ID.")
+    id_medico = int(input("Ingrese el ID del médico: "))
+    if not verificarSiExiste(id_medico, medicos, "médico"):
         return
+   
+    consultorio = input("Ingrese el nombre del consultorio: ")
+    fecha = input("Ingrese la fecha (AAAA-MM-DD): ")
+    hora = input("Ingrese la hora (HH:MM): ")
+    id_turno = max([turno[0] for turno in turnos], default=0) + 1
+    turnos.append((id_turno, id_paciente, id_medico, consultorio, fecha, hora))
+    print(f"Turno {len(turnos)} agregado con éxito.")
+           
+    
     
 def eliminar_turno(turnos):
     id_turno= int(input("Ingrese el ID del turno que quiere eliminar: "))
@@ -219,6 +232,7 @@ def eliminar_turno(turnos):
 
 def modificar_turno(turnos, medicos, pacientes):
     id_turno= int(input("Ingrese el ID del turno que quiere modificar: "))
+    turnoAModificar = None
     for i in range(len(turnos)):
         if turnos[i][0]== id_turno:
             turnoAModificar=i
@@ -237,51 +251,62 @@ def modificar_turno(turnos, medicos, pacientes):
         turno = list(turnos[turnoAModificar]) # Convertir la tupla a lista para poder modificarla
         if opcion == 1:
             id_paciente=int(input("Ingrese el nuevo ID del paciente: "))
-            if id_paciente in pacientes:
+            if verificarSiExiste(id_paciente, pacientes, "paciente"):
                 turno[1]=id_paciente
                 print("ID del paciente modificado con éxito.")
+            else:
+                return
         elif opcion ==2:
             id_medico=int(input("Ingrese el nuevo ID del médico: "))
-            if id_medico in medicos:
-                turno[2]=id_medico
+            if verificarSiExiste(id_medico, medicos, "médico"):
+                turno[2] = id_medico
                 print("ID del médico modificado con éxito.")
             else:
-                print("No existe un médico con ese ID.")
+                return
         elif opcion ==3:
             consultorio=input("Ingrese el nuevo nombre del consultorio: ")
             turno[3]=consultorio
             print("El nuevo nombre del consultorio fue modificado con éxito.")
         elif opcion ==4:
             fecha=input("Ingrese la nueva fecha (AAAA-MM-DD): ")
-            turno[4]=fecha
-            print("La nueva fecha fue modificada con éxito.")
+            if validarFecha(fecha):
+                turno[4] = fecha
+                print("La nueva fecha fue modificada con éxito.")
+            else:
+                print("Formato de la fecha es inválido.")
+                return
         elif opcion ==5:
             hora=input("Ingrese la nueva hora (HH:MM): ")
-            turno[5]=hora
-            print("La nueva hora fue modificada con éxito.")
+            if validarHora(hora):
+                turno[5] = fecha
+                print("La nueva hora fue modificada con éxito.")
+            else:
+                print("Formato de la hora es inválido.")
+                return
         elif opcion ==6:
             id_paciente=int(input("Ingrese el nuevo ID del paciente: "))
-            if id_paciente in pacientes:
-                turno[1]=id_paciente
-            else: 
+            if not verificarSiExiste(id_paciente, pacientes, "paciente"):
                 print("No existe un paciente con ese ID.")
                 return
+            turno[1]=id_paciente
             id_medico=int(input("Ingrese el nuevo ID del médico: "))
-            if id_medico in medicos:
-                turno[2]=id_medico
-                print("ID del médico modificado con éxito.")
-            else:
+            if not verificarSiExiste(id_medico, medicos, "médico"):
                 print("No existe un médico con ese ID.")
                 return
+            turno[2]=id_medico
             consultorio=input("Ingrese el nuevo nombre del consultorio: ")
             turno[3]=consultorio
-            print("El nuevo nombre del consultorio fue modificado con éxito.")
-            fecha=input("Ingrese la nueva fecha (AAAA-MM-DD): ")
-            turno[4]=fecha
-            print("La nueva fecha fue modificada con éxito.")
-            hora=input("Ingrese la nueva hora (HH:MM): ")
-            turno[5]=hora
-            print("La nueva hora fue modificada con éxito.")
+            fecha = input("Ingrese la nueva fecha (AAAA-MM-DD): ")
+            if not validarFecha(fecha):
+                print("El formato de la fecha es inválido.")
+                return
+            turno[4] = fecha
+            hora = input("Ingrese la nueva hora (HH:MM): ")
+            if not validarHora(hora):
+                print("El formato de la hora es inválido.")
+                return
+            turno[5] = hora
+            print("La nueva información fue modificada con éxito.")
         else:
             print("Opción no válida. Intente de nuevo.")
             return
