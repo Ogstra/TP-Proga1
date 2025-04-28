@@ -3,11 +3,6 @@
 from datetime import datetime
 import unicodedata
 
-def quitar_acentos(texto):
-    texto = unicodedata.normalize('NFD', texto)
-    texto = ''.join(c for c in texto if unicodedata.category(c) != 'Mn')
-    return texto
-
 pacientes = {
     1: {
         "nombre": "Juan",
@@ -213,14 +208,28 @@ turnos = [
     (8, 1, 8, "Consultorio 808", "2025-04-22", "16:00"),  # Juan Pérez con Dr. Suárez (Oftalmología)
 ]
 def mensajesTipoNumerico(mensaje):
+    valor = input(mensaje).strip()
     while True:
-        valor = input(mensaje)
-        if valor.isdigit():
-            return int(valor)
+        if valor == "":
+            print("\n*** Error: Debe ingresar un número. ***")
+        elif not valor.isdigit():
+            print("\n*** Error: Debe ingresar un número. ***")
         else:
-            print("Error: Debe ingresar un número.")
+            return int(valor)
+        valor = input("Opción: ").strip()
 
 
+def quitar_acentos(texto):
+    texto = unicodedata.normalize('NFD', texto)
+    texto = ''.join(c for c in texto if unicodedata.category(c) != 'Mn')
+    return texto
+
+def validar_campo_vacio(texto):
+    valor = input(texto).strip()
+    while valor == "":
+        print("*** Este campo es obligatorio ***")
+        valor = input(texto).strip()
+    return valor
 
 def validarFecha(fecha):
     try:
@@ -256,17 +265,27 @@ def ver_turnos(turnos):
         print(f"  Consultorio: {consultorio}\n")
 
 def crear_paciente(pacientes):
+    nombre = validar_campo_vacio("Nombre: ")
+    apellido = validar_campo_vacio("Apellido: ")
+    dni = validar_campo_vacio("DNI: ")
+    fecha_nac = validar_campo_vacio("Fecha de Nacimiento: ")
+    domicilio = validar_campo_vacio("Domicilio: ")
+    mail = validar_campo_vacio("Mail: ")
+    num_tel = validar_campo_vacio("Número de Teléfono: ")
+    obra_social = validar_campo_vacio("Obra Social: ")
+    nacionalidad = validar_campo_vacio("Nacionalidad: ")
+    grupo_sanguineo = validar_campo_vacio("Grupo Sanguíneo: ")
     paciente = {
-    "nombre": input("Nombre: "),
-    "apellido": input("Apellido: "),
-    "dni": input("DNI: "),
-    "fecha_nac": input("Fecha de Nacimento: "),
-    "domicilio": input("Domicilio: "),
-    "mail": input("Mail: "),
-    "num_tel": input("Numero de Telefono: "),
-    "obra_social": input("Obra Social: "),
-    "nacionalidad": input("Nacionalidad: "),
-    "grupo_sanguineo": input("Grupo Sanguineo: ")
+    "nombre": nombre,
+    "apellido": apellido,
+    "dni": dni,
+    "fecha_nac": fecha_nac,
+    "domicilio": domicilio,
+    "mail": mail,
+    "num_tel": num_tel,
+    "obra_social": obra_social,
+    "nacionalidad": nacionalidad,
+    "grupo_sanguineo": grupo_sanguineo 
     }
     nuevo_id_paciente = max(pacientes.keys()) + 1 if pacientes else 1
     pacientes[nuevo_id_paciente] = paciente
@@ -274,10 +293,10 @@ def crear_paciente(pacientes):
 
 def buscar_paciente(pacientes):
     campos = ("nombre", "apellido", "dni", "mail", "grupo_sanguineo")
-    opcion = int(input("Buscar por:\n1) Nombre\n2) Apellido\n3) DNI\n4) Mail\n5) Grupo Sanguíneo\nOpción: "))
+    opcion = mensajesTipoNumerico("Buscar por:\n1) Nombre\n2) Apellido\n3) DNI\n4) Mail\n5) Grupo Sanguíneo\nOpción: ")
 
     while opcion < 1 or opcion > len(campos):
-        opcion = int(input("Opcion no valida\nBuscar por:\n1) Nombre\n2) Apellido\n3) DNI\n4) Mail\n5) Grupo Sanguíneo\nOpción: "))
+        opcion = mensajesTipoNumerico("Opcion no valida\nBuscar por:\n1) Nombre\n2) Apellido\n3) DNI\n4) Mail\n5) Grupo Sanguíneo\nOpción: ")
 
     campo_seleccionado = campos[opcion - 1]
     valor_buscado = quitar_acentos(input(f"Ingrese {campo_seleccionado}: ").lower())
