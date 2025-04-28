@@ -19,7 +19,7 @@ pacientes = {
         "num_tel": "555-1234",
         "obra_social": "OSDE",
         "nacionalidad": "Argentina",
-            "grupo_sanguineo": "O+"
+        "grupo_sanguineo": "O+"
     },
     2: {
         "nombre": "Ana",
@@ -33,7 +33,7 @@ pacientes = {
         "nacionalidad": "Argentina",
         "grupo_sanguineo": "A-"
     },
-    3: {    
+    3: {
         "nombre": "Ana",
         "apellido": "Perez",
         "dni": "28486789",
@@ -44,9 +44,56 @@ pacientes = {
         "obra_social": "Swiss Medical",
         "nacionalidad": "Argentina",
         "grupo_sanguineo": "A+"
+    },
+    4: {
+        "nombre": "Luis",
+        "apellido": "Martínez",
+        "dni": "34567890",
+        "fecha_nac": "1975-11-03",
+        "domicilio": "Boulevard Central 789",
+        "mail": "luis.martinez@email.com",
+        "num_tel": "555-7890",
+        "obra_social": "Galeno",
+        "nacionalidad": "Argentina",
+        "grupo_sanguineo": "B+"
+    },
+    5: {
+        "nombre": "María",
+        "apellido": "Gómez",
+        "dni": "45678901",
+        "fecha_nac": "1988-03-15",
+        "domicilio": "Av. Libertador 321",
+        "mail": "maria.gomez@email.com",
+        "num_tel": "555-3210",
+        "obra_social": "Medicus",
+        "nacionalidad": "Argentina",
+        "grupo_sanguineo": "AB-"
+    },
+    6: {
+        "nombre": "Carlos",
+        "apellido": "Fernández",
+        "dni": "56789012",
+        "fecha_nac": "1995-09-27",
+        "domicilio": "Calle San Martín 654",
+        "mail": "carlos.fernandez@email.com",
+        "num_tel": "555-6543",
+        "obra_social": "OSDE",
+        "nacionalidad": "Argentina",
+        "grupo_sanguineo": "O-"
+    },
+    7: {
+        "nombre": "Laura",
+        "apellido": "Sánchez",
+        "dni": "67890123",
+        "fecha_nac": "2000-01-10",
+        "domicilio": "Pasaje del Sol 98",
+        "mail": "laura.sanchez@email.com",
+        "num_tel": "555-9876",
+        "obra_social": "Swiss Medical",
+        "nacionalidad": "Argentina",
+        "grupo_sanguineo": "B-"
     }
 }
-
 # Diccionario de médicos
 medicos = {
     1: {
@@ -74,15 +121,97 @@ medicos = {
         "nacionalidad": "Argentina",
         "titulo": "Doctor en Medicina",
         "matricula": "67890"
+    },
+    3: {
+        "nombre": "Lucía",
+        "apellido": "González",
+        "especialidad": "Pediatría",
+        "mail": "lucia.gonzalez@email.com",
+        "dni": "65432109",
+        "fecha_nac": "1982-06-18",
+        "num_tel": "555-6789",
+        "domicilio": "Av. Niños 202",
+        "nacionalidad": "Argentina",
+        "titulo": "Doctora en Medicina",
+        "matricula": "13579"
+    },
+    4: {
+        "nombre": "Martín",
+        "apellido": "Fernández",
+        "especialidad": "Traumatología",
+        "mail": "martin.fernandez@email.com",
+        "dni": "54321098",
+        "fecha_nac": "1978-02-05",
+        "num_tel": "555-4321",
+        "domicilio": "Calle Huesos 303",
+        "nacionalidad": "Argentina",
+        "titulo": "Doctor en Medicina",
+        "matricula": "24680"
+    },
+    5: {
+        "nombre": "Sofía",
+        "apellido": "López",
+        "especialidad": "Neurología",
+        "mail": "sofia.lopez@email.com",
+        "dni": "43210987",
+        "fecha_nac": "1989-12-12",
+        "num_tel": "555-3210",
+        "domicilio": "Av. Cerebro 404",
+        "nacionalidad": "Argentina",
+        "titulo": "Doctora en Medicina",
+        "matricula": "11223"
+    },
+    6: {
+        "nombre": "Javier",
+        "apellido": "Pérez",
+        "especialidad": "Gastroenterología",
+        "mail": "javier.perez@email.com",
+        "dni": "32109876",
+        "fecha_nac": "1980-11-30",
+        "num_tel": "555-2109",
+        "domicilio": "Calle Estómago 505",
+        "nacionalidad": "Argentina",
+        "titulo": "Doctor en Medicina",
+        "matricula": "44556"
+    },
+    7: {
+        "nombre": "Paula",
+        "apellido": "Moreno",
+        "especialidad": "Oncología",
+        "mail": "paula.moreno@email.com",
+        "dni": "21098765",
+        "fecha_nac": "1979-08-22",
+        "num_tel": "555-1098",
+        "domicilio": "Av. Esperanza 606",
+        "nacionalidad": "Argentina",
+        "titulo": "Doctora en Medicina",
+        "matricula": "77889"
+    },
+    8: {
+        "nombre": "Diego",
+        "apellido": "Suárez",
+        "especialidad": "Oftalmología",
+        "mail": "diego.suarez@email.com",
+        "dni": "10987654",
+        "fecha_nac": "1983-04-17",
+        "num_tel": "555-0987",
+        "domicilio": "Calle Vista 707",
+        "nacionalidad": "Argentina",
+        "titulo": "Doctor en Medicina",
+        "matricula": "99001"
     }
 }
-
 # Matriz de turnos con referencia a los IDs
 turnos = [
-    (1, 1, 1, "Consultorio 101", "2025-04-15", "10:00"),  # Juan Pérez con Dra. Rodríguez
-    (2, 2, 2, "Consultorio 202", "2025-04-16", "11:30")   # Ana López con Dr. Martínez
+    (1, 1, 1, "Consultorio 101", "2025-04-15", "10:00"),  # Juan Pérez con Dra. Rodríguez (Cardiología)
+    (2, 2, 2, "Consultorio 202", "2025-04-16", "11:30"),  # Ana López con Dr. Martínez (Dermatología)
+    (3, 3, 3, "Consultorio 303", "2025-04-17", "09:00"),  # Ana Pérez con Dra. González (Pediatría)
+    (4, 4, 4, "Consultorio 404", "2025-04-18", "14:00"),  # Luis Martínez con Dr. Fernández (Traumatología)
+    (5, 5, 5, "Consultorio 505", "2025-04-19", "13:30"),  # María Gómez con Dra. López (Neurología)
+    (6, 6, 6, "Consultorio 606", "2025-04-20", "15:00"),  # Carlos Fernández con Dr. Pérez (Gastroenterología)
+    (7, 7, 7, "Consultorio 707", "2025-04-21", "08:30"),  # Laura Sánchez con Dra. Moreno (Oncología)
+    (8, 1, 8, "Consultorio 808", "2025-04-22", "16:00"),  # Juan Pérez con Dr. Suárez (Oftalmología)
 ]
-
 def mensajesTipoNumerico(mensaje):
     while True:
         valor = input(mensaje)
@@ -193,40 +322,43 @@ def eliminar_paciente(pacientes):
     else:
         print(f"No se encontró un paciente con DNI {dni_paciente}.")
         
-def crear_medico(medicos):
+def agregar_medico(medicos):
+    print(f"Agregar Médico: ")
+
     medico = {
-        "nombre": input("Nombre del médico: "),
-        "apellido": input("Apellido del médico: "),
+        "nombre": input("Nombre: "),
+        "apellido": input("Apellido: "),
         "especialidad": input("Especialidad: "),
         "mail": input("Mail: "),
         "dni": input("DNI: "),
-        "fecha_nac": input("Fecha de Nacimiento: "),
+        "fecha_nac": input("Fecha de nacimiento (AAAA-MM-DD): "),
         "num_tel": input("Número de Teléfono: "),
         "domicilio": input("Domicilio: "),
         "nacionalidad": input("Nacionalidad: "),
-        "titulo": input("Título profesional: "),
+        "titulo": input("Título: "),
         "matricula": input("Matrícula: ")
     }
-    nuevo_id_medico = max(medicos.keys()) + 1 if medicos else 1
-    medicos[nuevo_id_medico] = medico
-    print(f"\n--- Médico agregado ---")
+    
+    nuevo_id = max(medicos.keys(), default=0) + 1
+    medicos[nuevo_id] = medico
+
+    print(f"Médico agregado con éxito.")
+    print(f"ID asignado: {nuevo_id}")
+
 
 def buscar_medico(medicos):
-    campos = ("nombre", "apellido", "especialidad", "mail", "dni", "matricula")
-    opcion = int(input("Buscar médico por:\n1) Nombre\n2) Apellido\n3) Especialidad\n4) Mail\n5) DNI\n6) Matrícula\nOpción: "))
-
+    campos = ("nombre", "apellido", "dni", "mail", "grupo_sanguineo")
+    opcion = int(input("Buscar por:\n1) Nombre\n2) Apellido\n3) DNI\n4) Mail\nOpción: "))
     while opcion < 1 or opcion > len(campos):
-        opcion = int(input("Opción no válida\nBuscar médico por:\n1) Nombre\n2) Apellido\n3) Especialidad\n4) Mail\n5) DNI\n6) Matrícula\nOpción: "))
+        opcion = int(input("Opción no válida\nBuscar por:\n1) Nombre\n2) Apellido\n3) DNI\n4) Mail\nOpción: "))
 
     campo_seleccionado = campos[opcion - 1]
     valor_buscado = input(f"Ingrese {campo_seleccionado}: ").lower()
-
     resultados = []
     for id_medico, datos_medico in medicos.items():
         valor_actual = str(datos_medico[campo_seleccionado]).lower()
         if valor_actual == valor_buscado:
             resultados.append((id_medico, datos_medico))
-
     if resultados:
         for id_medico, datos in resultados:
             print(f"\nID: {id_medico}")
@@ -454,20 +586,58 @@ def modificar_turno(turnos, medicos, pacientes):
     turnos[turnoAModificar] = tuple(turno)  # Volvemos a guardar como tupla
     print(f"\n Turno {id_turno} modificado con éxito.")
 
+
+def eliminar_medico(medicos):
+    id_medico = mensajesTipoNumerico("Ingrese el ID del médico que desea eliminar: ")
+    if not verificarSiExiste(id_medico, medicos, "médico"):
+        return 
+    
+    del medicos[id_medico]
+    print(f"Médico {id_medico} eliminado con éxito.")
+
+def agregar_medico(medicos):
+    print(f"Agregar Médico: ")
+
+    medico = {
+        "nombre": input("Nombre: "),
+        "apellido": input("Apellido: "),
+        "especialidad": input("Especialidad: "),
+        "mail": input("Mail: "),
+        "dni": input("DNI: "),
+        "fecha_nac": input("Fecha de nacimiento (AAAA-MM-DD): "),
+        "num_tel": input("Número de Teléfono: "),
+        "domicilio": input("Domicilio: "),
+        "nacionalidad": input("Nacionalidad: "),
+        "titulo": input("Título: "),
+        "matricula": input("Matrícula: ")
+    }
+    
+    nuevo_id = max(medicos.keys(), default=0) + 1
+    medicos[nuevo_id] = medico
+
+    print(f"Médico agregado con éxito.")
+    print(f"ID asignado: {nuevo_id}")
+
+
+
+
+
+
 # Función para mostrar el menú
 def mostrar_menu():
     print("\nMenú de Turnos Médicos")
-    print("1. Ver lista de turnos")
-    print("2. Agregar turno")
+    print("1. Ver lista de turnos")  
+    print("2. Agregar turno")  
     print("3. Modificar turno")
-    print("4. Eliminar turno")
+    print("4. Eliminar turno") 
     print("5. Buscar paciente")
     print("6. Crear paciente")
     print("7. Eliminar paciente")
     print("8. Buscar médico")
-    print("9. Crear médico")
-    print("10. Ver agenda de médico")
-    print("11. Salir")
+    print("9. Eliminar médico")
+    print("10. Agregar médico")
+    print("11. Agenda médica")
+    print("12. Salir")
 
 # Lógica para el menú
 while True:
@@ -490,13 +660,13 @@ while True:
     elif opcion == "8":
         buscar_medico(medicos)
     elif opcion == "9":
-        crear_medico(medicos)
+        eliminar_medico(medicos)
     elif opcion == "10":
-        agenda_medico(medicos, turnos)
+        agregar_medico(medicos)
     elif opcion == "11":
+        agenda_medico(medicos, turnos)
+    elif opcion == "12":
         print("Saliendo del programa.")
         break
     else:
         print("Opción no válida. Intente de nuevo.")
-        continue
-
