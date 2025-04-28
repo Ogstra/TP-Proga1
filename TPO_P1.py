@@ -212,6 +212,19 @@ turnos = [
     (7, 7, 7, "Consultorio 707", "2025-04-21", "08:30"),  # Laura Sánchez con Dra. Moreno (Oncología)
     (8, 1, 8, "Consultorio 808", "2025-04-22", "16:00"),  # Juan Pérez con Dr. Suárez (Oftalmología)
 ]
+
+def quitar_acentos(texto):
+     texto = unicodedata.normalize('NFD', texto)
+     texto = ''.join(c for c in texto if unicodedata.category(c) != 'Mn')
+     return texto
+ 
+def validar_campo_vacio(texto):
+     valor = input(texto).strip()
+     while valor == "":
+         print("*** Este campo es obligatorio ***")
+         valor = input(texto).strip()
+     return valor
+
 def mensajesTipoNumerico(mensaje):
     while True:
         valor = input(mensaje)
@@ -261,18 +274,29 @@ def ver_turnos(turnos):
         print(f"  Médico: {medico['nombre']} {medico['apellido']} - {medico['especialidad']}")
         print(f"  Consultorio: {consultorio}\n")
 
+
 def crear_paciente(pacientes):
+    nombre = validar_campo_vacio("Nombre: ")
+    apellido = validar_campo_vacio("Apellido: ")
+    dni = validar_campo_vacio("DNI: ")
+    fecha_nac = validar_campo_vacio("Fecha de Nacimiento: ")
+    domicilio = validar_campo_vacio("Domicilio: ")
+    mail = validar_campo_vacio("Mail: ")
+    num_tel = validar_campo_vacio("Número de Teléfono: ")
+    obra_social = validar_campo_vacio("Obra Social: ")
+    nacionalidad = validar_campo_vacio("Nacionalidad: ")
+    grupo_sanguineo = validar_campo_vacio("Grupo Sanguíneo: ")
     paciente = {
-    "nombre": input("Nombre: "),
-    "apellido": input("Apellido: "),
-    "dni": input("DNI: "),
-    "fecha_nac": input("Fecha de Nacimento: "),
-    "domicilio": input("Domicilio: "),
-    "mail": input("Mail: "),
-    "num_tel": input("Numero de Telefono: "),
-    "obra_social": input("Obra Social: "),
-    "nacionalidad": input("Nacionalidad: "),
-    "grupo_sanguineo": input("Grupo Sanguineo: ")
+     "nombre": nombre,
+     "apellido": apellido,
+     "dni": dni,
+     "fecha_nac": fecha_nac,
+     "domicilio": domicilio,
+     "mail": mail,
+     "num_tel": num_tel,
+     "obra_social": obra_social,
+     "nacionalidad": nacionalidad,
+     "grupo_sanguineo": grupo_sanguineo 
     }
     nuevo_id_paciente = max(pacientes.keys()) + 1 if pacientes else 1
     pacientes[nuevo_id_paciente] = paciente
@@ -331,25 +355,39 @@ def eliminar_paciente(pacientes):
 def agregar_medico(medicos):
     print(f"Agregar Médico: ")
 
+    nombre = validar_campo_vacio("Nombre: ")
+    apellido = validar_campo_vacio("Apellido: ")
+    especialidad = validar_campo_vacio("Especialidad: ")
+    mail = validar_campo_vacio("Mail: ")
+    dni = validar_campo_vacio("DNI: ")
+    fecha_nac = validar_campo_vacio("Fecha de nacimiento (AAAA-MM-DD): ")
+    num_tel = validar_campo_vacio("Número de Teléfono: ")
+    domicilio = validar_campo_vacio("Domicilio: ")
+    nacionalidad = validar_campo_vacio("Nacionalidad: ")
+    titulo = validar_campo_vacio("Título: ")
+    matricula = validar_campo_vacio("Matrícula: ")
+
     medico = {
-        "nombre": input("Nombre: "),
-        "apellido": input("Apellido: "),
-        "especialidad": input("Especialidad: "),
-        "mail": input("Mail: "),
-        "dni": input("DNI: "),
-        "fecha_nac": input("Fecha de nacimiento (AAAA-MM-DD): "),
-        "num_tel": input("Número de Teléfono: "),
-        "domicilio": input("Domicilio: "),
-        "nacionalidad": input("Nacionalidad: "),
-        "titulo": input("Título: "),
-        "matricula": input("Matrícula: ")
+        "nombre": nombre,
+        "apellido": apellido,
+        "especialidad": especialidad,
+        "dni": dni,
+        "fecha_nac": fecha_nac,
+        "domicilio": domicilio,
+        "mail": mail,
+        "num_tel": num_tel,
+        "nacionalidad": nacionalidad,
+        "titulo": titulo,
+        "matricula": matricula
     }
-    
+
     nuevo_id = max(medicos.keys(), default=0) + 1
     medicos[nuevo_id] = medico
 
     print(f"Médico agregado con éxito.")
     print(f"ID asignado: {nuevo_id}")
+
+
 
 
 def buscar_medico(medicos):
@@ -618,34 +656,6 @@ def eliminar_medico(medicos, turnos, pacientes):
         print(f"Médico {nombre_medico} {apellido_medico} eliminado con éxito.")
     else:
         print("Se ha cancelado la eliminación del médico.")
-
-def agregar_medico(medicos):
-    print(f"Agregar Médico: ")
-
-    medico = {
-        "nombre": input("Nombre: "),
-        "apellido": input("Apellido: "),
-        "especialidad": input("Especialidad: "),
-        "mail": input("Mail: "),
-        "dni": input("DNI: "),
-        "fecha_nac": input("Fecha de nacimiento (AAAA-MM-DD): "),
-        "num_tel": input("Número de Teléfono: "),
-        "domicilio": input("Domicilio: "),
-        "nacionalidad": input("Nacionalidad: "),
-        "titulo": input("Título: "),
-        "matricula": input("Matrícula: ")
-    }
-    
-    nuevo_id = max(medicos.keys(), default=0) + 1
-    medicos[nuevo_id] = medico
-
-    print(f"Médico agregado con éxito.")
-    print(f"ID asignado: {nuevo_id}")
-
-
-
-
-
 
 # Función para mostrar el menú
 def mostrar_menu():
