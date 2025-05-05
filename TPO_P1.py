@@ -201,7 +201,6 @@ medicos = {
         "matricula": "99001"
     }
 }
-# Matriz de turnos con referencia a los IDs
 turnos = [
     (1, 1, 1, "Consultorio 101", "2025-04-15", "10:00"),  # Juan Pérez con Dra. Rodríguez (Cardiología)
     (2, 2, 2, "Consultorio 202", "2025-04-16", "11:30"),  # Ana López con Dr. Martínez (Dermatología)
@@ -279,7 +278,10 @@ def crear_paciente(pacientes):
     nombre = validar_campo_vacio("Nombre: ")
     apellido = validar_campo_vacio("Apellido: ")
     dni = validar_campo_vacio("DNI: ")
-    fecha_nac = validar_campo_vacio("Fecha de Nacimiento: ")
+    fecha_nac = input("Ingrese la fecha (AAAA-MM-DD): ")
+    while not validarFecha(fecha_nac):
+        print("El formato de la fecha es inválido.")
+        fecha_nac = input("Ingrese la fecha (AAAA-MM-DD): ")  
     domicilio = validar_campo_vacio("Domicilio: ")
     mail = validar_campo_vacio("Mail: ")
     num_tel = validar_campo_vacio("Número de Teléfono: ")
@@ -360,7 +362,10 @@ def agregar_medico(medicos):
     especialidad = validar_campo_vacio("Especialidad: ")
     mail = validar_campo_vacio("Mail: ")
     dni = validar_campo_vacio("DNI: ")
-    fecha_nac = validar_campo_vacio("Fecha de nacimiento (AAAA-MM-DD): ")
+    fecha_nac = input("Ingrese la fecha (AAAA-MM-DD): ")
+    while not validarFecha(fecha_nac):
+        print("El formato de la fecha es inválido.")
+        fecha_nac = input("Ingrese la fecha (AAAA-MM-DD): ") 
     num_tel = validar_campo_vacio("Número de Teléfono: ")
     domicilio = validar_campo_vacio("Domicilio: ")
     nacionalidad = validar_campo_vacio("Nacionalidad: ")
