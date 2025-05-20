@@ -1,0 +1,95 @@
+{
+    "pacientes": [
+        {
+            "id": 1,
+            "nombre": "Juan",
+            "apellido": "Pérez",
+            "dni": "12345678",
+            "fecha_nac": "1980-05-12",
+            "domicilio": "Av. Siempre Viva 123",
+            "mail": "juan.perez@email.com",
+            "num_tel": "555-1234",
+            "obra_social": "OSDE",
+            "nacionalidad": "Argentina",
+            "grupo_sanguineo": "O+"
+        },
+        {
+            "id": 2,
+            "nombre": "Ana",
+            "apellido": "López",
+            "dni": "23456789",
+            "fecha_nac": "1992-07-24",
+            "domicilio": "Calle Falsa 456",
+            "mail": "ana.lopez@email.com",
+            "num_tel": "555-5678",
+            "obra_social": "Swiss Medical",
+            "nacionalidad": "Argentina",
+            "grupo_sanguineo": "A-"
+        },
+        {
+            "id": 3,
+            "nombre": "Ana",
+            "apellido": "Perez",
+            "dni": "28486789",
+            "fecha_nac": "1998-07-24",
+            "domicilio": "Calle Falsa 486",
+            "mail": "ana.lopez@email.com",
+            "num_tel": "555-5278",
+            "obra_social": "Swiss Medical",
+            "nacionalidad": "Argentina",
+            "grupo_sanguineo": "A+"
+        },
+        {
+            "id": 4,
+            "nombre": "Luis",
+            "apellido": "Martínez",
+            "dni": "34567890",
+            "fecha_nac": "1975-11-03",
+            "domicilio": "Boulevard Central 789",
+            "mail": "luis.martinez@email.com",
+            "num_tel": "555-7890",
+            "obra_social": "Galeno",
+            "nacionalidad": "Argentina",
+            "grupo_sanguineo": "B+"
+        },
+        {
+            "id": 5,
+            "nombre": "María",
+            "apellido": "Gómez",
+            "dni": "45678901",
+            "fecha_nac": "1988-03-15",
+            "domicilio": "Av. Libertador 321",
+            "mail": "maria.gomez@email.com",
+            "num_tel": "555-3210",
+            "obra_social": "Medicus",
+            "nacionalidad": "Argentina",
+            "grupo_sanguineo": "AB-"
+        },
+        {
+            "id": 6,
+            "nombre": "Carlos",
+            "apellido": "Fernández",
+            "dni": "56789012",
+            "fecha_nac": "1995-09-27",
+            "domicilio": "Calle San Martín 654",
+            "mail": "carlos.fernandez@email.com",
+            "num_tel": "555-6543",
+            "obra_social": "OSDE",
+            "nacionalidad": "Argentina",
+            "grupo_sanguineo": "O-"
+        },
+        {
+            "id": 7,
+            "nombre": "Laura",
+            "apellido": "Sánchez",
+            "dni": "67890123",
+            "fecha_nac": "2000-01-10",
+            "domicilio": "Pasaje del Sol 98",
+            "mail": "laura.sanchez@email.com",
+            "num_tel": "555-9876",
+            "obra_social": "Swiss Medical",
+            "nacionalidad": "Argentina",
+            "grupo_sanguineo": "B-"
+        }
+    ]
+}
