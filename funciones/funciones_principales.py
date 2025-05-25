@@ -360,43 +360,31 @@ def buscar_paciente(pacientes):
             resultados.append(pacientes[i])
 
     if len(resultados) == 1:
-        for i in range(len(resultados)):
-            print("ID: " + str(resultados[i]['id']))
-            print("Nombre: " + resultados[i]['nombre'])
-            print("Apellido: " + resultados[i]['apellido'])
-            print("DNI: " + resultados[i]['dni'])
-            print("Fecha de nacimiento: " + resultados[i]['fecha_nac'])
-            print("Domicilio: " + resultados[i]['domicilio'])
-            print("Mail: " + resultados[i]['mail'])
-            print("Número de Teléfono: " + resultados[i]['num_tel'])
-            print("Obra Social: " + resultados[i]['obra_social'])
-            print("Nacionalidad: " + resultados[i]['nacionalidad'])
-            print("Grupo Sanguíneo: " + resultados[i]['grupo_sanguineo'])
+        paciente = resultados[0]
+        for i in paciente:
+            print(f"{i.replace('_', ' ').capitalize()}: {paciente[i]}")
+
     elif len(resultados) > 1:
         print("\nSe encontraron varios pacientes:")
         
-        for i in range(len(resultados)):
-            print(f'Paciente {str(i + 1)}:')
-            print("Nombre: " + resultados[i]['nombre'])
-            print("Apellido: " + resultados[i]['apellido'])
-            print("DNI: " + resultados[i]['dni'])
-            print("")
+        campos_orden = [
+            "nombre", "apellido", "dni"
+        ]
+        
+        for i, paciente in enumerate(resultados, start=1):
+            print(f"Paciente {i}:")
+            for i in campos_orden:
+                print(f"{i.replace('_', ' ').capitalize()}: {paciente[i]}")
+            print("-" * 30)
             
         pacienteElegido = int(input("Seleccione paciente: "))
         while pacienteElegido < 1 or pacienteElegido > len(resultados):
             pacienteElegido = int(input(f"Opción inválida: "))
             
-        print("ID: " + str(resultados[pacienteElegido - 1]['id']))
-        print("Nombre: " + resultados[pacienteElegido - 1]['nombre'])
-        print("Apellido: " + resultados[pacienteElegido - 1]['apellido'])
-        print("DNI: " + resultados[pacienteElegido - 1]['dni'])
-        print("Fecha de nacimiento: " + resultados[pacienteElegido - 1]['fecha_nac'])
-        print("Domicilio: " + resultados[pacienteElegido - 1]['domicilio'])
-        print("Mail: " + resultados[pacienteElegido - 1]['mail'])
-        print("Número de Teléfono: " + resultados[pacienteElegido - 1]['num_tel'])
-        print("Obra Social: " + resultados[pacienteElegido - 1]['obra_social'])
-        print("Nacionalidad: " + resultados[pacienteElegido - 1]['nacionalidad'])
-        print("Grupo Sanguíneo: " + resultados[pacienteElegido - 1]['grupo_sanguineo'])
+        print("\nPaciente seleccionado:")
+        paciente = resultados[pacienteElegido - 1]
+        for i in paciente:
+            print(f"{i.replace('_', ' ').capitalize()}: {paciente[i]}")
     else:
         print("No se encontraron pacientes.")
         return
