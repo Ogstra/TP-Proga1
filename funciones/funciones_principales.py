@@ -1,7 +1,21 @@
 from funciones.funciones_validaciones import *
-
+from funciones.funciones_generales import *
 # Función para mostrar el menú
-def mostrar_menu():
+def mostrar_menu(turnos, pacientes, medicos):
+    """Función que muestra el menú principal y maneja las opciones seleccionadas por el usuario.	
+    Args:
+        turnos (list): Lista de turnos médicos.
+        pacientes (dict): Diccionario de pacientes.
+        medicos (dict): Diccionario de médicos.
+    Returns:
+        str: Opción seleccionada por el usuario.
+    Logica:
+    - Imprime el menú de opciones disponibles.
+    - Solicita al usuario que seleccione una opción.
+    - Dependiendo de la opción seleccionada, llama a la función correspondiente.
+    - Si la opción es "0", finaliza el programa.
+    - Si la opción es inválida, muestra un mensaje de error y vuelve a solicitar una opción.
+    """
     print("\nMenú de Turnos Médicos")
     print("1. Ver lista de turnos")  
     print("2. Agregar turno")  
@@ -14,52 +28,165 @@ def mostrar_menu():
     print("9. Eliminar médico")
     print("10. Agregar médico")
     print("11. Agenda médica")
-    print("12. Salir")
-
+    try:
+        opcion = input("\nSeleccione una opción (0 para salir):")
+        if opcion == "1":
+            ver_turnos(turnos, pacientes, medicos)
+        elif opcion == "2":
+            agregar_turno(turnos, medicos, pacientes)
+        elif opcion == "3":
+            modificar_turno(turnos,medicos, pacientes)
+        elif opcion == "4":
+            eliminar_turno(turnos)
+        elif opcion == "5":
+            buscar_paciente(pacientes)
+        elif opcion == "6":
+            crear_paciente(pacientes)
+        elif opcion == "7":
+            eliminar_paciente(pacientes)
+        elif opcion == "8":
+            buscar_medico(medicos)
+        elif opcion == "9":
+            eliminar_medico(medicos, turnos, pacientes)
+        elif opcion == "10":
+            agregar_medico(medicos)
+        elif opcion == "11":
+            agenda_medico(medicos, turnos)
+        elif opcion == "0":
+            print("Saliendo del programa...")
+        else:
+            print("Opción no válida. Intente de nuevo.")
+        return opcion
+    except ValueError as e:
+        print(f"Error: {e}. Debe ingresar un número válido.")
 # Función para mostrar turnos con información expandida
 def ver_turnos(turnos, pacientes, medicos):
-    print("\nLista de turnos:")
+    """Función que muestra la lista de turnos con información detallada de pacientes y médicos.
+    Args:
+        turnos (list): Lista de turnos médicos.
+        pacientes (dict): Diccionario de pacientes.
+        medicos (dict): Diccionario de médicos.
+    Returns:
+        None
+    Logica:
+    - Itera sobre cada turno en la lista de turnos.
+    - Intenta obtener el ID del médico y del paciente del turno.
+    - Busca el nombre del paciente y del médico en sus respectivos diccionarios.
+    - Si encuentra ambos, agrega la información del turno a una lista.
+    - Determina el estado del turno comparando la fecha y hora actual con la del turno.
+    - Imprime la lista de turnos en formato tabular.
+    """
+    info_turno = []
     for turno in turnos:
-        id_turno = turno["id"]
-        id_paciente = turno["paciente"]
-        id_medico = turno["medico"]
-        consultorio = turno["consultorio"]
-        fecha = turno["fecha"]
-        horario = turno["hora"]
-
-        paciente = next(p for p in pacientes if p["id"] == id_paciente)
-        medico = next(m for m in medicos if m["id"] == id_medico)
-
-        print(f"Turno {id_turno}: {fecha} a las {horario}")
-        print(f"  Paciente: {paciente['nombre']} {paciente['apellido']} ({paciente['dni']})")
-        print(f"  Médico: {medico['nombre']} {medico['apellido']} - {medico['especialidad']}")
-        print(f"  Consultorio: {consultorio}\n")
+        try:
+            id_medico = turno["medico"]
+            id_paciente = turno["paciente"]
+            # Obtener el nombre del paciente
+            paciente = next((p for p in pacientes if p["id"] == id_paciente), None)
+            paciente = paciente['nombre'] + " " + paciente['apellido'] if paciente else None
+            # Obtener el nombre del médico
+            medico = next((m for m in medicos if m["id"] == id_medico), None)
+            medico = medico['nombre'] + " " + medico['apellido'] if medico else None
+            # Agregar la información del turno a la lista
+            # Agregar estado de turno como "Pendiente" o "Atendido" comparando fecha y hora actual
+            if turno['fecha'] < datetime.now().strftime("%Y-%m-%d") or (turno['fecha'] == datetime.now().strftime("%Y-%m-%d") and turno['hora'] < datetime.now().strftime("%H:%M")):
+                estado = "Atendido"
+            else:
+                estado = "Pendiente"
+            if paciente and medico:
+               info_turno.append([turno['fecha'], turno['hora'], paciente, medico, turno['consultorio'], estado])
+            # Si el paciente y médico se encuentran, se agrega el turno a la lista
+            # Si el paciente o médico no se encuentra, no se agrega el turno
+            else:
+                print("Datos incompletos para mostrar el turno.")
+        # Se captura cualquier error de tipo o clave que pueda ocurrir al procesar el turno
+        except ValueError as e:
+            print(f"VALUE Error al procesar el turno: {e}")
+        except TypeError as e:
+            print(f"TYPE Error al procesar el turno: {e}")
+        except KeyError as e:
+            print(f"KEY Turno inválido. Falta la clave: {e}")
+    #ordenar la lista de turnos por fecha y hora
+    info_turno.sort(key=lambda x: (x[0], x[1]))  # Ordenar por fecha y hora
+    print_tabla("Lista de Turnos", info_turno, ["Fecha", "Hora", "Paciente", "Medico", "Consultorio", "Estado"])
 
 def agregar_turno(turnos, medicos, pacientes):
-
-    print("\n=== Agregar Turno ===")
-
-    id_paciente = mensajesTipoNumerico("Ingrese el ID del paciente: ")
-    if not verificarSiExiste(id_paciente, pacientes, "paciente"):
+    """Función que permite agregar un nuevo turno médico.
+    Args:
+        turnos (list): Lista de turnos médicos.
+        medicos (dict): Diccionario de médicos.
+        pacientes (dict): Diccionario de pacientes.
+    Returns:
+        None
+    Logica:
+    - Solicita al usuario el ID del paciente y verifica si existe.
+    - Solicita al usuario el ID del médico y verifica si existe.
+    - Solicita el nombre del consultorio, la fecha y la hora del turno.
+    - Valida la fecha y la hora ingresadas.
+    - Genera un nuevo ID para el turno y lo agrega a la lista de turnos.
+    """
+    print("Agregar Turno:")
+    
+    # Verificar si hay pacientes registrados
+    if not pacientes:
+        print("No hay pacientes registrados. Por favor, registre un paciente antes de agregar un turno.")
         return
-    id_medico = mensajesTipoNumerico("Ingrese el ID del médico: ")
-    if not verificarSiExiste(id_medico, medicos, "médico"):
+    
+    # Verificar si hay médicos registrados
+    if not medicos:
+        print("No hay médicos registrados. Por favor, registre un médico antes de agregar un turno.")
         return
 
-    consultorio = input("Ingrese el nombre del consultorio: ")
-    fecha = input("Ingrese la fecha (AAAA-MM-DD): ")
-    if not validarFecha(fecha):
-        print("El formato de la fecha es inválido.")
+    while True:
+        try:
+            id_paciente = int(input("Ingrese el ID del paciente: "))
+            if verificarSiExiste(id_paciente, pacientes, "paciente"):
+                break
+        except ValueError:
+            print("Debe ingresar un número entero válido.")
+
+    while True:
+        try:
+            id_medico = int(input("Ingrese el ID del médico: "))
+            if verificarSiExiste(id_medico, medicos, "médico"):
+                break
+        except ValueError:
+            print("Debe ingresar un número entero válido.")
+
+    consultorio = input("Ingrese el numero del consultorio: ")
+
+    while True:
         fecha = input("Ingrese la fecha (AAAA-MM-DD): ")
-        return
-    hora = input("Ingrese la hora (HH:MM): ")
-    if not validarHora(hora):
-        print("El formato de la hora es inválido.")
+        if validarFecha(fecha):
+            break
+        else:
+            print("Formato de fecha inválido. Intente de nuevo.")
+
+    while True:
         hora = input("Ingrese la hora (HH:MM): ")
-        return
-    id_turno = max([turno[0] for turno in turnos], default=0) + 1
-    turnos.append((id_turno, id_paciente, id_medico, consultorio, fecha, hora))
-    print(f"Turno {id_turno} agregado con éxito.")
+        if validarHora(hora):
+            break
+        else:
+            print("Formato de hora inválido. Intente de nuevo.")
+
+    # Generar un nuevo ID para el turno
+    # Si la lista de turnos está vacía, el nuevo ID será 1
+    # Si no, se toma el máximo ID existente y se le suma 1
+    nuevo_id_turno = max(turnos, key=lambda x: x["id"])["id"] + 1 if turnos else 1
+    nuevo_turno = {
+        "id": nuevo_id_turno,
+        "paciente": id_paciente,
+        "medico": id_medico,
+        "consultorio": consultorio,
+        "fecha": fecha,
+        "hora": hora
+    }
+    
+    turnos.append(nuevo_turno)  # Agregar el nuevo turno a la lista de turnos
+    guardar_json("turnos", turnos)  # Guardar los cambios en el archivo JSON
+    # Imprimir el turno agregado en formato tabular
+    print_tabla("Turno Agregado", [[nuevo_turno["fecha"], nuevo_turno["hora"], pacientes[id_paciente]["nombre"] + " " + pacientes[id_paciente]["apellido"], medicos[id_medico]["nombre"] + " " + medicos[id_medico]["apellido"], consultorio, "Pendiente"]], ["Fecha", "Hora", "Paciente", "Medico", "Consultorio", "Estado"])
+    print(f"Turno agregado con éxito. ID del turno: {nuevo_id_turno}")
 
 def modificar_turno(turnos, medicos, pacientes):
     try:
@@ -251,34 +378,49 @@ def buscar_paciente(pacientes):
         pacienteElegido = int(input(f"Opción inválida: "))
 
 def crear_paciente(pacientes):
+    """Función que permite crear un nuevo paciente y agregarlo a la lista de pacientes.	
+    Args:
+        pacientes (list): Lista de pacientes.
+    Returns:
+        None
+    Logica:
+    - Solicita al usuario los datos del paciente, asegurándose de que no queden campos vacíos.
+    - Valida el formato de la fecha de nacimiento.
+    - Genera un nuevo ID para el paciente.
+    - Crea un diccionario con los datos del paciente y lo agrega a la lista de pacientes.
+    """
     nombre = validar_campo_vacio("Nombre: ")
     apellido = validar_campo_vacio("Apellido: ")
     dni = validar_campo_vacio("DNI: ")
     fecha_nac = input("Ingrese la fecha (AAAA-MM-DD): ")
     while not validarFecha(fecha_nac):
         print("El formato de la fecha es inválido.")
-        fecha_nac = input("Ingrese la fecha (AAAA-MM-DD): ")  
+        fecha_nac = input("Ingrese la fecha de nacimiento(AAAA-MM-DD): ")  
     domicilio = validar_campo_vacio("Domicilio: ")
     mail = validar_campo_vacio("Mail: ")
     num_tel = validar_campo_vacio("Número de Teléfono: ")
     obra_social = validar_campo_vacio("Obra Social: ")
     nacionalidad = validar_campo_vacio("Nacionalidad: ")
     grupo_sanguineo = validar_campo_vacio("Grupo Sanguíneo: ")
+    nuevo_id_paciente = max(pacientes, key=lambda x: x["id"])["id"] + 1 if pacientes else 1
     paciente = {
-     "nombre": nombre,
-     "apellido": apellido,
-     "dni": dni,
-     "fecha_nac": fecha_nac,
-     "domicilio": domicilio,
-     "mail": mail,
-     "num_tel": num_tel,
-     "obra_social": obra_social,
-     "nacionalidad": nacionalidad,
-     "grupo_sanguineo": grupo_sanguineo 
+        "id": nuevo_id_paciente,
+        "nombre": nombre,
+        "apellido": apellido,
+        "dni": dni,
+        "fecha_nac": fecha_nac,
+        "domicilio": domicilio,
+        "mail": mail,
+        "num_tel": num_tel,
+        "obra_social": obra_social,
+        "nacionalidad": nacionalidad,
+        "grupo_sanguineo": grupo_sanguineo 
     }
-    nuevo_id_paciente = max(pacientes.keys()) + 1 if pacientes else 1
-    pacientes[nuevo_id_paciente] = paciente
-    print(f"--- Paciente agregado ---")
+    pacientes.append(paciente)  # Agregar el nuevo paciente a la lista de pacientes
+    guardar_json("pacientes", pacientes)  # Guardar los cambios en el archivo JSON
+    print_tabla("Paciente Agregado", [[paciente["id"], paciente["nombre"], paciente["apellido"], paciente["dni"], paciente["fecha_nac"], paciente["domicilio"], paciente["mail"], paciente["num_tel"], paciente["obra_social"], paciente["nacionalidad"], paciente["grupo_sanguineo"]]], ["ID", "Nombre", "Apellido", "DNI", "Fecha Nac.", "Domicilio", "Mail", "Teléfono", "Obra Social", "Nacionalidad", "Grupo Sanguíneo"])
+    print(f"Paciente agregado con éxito.")
+    print(f"ID asignado: {nuevo_id_paciente}")
 
 def eliminar_paciente(pacientes):
     dni_paciente = input("Ingrese el DNI del paciente que desea eliminar: ")
@@ -342,6 +484,17 @@ def eliminar_medico(medicos, turnos, pacientes):
         print("Se ha cancelado la eliminación del médico.")
         
 def agregar_medico(medicos):
+    """Función que permite agregar un nuevo médico a la lista de médicos.
+    Args:
+        medicos (list): Lista de médicos.
+    Returns:
+        None
+    Logica:
+    - Solicita al usuario los datos del médico, asegurándose de que no queden campos vacíos.
+    - Valida el formato de la fecha de nacimiento.
+    - Genera un nuevo ID para el médico.
+    - Crea un diccionario con los datos del médico y lo agrega a la lista de médicos.
+    """
     print(f"Agregar Médico: ")
 
     nombre = validar_campo_vacio("Nombre: ")
@@ -358,8 +511,10 @@ def agregar_medico(medicos):
     nacionalidad = validar_campo_vacio("Nacionalidad: ")
     titulo = validar_campo_vacio("Título: ")
     matricula = validar_campo_vacio("Matrícula: ")
-
+    # Generar un nuevo ID para el médico
+    nuevo_id = max(medicos, key=lambda x: x["id"])["id"] + 1 if medicos else 1
     medico = {
+        "id": nuevo_id,
         "nombre": nombre,
         "apellido": apellido,
         "especialidad": especialidad,
@@ -373,46 +528,58 @@ def agregar_medico(medicos):
         "matricula": matricula
     }
 
-    nuevo_id = max(medicos.keys(), default=0) + 1
-    medicos[nuevo_id] = medico
-
+    medicos.append(medico)  # Agregar el nuevo médico a la lista de médicos
+    guardar_json("medicos", medicos)  # Guardar los cambios en el archivo JSON
+    print_tabla("Médico Agregado", [[medico["id"], medico["nombre"], medico["apellido"], medico["especialidad"], medico["dni"], medico["fecha_nac"], medico["domicilio"], medico["mail"], medico["num_tel"], medico["nacionalidad"], medico["titulo"], medico["matricula"]]], ["ID", "Nombre", "Apellido", "Especialidad", "DNI", "Fecha Nac.", "Domicilio", "Mail", "Teléfono", "Nacionalidad", "Título", "Matrícula"])
     print(f"Médico agregado con éxito.")
     print(f"ID asignado: {nuevo_id}")
 
 def agenda_medico(medicos, turnos):
-    while True:
-        print("\n=== Lista de Médicos ===")
-        for id_medico, datos in medicos.items():
-            print(f"{id_medico}. {datos['nombre']} {datos['apellido']}")
-        print("0. Atras")
+    """Función que muestra la agenda de un médico específico.	
+    Args:
+        medicos (list): Lista de médicos.
+        turnos (list): Lista de turnos médicos.
+    Returns:
+        None
+    Logica:
+    - Imprime la lista de médicos disponibles.
+    - Solicita al usuario que ingrese el ID del médico cuya agenda desea ver.
+    - Verifica si el ID del médico existe.
+    - Si el médico existe, filtra los turnos asignados a ese médico.
+    - Si no hay turnos asignados, muestra un mensaje indicando que no hay turnos para ese médico.
+    - Si hay turnos, ordena la agenda por fecha y hora.
+    - Imprime la agenda del médico en formato tabular.
+    """
+    print("Agenda Médica:")
+    if not medicos:
+        print("No hay médicos registrados.")
+        return
+    print("Médicos disponibles:")
+    info_medicos = []
+    for medico in medicos:
+        info_medicos.append([medico["id"], medico["nombre"], medico["apellido"], medico["especialidad"]])
+    print_tabla("Lista de Médicos", info_medicos, ["ID", "Nombre", "Apellido", "Especialidad"])
+    id_medico = int(input("Ingrese el ID del médico para ver su agenda: "))
+    if not verificarSiExiste(id_medico, medicos, "médico"):
+        return
+    print(f"\nAgenda del Médico {medicos[id_medico]['nombre']} {medicos[id_medico]['apellido']}:")
+    agenda = []
+    for turno in turnos:
+        if turno["medico"] == id_medico:
+            #sacar el id del medico del turno para no mostrarlo en la agenda
+            turno.pop("medico", None)
+            turno.pop("id", None)
+            agenda.append(turno)
+    # Si no hay turnos asignados, se muestra un mensaje indicando que no hay turnos para ese médico
+    if not agenda:
+        print("No hay turnos asignados para este médico.")
+        return
+    # Ordenar la agenda por fecha y hora
+    agenda.sort(key=lambda x: (x["fecha"], x["hora"]))
+    tabla_agenda = []
+    for item in agenda:
+        paciente = item["paciente"]
+        tabla_agenda.append([item["fecha"], item["hora"], paciente, item["consultorio"]])
 
-        id_elegido = input("Ingrese el ID del médico para ver sus turnos (0 para salir): ")
-
-        if not id_elegido.isdigit():
-            print("❌ ID inválido. Debe ser un número.")
-            continue
-
-        id_elegido = int(id_elegido)
-
-        if id_elegido == 0:
-            print("Saliendo del listado de turnos por médico.")
-            break
-
-        if not verificarSiExiste(id_elegido, medicos, "médico"):
-            continue
-
-        print(f"\nTurnos asignados al Dr/a. {medicos[id_elegido]['nombre']} {medicos[id_elegido]['apellido']}:")
-
-        turnos_medico = []
-        for turno in turnos:
-            if turno[2] == id_elegido:
-                turnos_medico.append(turno)
-
-        if not turnos_medico:
-            print("No hay turnos asignados.")
-            continue
-
-        for turno in turnos_medico:
-            id_paciente = turno[1]
-            paciente = pacientes.get(id_paciente, {"nombre": "Desconocido", "apellido": ""})
-            print(f"- {paciente['nombre']} {paciente['apellido']} | Consultorio: {turno[3]} | Fecha: {turno[4]} | Hora: {turno[5]}")
+    print_tabla("Agenda del Médico", tabla_agenda, ["Fecha", "Hora", "Paciente", "Consultorio"])
+    

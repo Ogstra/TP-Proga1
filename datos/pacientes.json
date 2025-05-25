@@ -90,6 +90,19 @@
             "obra_social": "Swiss Medical",
             "nacionalidad": "Argentina",
             "grupo_sanguineo": "B-"
+        },
+        {
+            "id": 8,
+            "nombre": "Matias",
+            "apellido": "Ledesma",
+            "dni": "42823337",
+            "fecha_nac": "2000-12-15",
+            "domicilio": "15:05",
+            "mail": "mati2almas@gmail.com",
+            "num_tel": "42823337",
+            "obra_social": "osde",
+            "nacionalidad": "Argentina",
+            "grupo_sanguineo": "B+"
         }
     ]
 }

@@ -34,9 +34,22 @@ def validarHora(hora):
     except ValueError:
         return False
 
-#Funcion para verificar si existe ese id
-def verificarSiExiste(id, diccionario, nombre_objeto):
-    if id not in diccionario:
-        print(f"No existe un {nombre_objeto} con ese ID.")
-        return False
-    return True
+#Funcion para verificar si existe ese id en el json
+def verificarSiExiste(id, json, nombre_objeto):
+    """
+    Verifica si un ID existe en una lista de diccionarios.
+    Args:
+        id (str): El ID a verificar.
+        json (list): Lista de diccionarios donde se buscará el ID.
+        nombre_objeto (str): Nombre del objeto para mostrar en el mensaje de error.
+    Returns:
+        bool: True si el ID existe, False en caso contrario.
+    Logica:
+        Recorre la lista de diccionarios y compara el campo 'id' con el ID proporcionado.
+        Si encuentra una coincidencia, retorna True. Si no, imprime un mensaje de error y retorna False.    
+    """
+    for item in json:
+        if item['id'] == id:
+            return True
+    print(f"El {nombre_objeto} con ID {id} no existe.")
+    return False
