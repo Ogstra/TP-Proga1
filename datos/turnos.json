@@ -4,7 +4,7 @@
             "id": 1,
             "paciente": 1,
             "medico": 1,
-            "consultorio": "Consultorio 101",
+            "consultorio": "101",
             "fecha": "2025-04-15",
             "hora": "10:00"
         },
@@ -12,7 +12,7 @@
             "id": 2,
             "paciente": 2,
             "medico": 2,
-            "consultorio": "Consultorio 202",
+            "consultorio": "202",
             "fecha": "2025-04-16",
             "hora": "11:30"
         },
@@ -20,7 +20,7 @@
             "id": 3,
             "paciente": 3,
             "medico": 3,
-            "consultorio": "Consultorio 303",
+            "consultorio": "303",
             "fecha": "2025-04-17",
             "hora": "09:00"
         },
@@ -28,7 +28,7 @@
             "id": 4,
             "paciente": 4,
             "medico": 4,
-            "consultorio": "Consultorio 404",
+            "consultorio": "404",
             "fecha": "2025-04-18",
             "hora": "14:00"
         },
@@ -36,7 +36,7 @@
             "id": 5,
             "paciente": 5,
             "medico": 5,
-            "consultorio": "Consultorio 505",
+            "consultorio": "505",
             "fecha": "2025-04-19",
             "hora": "13:30"
         },
@@ -44,7 +44,7 @@
             "id": 6,
             "paciente": 6,
             "medico": 6,
-            "consultorio": "Consultorio 606",
+            "consultorio": "606",
             "fecha": "2025-08-20",
             "hora": "15:00"
         },
@@ -52,7 +52,7 @@
             "id": 7,
             "paciente": 7,
             "medico": 7,
-            "consultorio": "Consultorio 707",
+            "consultorio": "707",
             "fecha": "2025-06-21",
             "hora": "08:30"
         },
@@ -60,7 +60,7 @@
             "id": 8,
             "paciente": 1,
             "medico": 8,
-            "consultorio": "Consultorio 808",
+            "consultorio": "808",
             "fecha": "2025-04-22",
             "hora": "16:00"
         },
@@ -68,7 +68,7 @@
             "id": 9,
             "paciente": 2,
             "medico": 8,
-            "consultorio": "Consultorio 808",
+            "consultorio": "808",
             "fecha": "2025-04-22",
             "hora": "08:00"
         },
@@ -79,6 +79,14 @@
             "consultorio": "115",
             "fecha": "2026-05-08",
             "hora": "14:11"
+        },
+        {
+            "id": 11,
+            "paciente": 2,
+            "medico": 3,
+            "consultorio": "114",
+            "fecha": "2025-06-23",
+            "hora": "15:45"
         }
     ]
 }

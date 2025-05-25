@@ -197,7 +197,7 @@ def modificar_turno(turnos, medicos, pacientes):
 
     turnoAModificar = None
     for i in range(len(turnos)):
-        if turnos[i][0] == id_turno:
+        if turnos[i]["id"] == id_turno:
             turnoAModificar = i
             break
 
@@ -351,31 +351,58 @@ def buscar_paciente(pacientes):
 
     campo_seleccionado = campos[opcion - 1]
     valor_buscado = quitar_acentos(input(f"Ingrese {campo_seleccionado}: ").lower())
-
+    
     resultados = []
-    for id_paciente, datos_paciente in pacientes.items():
-        valor_actual = quitar_acentos(str(datos_paciente[campo_seleccionado]).lower())
+    
+    for i in range(len(pacientes)):
+        valor_actual = quitar_acentos(str(pacientes[i][f"{campo_seleccionado}"]).lower())
         if valor_actual == valor_buscado:
-            resultados.append((id_paciente, datos_paciente))
+            resultados.append(pacientes[i])
 
-    if not resultados:
+    if len(resultados) == 1:
+        for i in range(len(resultados)):
+            print("ID: " + str(resultados[i]['id']))
+            print("Nombre: " + resultados[i]['nombre'])
+            print("Apellido: " + resultados[i]['apellido'])
+            print("DNI: " + resultados[i]['dni'])
+            print("Fecha de nacimiento: " + resultados[i]['fecha_nac'])
+            print("Domicilio: " + resultados[i]['domicilio'])
+            print("Mail: " + resultados[i]['mail'])
+            print("Número de Teléfono: " + resultados[i]['num_tel'])
+            print("Obra Social: " + resultados[i]['obra_social'])
+            print("Nacionalidad: " + resultados[i]['nacionalidad'])
+            print("Grupo Sanguíneo: " + resultados[i]['grupo_sanguineo'])
+    elif len(resultados) > 1:
+        print("\nSe encontraron varios pacientes:")
+        
+        for i in range(len(resultados)):
+            print(f'Paciente {str(i + 1)}:')
+            print("Nombre: " + resultados[i]['nombre'])
+            print("Apellido: " + resultados[i]['apellido'])
+            print("DNI: " + resultados[i]['dni'])
+            print("")
+            
+        pacienteElegido = int(input("Seleccione paciente: "))
+        while pacienteElegido < 1 or pacienteElegido > len(resultados):
+            pacienteElegido = int(input(f"Opción inválida: "))
+            
+        print("ID: " + str(resultados[pacienteElegido - 1]['id']))
+        print("Nombre: " + resultados[pacienteElegido - 1]['nombre'])
+        print("Apellido: " + resultados[pacienteElegido - 1]['apellido'])
+        print("DNI: " + resultados[pacienteElegido - 1]['dni'])
+        print("Fecha de nacimiento: " + resultados[pacienteElegido - 1]['fecha_nac'])
+        print("Domicilio: " + resultados[pacienteElegido - 1]['domicilio'])
+        print("Mail: " + resultados[pacienteElegido - 1]['mail'])
+        print("Número de Teléfono: " + resultados[pacienteElegido - 1]['num_tel'])
+        print("Obra Social: " + resultados[pacienteElegido - 1]['obra_social'])
+        print("Nacionalidad: " + resultados[pacienteElegido - 1]['nacionalidad'])
+        print("Grupo Sanguíneo: " + resultados[pacienteElegido - 1]['grupo_sanguineo'])
+    else:
         print("No se encontraron pacientes.")
         return
-    elif len(resultados) == 1:
-        id_paciente, datos = resultados[0]
-        print(f"\nID: {id_paciente}")
-        for clave, valor in datos.items():
-            print(f"{clave.capitalize()}: {valor}")
-        return id_paciente
-    else:
-        print("\nSe encontraron varios pacientes:")
-        for id, (id_paciente, datos) in enumerate(resultados, start=1):
-            print(f"{id}) {datos['nombre']} {datos['apellido']} - DNI: {datos['dni']}")
-            
-    pacienteElegido = int(input("Seleccione paciente: "))
 
-    while pacienteElegido < 1 or pacienteElegido > len(resultados):
-        pacienteElegido = int(input(f"Opción inválida: "))
+
+
 
 def crear_paciente(pacientes):
     """Función que permite crear un nuevo paciente y agregarlo a la lista de pacientes.	
