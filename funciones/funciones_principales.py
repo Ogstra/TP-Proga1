@@ -54,6 +54,7 @@ def mostrar_menu(turnos, pacientes, medicos):
             agenda_medico(medicos, turnos)
         elif opcion == "0":
             print("Saliendo del programa...")
+            exit()
         else:
             print("Opción no válida. Intente de nuevo.")
         return opcion
