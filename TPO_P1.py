@@ -9,11 +9,15 @@ turnos = cargar_json("turnos")
     # Mostrar el menú y manejar las opciones
 print("Bienvenido al sistema de gestión de turnos médicos")
 mostrar_menu(turnos, pacientes, medicos)
+
 # Bucle principal para mantener el programa en ejecución
 while True:
-    continuar = input("\n¿Desea continuar? (s/n): ").strip().lower()
-    if continuar != 's':
+    continuar = input("\n¿Desea continuar? (Enter / s = sí, n / 0 = no): ").strip().lower()
+
+    if continuar in ('', 's'):
+        mostrar_menu(turnos, pacientes, medicos)
+    elif continuar in ('n', '0'):
         print("Saliendo del sistema. ¡Hasta luego!")
         break
-    if mostrar_menu(turnos, pacientes, medicos) == "0":
-        break
+    else:
+        print("*** Opción no válida ***")

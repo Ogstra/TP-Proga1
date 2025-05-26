@@ -343,6 +343,23 @@ def eliminar_turno(turnos):
         return
 
 def buscar_paciente(pacientes):
+    """
+    Busca pacientes en una lista según un campo específico (nombre, apellido, DNI, etc.).
+
+    Parámetros:
+        pacientes (list[dict]): Lista de diccionarios con los datos de los pacientes.
+
+    Comportamiento:
+        - Pide al usuario que elija un campo para buscar.
+        - Solicita el valor a buscar (ignorando mayúsculas y acentos).
+        - Si hay un resultado, lo muestra.
+        - Si hay varios, muestra un submenú para elegir.
+        - Si no hay coincidencias, lo informa.
+
+    Retorna:
+        None
+    """
+    
     campos = ("nombre", "apellido", "dni", "mail", "grupo_sanguineo")
     opcion = int(input("Buscar por:\n1) Nombre\n2) Apellido\n3) DNI\n4) Mail\n5) Grupo Sanguíneo\nOpción: "))
 
@@ -367,9 +384,7 @@ def buscar_paciente(pacientes):
     elif len(resultados) > 1:
         print("\nSe encontraron varios pacientes:")
         
-        campos_orden = [
-            "nombre", "apellido", "dni"
-        ]
+        campos_orden = ["nombre", "apellido", "dni"] # Campos que se mostraran en el resultado (ordenados)
         
         for i, paciente in enumerate(resultados, start=1):
             print(f"Paciente {i}:")
