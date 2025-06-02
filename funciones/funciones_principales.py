@@ -233,7 +233,7 @@ def modificar_turno(turnos, medicos, pacientes):
                 print("Operación cancelada.")
                 return
             if verificarSiExiste(id_paciente, pacientes, "paciente"):
-                turno[1] = id_paciente
+                turno['paciente'] = id_paciente
                 print("ID del paciente modificado con éxito.")
                 break
 
@@ -244,7 +244,7 @@ def modificar_turno(turnos, medicos, pacientes):
                 print("Operación cancelada.")
                 return
             if verificarSiExiste(id_medico, medicos, "médico"):
-                turno[2] = id_medico
+                turno['medico'] = id_medico
                 print("ID del médico modificado con éxito.")
                 break
 
@@ -260,7 +260,7 @@ def modificar_turno(turnos, medicos, pacientes):
                 print("Operación cancelada.")
                 return
             if validarFecha(fecha):
-                turno[4] = fecha
+                turno['fecha'] = fecha
                 print("La fecha fue modificada con éxito.")
                 break
             else:
@@ -273,7 +273,7 @@ def modificar_turno(turnos, medicos, pacientes):
                 print("Operación cancelada.")
                 return
             if validarHora(hora):
-                turno[5] = hora
+                turno['hora'] = hora
                 print("La hora fue modificada con éxito.")
                 break
             else:
@@ -286,7 +286,7 @@ def modificar_turno(turnos, medicos, pacientes):
                 print("Operación cancelada.")
                 return
             if verificarSiExiste(id_paciente, pacientes, "paciente"):
-                turno[1] = id_paciente
+                turno['paciente'] = id_paciente
                 break
 
         while True:
@@ -295,11 +295,11 @@ def modificar_turno(turnos, medicos, pacientes):
                 print("Operación cancelada.")
                 return
             if verificarSiExiste(id_medico, medicos, "médico"):
-                turno[2] = id_medico
+                turno['medico'] = id_medico
                 break
 
         consultorio = input("Ingrese el nuevo nombre del consultorio: ")
-        turno[3] = consultorio
+        turno['consultorio'] = consultorio
         print("El nombre del consultorio fue modificado con éxito.")
 
         while True:
@@ -308,7 +308,7 @@ def modificar_turno(turnos, medicos, pacientes):
                 print("Operación cancelada.")
                 return
             if validarFecha(fecha):
-                turno[4] = fecha
+                turno['fecha'] = fecha
                 break
             else:
                 print("Formato de fecha inválido. Intente de nuevo.")
@@ -319,7 +319,7 @@ def modificar_turno(turnos, medicos, pacientes):
                 print("Operación cancelada.")
                 return
             if validarHora(hora):
-                turno[5] = hora
+                turno['hora'] = hora
                 break
             else:
                 print("El formato de la hora es inválido. Intente de nuevo.")
