@@ -205,8 +205,7 @@ def modificar_turno(turnos, medicos, pacientes):
     if turnoAModificar is None:
         print(f"No se encontró un turno con el ID {id_turno}.")
         return
-
-    turno = list(turnos[turnoAModificar])  # Convertimos la tupla en lista para poder modificarla
+    turno = turnos[turnoAModificar] # Convertimos la tupla en lista para poder modificarla
 
     # Pedir opción de modificación con validación
     while True:
@@ -251,9 +250,9 @@ def modificar_turno(turnos, medicos, pacientes):
 
     elif opcion == 3:
         consultorio = input("Ingrese el nuevo nombre del consultorio: ")
-        turno[3] = consultorio
+        turno['consultorio'] = consultorio
         print("El nombre del consultorio fue modificado con éxito.")
-
+        
     elif opcion == 4:
         while True:
             fecha = input("Ingrese la nueva fecha (AAAA-MM-DD) (o -1 para cancelar): ")
@@ -325,7 +324,10 @@ def modificar_turno(turnos, medicos, pacientes):
             else:
                 print("El formato de la hora es inválido. Intente de nuevo.")
         print("Toda la información fue modificada con éxito.")
-    turnos[turnoAModificar] = tuple(turno)  # Volvemos a guardar como tupla
+        
+    turnos[turnoAModificar] = turno # Volvemos a guardar como tupla
+    guardar_json('turnos', turnos)
+    
     print(f"\n Turno {id_turno} modificado con éxito.")
 
 def eliminar_turno(turnos):
