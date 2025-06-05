@@ -348,21 +348,8 @@ def eliminar_turno(turnos):
 def buscar_paciente(pacientes):
     """
     Busca pacientes en una lista según un campo específico (nombre, apellido, DNI, etc.).
-
-    Parámetros:
-        pacientes (list[dict]): Lista de diccionarios con los datos de los pacientes.
-
-    Comportamiento:
-        - Pide al usuario que elija un campo para buscar.
-        - Solicita el valor a buscar (ignorando mayúsculas y acentos).
-        - Si hay un resultado, lo muestra.
-        - Si hay varios, muestra un submenú para elegir.
-        - Si no hay coincidencias, lo informa.
-
-    Retorna:
-        None
+    Muestra los resultados en formato tabular.
     """
-    
     campos = ("nombre", "apellido", "dni", "mail", "grupo_sanguineo")
     opcion = int(input("Buscar por:\n1) Nombre\n2) Apellido\n3) DNI\n4) Mail\n5) Grupo Sanguíneo\nOpción: "))
 
@@ -371,44 +358,63 @@ def buscar_paciente(pacientes):
 
     campo_seleccionado = campos[opcion - 1]
     valor_buscado = quitar_acentos(input(f"Ingrese {campo_seleccionado}: ").lower())
-    
+
     resultados = []
-    
-    for i in range(len(pacientes)):
-        valor_actual = quitar_acentos(str(pacientes[i][f"{campo_seleccionado}"]).lower())
+    for paciente in pacientes:
+        valor_actual = quitar_acentos(str(paciente.get(campo_seleccionado, "")).lower())
         if valor_actual == valor_buscado:
-            resultados.append(pacientes[i])
+            resultados.append(paciente)
 
-    if len(resultados) == 1:
-        paciente = resultados[0]
-        for i in paciente:
-            print(f"{i.replace('_', ' ').capitalize()}: {paciente[i]}")
-
-    elif len(resultados) > 1:
-        print("\nSe encontraron varios pacientes:")
-        
-        campos_orden = ["nombre", "apellido", "dni"] # Campos que se mostraran en el resultado (ordenados)
-        
-        for i, paciente in enumerate(resultados, start=1):
-            print(f"Paciente {i}:")
-            for i in campos_orden:
-                print(f"{i.replace('_', ' ').capitalize()}: {paciente[i]}")
-            print("-" * 30)
-            
-        pacienteElegido = int(input("Seleccione paciente: "))
-        while pacienteElegido < 1 or pacienteElegido > len(resultados):
-            pacienteElegido = int(input(f"Opción inválida: "))
-            
-        print("\nPaciente seleccionado:")
-        paciente = resultados[pacienteElegido - 1]
-        for i in paciente:
-            print(f"{i.replace('_', ' ').capitalize()}: {paciente[i]}")
+    if resultados:
+        columnas = ["ID", "Nombre", "Apellido", "DNI", "Fecha Nac.", "Domicilio", "Mail", "Teléfono", "Obra Social", "Nacionalidad", "Grupo Sanguíneo"]
+        filas = [[p.get("id"), p.get("nombre"), p.get("apellido"), p.get("dni"), p.get("fecha_nac"), p.get("domicilio"), p.get("mail"), p.get("num_tel"), p.get("obra_social"), p.get("nacionalidad"), p.get("grupo_sanguineo")] for p in resultados]
+        print_tabla("Resultados de Pacientes", filas, columnas)
     else:
         print("No se encontraron pacientes.")
+
+def buscar_medico(medicos):
+    if not medicos:
+        print("No hay médicos registrados.")
         return
 
+    campos = ("nombre", "apellido", "dni", "mail", "grupo_sanguineo")
+    try:
+        opcion = int(input("Buscar por:\n1) Nombre\n2) Apellido\n3) DNI\n4) Mail\nOpción: "))
+        while opcion < 1 or opcion > len(campos):
+            opcion = int(input("Opción no válida\nBuscar por:\n1) Nombre\n2) Apellido\n3) DNI\n4) Mail\nOpción: "))
+    except ValueError:
+        print("Debe ingresar un número válido.")
+        return
 
-
+    campo_seleccionado = campos[opcion - 1]
+    valor_buscado = quitar_acentos(input(f"Ingrese {campo_seleccionado}: ").lower())
+    resultados = []
+    for medico in medicos:
+        valor_actual = quitar_acentos(str(medico.get(campo_seleccionado, "")).lower())
+        if valor_actual == valor_buscado:
+            resultados.append(medico)
+    if resultados:
+        columnas = ["ID", "Nombre", "Apellido", "Especialidad", "DNI", "Fecha Nac.", "Domicilio", "Mail", "Teléfono", "Nacionalidad", "Título", "Matrícula", "Grupo Sanguíneo"]
+        filas = [
+            [
+                m.get("id"),
+                m.get("nombre"),
+                m.get("apellido"),
+                m.get("especialidad"),
+                m.get("dni"),
+                m.get("fecha_nac"),
+                m.get("domicilio"),
+                m.get("mail"),
+                m.get("num_tel"),
+                m.get("nacionalidad"),
+                m.get("titulo"),
+                m.get("matricula"),
+                m.get("grupo_sanguineo")
+            ] for m in resultados
+        ]
+        print_tabla("Resultados de Médicos", filas, columnas)
+    else:
+        print("No se encontraron médicos con ese dato.")
 
 def crear_paciente(pacientes):
     """Función que permite crear un nuevo paciente y agregarlo a la lista de pacientes.	
@@ -468,28 +474,8 @@ def eliminar_paciente(pacientes):
         print(f"Paciente con DNI {dni_paciente} eliminado con éxito.")
     else:
         print(f"No se encontró un paciente con DNI {dni_paciente}.")
-
-def buscar_medico(medicos):
-    campos = ("nombre", "apellido", "dni", "mail", "grupo_sanguineo")
-    opcion = int(input("Buscar por:\n1) Nombre\n2) Apellido\n3) DNI\n4) Mail\nOpción: "))
-    while opcion < 1 or opcion > len(campos):
-        opcion = int(input("Opción no válida\nBuscar por:\n1) Nombre\n2) Apellido\n3) DNI\n4) Mail\nOpción: "))
-
-    campo_seleccionado = campos[opcion - 1]
-    valor_buscado = input(f"Ingrese {campo_seleccionado}: ").lower()
-    resultados = []
-    for id_medico, datos_medico in medicos.items():
-        valor_actual = str(datos_medico[campo_seleccionado]).lower()
-        if valor_actual == valor_buscado:
-            resultados.append((id_medico, datos_medico))
-    if resultados:
-        for id_medico, datos in resultados:
-            print(f"\nID: {id_medico}")
-            for clave, valor in datos.items():
-                print(f"{clave.capitalize()}: {valor}")
-    else:
-        print("No se encontraron médicos con ese dato.")
-
+        
+        
 def eliminar_medico(medicos, turnos, pacientes):
     id_medico = mensajesTipoNumerico("Ingrese el ID del médico que desea eliminar: ")
     
@@ -593,6 +579,11 @@ def agenda_medico(medicos, turnos):
         info_medicos.append([medico["id"], medico["nombre"], medico["apellido"], medico["especialidad"]])
     print_tabla("Lista de Médicos", info_medicos, ["ID", "Nombre", "Apellido", "Especialidad"])
     id_medico = int(input("Ingrese el ID del médico para ver su agenda: "))
+    try:
+        id_medico = int(input("Ingrese el ID del médico para ver su agenda: "))
+    except ValueError:
+        print("Debe ingresar un número válido.")
+        return
     if not verificarSiExiste(id_medico, medicos, "médico"):
         return
     print(f"\nAgenda del Médico {medicos[id_medico]['nombre']} {medicos[id_medico]['apellido']}:")
