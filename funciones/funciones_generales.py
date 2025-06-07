@@ -52,7 +52,8 @@ def print_tabla(titulo, info, columnas, horientacion):
     table = Table()
     
     table = Table(
-            title="Datos Verticales" if horientacion == "vertical" else "Datos Horizontales",
+            
+            #title="Datos Verticales" if horientacion == "vertical" else "Datos Horizontales",
             box=box.ROUNDED,
             style="#8b8b8b",
             header_style="bold",

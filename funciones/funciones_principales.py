@@ -134,9 +134,6 @@ def ver_turnos(turnos, pacientes, medicos):
             
     #ordenar la lista de turnos por fecha y hora
     info_turno.sort(key=lambda x: datetime.strptime(f"{x[0]} {x[1]}", "%Y-%m-%d %H:%M"))
-    
-    for fila in info_turno:
-        print(fila)
 
     print_tabla("Lista de Turnos", info_turno, ["Fecha", "Hora", "Paciente", "Medico", "Consultorio", "Estado"], "horizontal")
 
