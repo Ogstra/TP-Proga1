@@ -1,7 +1,25 @@
 from funciones.funciones_validaciones import *
 from funciones.funciones_generales import *
+
+def menu_roles(roles):
+    print('Seleccione rol:')
+    for i in range(len(roles)):
+        print(f'{i + 1}. {roles[i]}')
+    opcion = mensajesTipoNumerico("\nSeleccione una opción (0 para salir):")
+    if 0 < opcion < len(roles) + 1:
+        rol_seleccionado = roles[opcion - 1]
+        print(f"Rol seleccionado: {rol_seleccionado}")
+        return rol_seleccionado
+    elif opcion == 0:
+        print("Saliendo...")
+        exit()
+    else:
+        print("Opción inválida.")
+        return None
+        
+
 # Función para mostrar el menú
-def mostrar_menu(turnos, pacientes, medicos):
+def mostrar_menu(turnos, pacientes, medicos, rol):
     """Función que muestra el menú principal y maneja las opciones seleccionadas por el usuario.	
     Args:
         turnos (list): Lista de turnos médicos.
