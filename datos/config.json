@@ -1,0 +1,63 @@
+{
+    "config": {
+      "roles": ["Admin", "Médico", "Paciente"],
+      "opciones_menu": [
+        {
+          "clave": "ver_turnos",
+          "texto": "Ver turnos",
+          "roles": ["Admin", "Médico", "Paciente"]
+        },
+        {
+          "clave": "agregar_turno",
+          "texto": "Agregar turno",
+          "roles": ["Admin", "Médico"]
+        },
+        {
+          "clave": "modificar_turno",
+          "texto": "Modificar turno",
+          "roles": ["Admin", "Médico"]
+        },
+        {
+          "clave": "eliminar_turno",
+          "texto": "Eliminar turno",
+          "roles": ["Admin", "Médico"]
+        },
+        {
+          "clave": "buscar_paciente",
+          "texto": "Buscar paciente",
+          "roles": ["Admin", "Médico"]
+        },
+        {
+          "clave": "crear_paciente",
+          "texto": "Crear paciente",
+          "roles": ["Admin"]
+        },
+        {
+          "clave": "eliminar_paciente",
+          "texto": "Eliminar paciente",
+          "roles": ["Admin"]
+        },
+        {
+          "clave": "buscar_medico",
+          "texto": "Buscar médico",
+          "roles": ["Admin", "Médico", "Paciente"]
+        },
+        {
+          "clave": "eliminar_medico",
+          "texto": "Eliminar médico",
+          "roles": ["Admin"]
+        },
+        {
+          "clave": "agregar_medico",
+          "texto": "Agregar médico",
+          "roles": ["Admin"]
+        },
+        {
+          "clave": "agenda_medico",
+          "texto": "Agenda médico",
+          "roles": ["Médico"]
+        }
+      ]
+    }
+  }
+  

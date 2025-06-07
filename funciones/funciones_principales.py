@@ -19,7 +19,7 @@ def menu_roles(roles):
         
 
 # Función para mostrar el menú
-def mostrar_menu(turnos, pacientes, medicos, rol):
+def mostrar_menu(turnos, pacientes, medicos, rol, opciones):
     """Función que muestra el menú principal y maneja las opciones seleccionadas por el usuario.	
     Args:
         turnos (list): Lista de turnos médicos.
@@ -51,7 +51,8 @@ def mostrar_menu(turnos, pacientes, medicos, rol):
     print(f"\n--- Menú para {rol} ---")
     
     opciones_validas = [op for op in opciones if rol.capitalize() in op["roles"]]
-
+    #print(opciones_validas)
+    
     for i, op in enumerate(opciones_validas, start=1):
         print(f"{i}. {op['texto']}")
     print("0. Salir")
