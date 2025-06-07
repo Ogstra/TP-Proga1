@@ -1,5 +1,7 @@
 import json
-import tabulate  
+from rich.console import Console
+from rich.table import Table
+from rich import box
 from datetime import datetime
 
 def cargar_json(file_path):
@@ -36,7 +38,7 @@ def tieneTurnosAsignados(id, turnos, posicionDelId):
     """
     return any(turno[posicionDelId] == id for turno in turnos)
 
-def print_tabla(titulo, info, columnas):
+def print_tabla(titulo, info, columnas, horientacion):
     """
     Imprime una tabla formateada en la consola.
     Args:
@@ -46,10 +48,32 @@ def print_tabla(titulo, info, columnas):
     Returns:
         None   
     """
-    # Imprimir el título de la tabla
-    nombre_tabla = tabulate.tabulate([[titulo]], tablefmt="grid", stralign="center", numalign="center")
-    print(nombre_tabla)
-    # Imprimir la tabla
-    tabla = tabulate.tabulate(info, columnas, tablefmt="grid", stralign="center", numalign="center")
-    print(tabla)
-
+    console = Console()
+    table = Table()
+    
+    table = Table(
+            title="Datos Verticales" if horientacion == "vertical" else "Datos Horizontales",
+            box=box.ROUNDED,
+            style="#8b8b8b",
+            header_style="bold",
+            row_styles=[],
+            show_lines=True
+        )
+        
+    if horientacion == "vertical":
+        datos_transpuestos = list(zip(*info))
+        table.add_column("Campo", justify="left")
+        for i in range(len(info)):
+            table.add_column(f"Registro {i+1}", justify="left")
+        for idx, campo in enumerate(columnas):
+            fila = [campo] + list(map(str, datos_transpuestos[idx]))
+            table.add_row(*fila)
+    else:
+        for col in columnas:
+            table.add_column(col, justify="center")
+        for fila in info:
+            table.add_row(*map(str, fila))
+            
+        indice_estado = columnas.index("Estado") if "Estado" in columnas else -1
+        
+    console.print(table)

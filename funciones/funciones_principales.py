@@ -131,9 +131,14 @@ def ver_turnos(turnos, pacientes, medicos):
             print(f"TYPE Error al procesar el turno: {e}")
         except KeyError as e:
             print(f"KEY Turno inválido. Falta la clave: {e}")
+            
     #ordenar la lista de turnos por fecha y hora
-    info_turno.sort(key=lambda x: (x[0], x[1]))  # Ordenar por fecha y hora
-    print_tabla("Lista de Turnos", info_turno, ["Fecha", "Hora", "Paciente", "Medico", "Consultorio", "Estado"])
+    info_turno.sort(key=lambda x: datetime.strptime(f"{x[0]} {x[1]}", "%Y-%m-%d %H:%M"))
+    
+    for fila in info_turno:
+        print(fila)
+
+    print_tabla("Lista de Turnos", info_turno, ["Fecha", "Hora", "Paciente", "Medico", "Consultorio", "Estado"], "horizontal")
 
 def agregar_turno(turnos, medicos, pacientes):
     """Función que permite agregar un nuevo turno médico.
@@ -210,7 +215,7 @@ def agregar_turno(turnos, medicos, pacientes):
     turnos.append(nuevo_turno)  # Agregar el nuevo turno a la lista de turnos
     guardar_json("turnos", turnos)  # Guardar los cambios en el archivo JSON
     # Imprimir el turno agregado en formato tabular
-    print_tabla("Turno Agregado", [[nuevo_turno["fecha"], nuevo_turno["hora"], pacientes[id_paciente]["nombre"] + " " + pacientes[id_paciente]["apellido"], medicos[id_medico]["nombre"] + " " + medicos[id_medico]["apellido"], consultorio, "Pendiente"]], ["Fecha", "Hora", "Paciente", "Medico", "Consultorio", "Estado"])
+    print_tabla("Turno Agregado", [[nuevo_turno["fecha"], nuevo_turno["hora"], pacientes[id_paciente]["nombre"] + " " + pacientes[id_paciente]["apellido"], medicos[id_medico]["nombre"] + " " + medicos[id_medico]["apellido"], consultorio, "Pendiente"]], ["Fecha", "Hora", "Paciente", "Medico", "Consultorio", "Estado"], "horizontal")
     print(f"Turno agregado con éxito. ID del turno: {nuevo_id_turno}")
 
 def modificar_turno(turnos, medicos, pacientes):
@@ -393,7 +398,7 @@ def buscar_paciente(pacientes):
     if resultados:
         columnas = ["ID", "Nombre", "Apellido", "DNI", "Fecha Nac.", "Domicilio", "Mail", "Teléfono", "Obra Social", "Nacionalidad", "Grupo Sanguíneo"]
         filas = [[p.get("id"), p.get("nombre"), p.get("apellido"), p.get("dni"), p.get("fecha_nac"), p.get("domicilio"), p.get("mail"), p.get("num_tel"), p.get("obra_social"), p.get("nacionalidad"), p.get("grupo_sanguineo")] for p in resultados]
-        print_tabla("Resultados de Pacientes", filas, columnas)
+        print_tabla("Resultados de Pacientes", filas, columnas, "vertical")
     else:
         print("No se encontraron pacientes.")
 
@@ -437,7 +442,7 @@ def buscar_medico(medicos):
                 m.get("grupo_sanguineo")
             ] for m in resultados
         ]
-        print_tabla("Resultados de Médicos", filas, columnas)
+        print_tabla("Resultados de Médicos", filas, columnas, "vertical")
     else:
         print("No se encontraron médicos con ese dato.")
 
@@ -482,7 +487,7 @@ def crear_paciente(pacientes):
     }
     pacientes.append(paciente)  # Agregar el nuevo paciente a la lista de pacientes
     guardar_json("pacientes", pacientes)  # Guardar los cambios en el archivo JSON
-    print_tabla("Paciente Agregado", [[paciente["id"], paciente["nombre"], paciente["apellido"], paciente["dni"], paciente["fecha_nac"], paciente["domicilio"], paciente["mail"], paciente["num_tel"], paciente["obra_social"], paciente["nacionalidad"], paciente["grupo_sanguineo"]]], ["ID", "Nombre", "Apellido", "DNI", "Fecha Nac.", "Domicilio", "Mail", "Teléfono", "Obra Social", "Nacionalidad", "Grupo Sanguíneo"])
+    print_tabla("Paciente Agregado", [[paciente["id"], paciente["nombre"], paciente["apellido"], paciente["dni"], paciente["fecha_nac"], paciente["domicilio"], paciente["mail"], paciente["num_tel"], paciente["obra_social"], paciente["nacionalidad"], paciente["grupo_sanguineo"]]], ["ID", "Nombre", "Apellido", "DNI", "Fecha Nac.", "Domicilio", "Mail", "Teléfono", "Obra Social", "Nacionalidad", "Grupo Sanguíneo"], "vertical")
     print(f"Paciente agregado con éxito.")
     print(f"ID asignado: {nuevo_id_paciente}")
 
@@ -574,7 +579,7 @@ def agregar_medico(medicos):
 
     medicos.append(medico)  # Agregar el nuevo médico a la lista de médicos
     guardar_json("medicos", medicos)  # Guardar los cambios en el archivo JSON
-    print_tabla("Médico Agregado", [[medico["id"], medico["nombre"], medico["apellido"], medico["especialidad"], medico["dni"], medico["fecha_nac"], medico["domicilio"], medico["mail"], medico["num_tel"], medico["nacionalidad"], medico["titulo"], medico["matricula"]]], ["ID", "Nombre", "Apellido", "Especialidad", "DNI", "Fecha Nac.", "Domicilio", "Mail", "Teléfono", "Nacionalidad", "Título", "Matrícula"])
+    print_tabla("Médico Agregado", [[medico["id"], medico["nombre"], medico["apellido"], medico["especialidad"], medico["dni"], medico["fecha_nac"], medico["domicilio"], medico["mail"], medico["num_tel"], medico["nacionalidad"], medico["titulo"], medico["matricula"]]], ["ID", "Nombre", "Apellido", "Especialidad", "DNI", "Fecha Nac.", "Domicilio", "Mail", "Teléfono", "Nacionalidad", "Título", "Matrícula"], "vertical")
     print(f"Médico agregado con éxito.")
     print(f"ID asignado: {nuevo_id}")
 
@@ -602,7 +607,7 @@ def agenda_medico(medicos, turnos):
     info_medicos = []
     for medico in medicos:
         info_medicos.append([medico["id"], medico["nombre"], medico["apellido"], medico["especialidad"]])
-    print_tabla("Lista de Médicos", info_medicos, ["ID", "Nombre", "Apellido", "Especialidad"])
+    print_tabla("Lista de Médicos", info_medicos, ["ID", "Nombre", "Apellido", "Especialidad"], "horizontal")
     id_medico = int(input("Ingrese el ID del médico para ver su agenda: "))
     try:
         id_medico = int(input("Ingrese el ID del médico para ver su agenda: "))
@@ -630,7 +635,7 @@ def agenda_medico(medicos, turnos):
         paciente = item["paciente"]
         tabla_agenda.append([item["fecha"], item["hora"], paciente, item["consultorio"]])
 
-    print_tabla("Agenda del Médico", tabla_agenda, ["Fecha", "Hora", "Paciente", "Consultorio"])
+    print_tabla("Agenda del Médico", tabla_agenda, ["Fecha", "Hora", "Paciente", "Consultorio"], "horizontal")
   
 def editar_config_menu(): 
     config = cargar_json("config")
