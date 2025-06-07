@@ -200,7 +200,7 @@ def crear_o_editar_turno(turnos, medicos, pacientes, id_turno=None):
         if consultorios_disponibles:
             print(f"\n *** Consultorios disponibles a las {hora or nueva_fecha_hora}: ***")
             disponibles_por_piso = agrupar_consultorios_por_piso(consultorios)
-            print_tabla("Resultados de Médicos", [disponibles_por_piso], ["1","2","3","4","5"], "vertical")
+            print_tabla("Resultados de Médicos", [disponibles_por_piso], ["Piso 1","Piso 2","Piso 3","Piso 4","Piso 5"], "vertical")
 
         else:
             print("No hay consultorios disponibles en esa fecha y hora.")
