@@ -137,32 +137,16 @@ def ver_turnos(turnos, pacientes, medicos):
 
     print_tabla("Lista de Turnos", info_turno, ["Fecha", "Hora", "Paciente", "Medico", "Consultorio", "Estado"], "horizontal")
 
-def agregar_turno(turnos, medicos, pacientes):
-    """Función que permite agregar un nuevo turno médico.
-    Args:
-        turnos (list): Lista de turnos médicos.
-        medicos (dict): Diccionario de médicos.
-        pacientes (dict): Diccionario de pacientes.
-    Returns:
-        None
-    Logica:
-    - Solicita al usuario el ID del paciente y verifica si existe.
-    - Solicita al usuario el ID del médico y verifica si existe.
-    - Solicita el nombre del consultorio, la fecha y la hora del turno.
-    - Valida la fecha y la hora ingresadas.
-    - Genera un nuevo ID para el turno y lo agrega a la lista de turnos.
-    """
-    print("Agregar Turno:")
-    
-    # Verificar si hay pacientes registrados
+def crear_o_editar_turno(turnos, medicos, pacientes, id_turno=None):
+    print("Asignación de Turno:")
+
     if not pacientes:
-        print("No hay pacientes registrados. Por favor, registre un paciente antes de agregar un turno.")
-        return
-    
-    # Verificar si hay médicos registrados
+        print("No hay pacientes registrados.")
+        return None
+
     if not medicos:
-        print("No hay médicos registrados. Por favor, registre un médico antes de agregar un turno.")
-        return
+        print("No hay médicos registrados.")
+        return None
 
     while True:
         try:
@@ -180,181 +164,91 @@ def agregar_turno(turnos, medicos, pacientes):
         except ValueError:
             print("Debe ingresar un número entero válido.")
 
-    consultorio = input("Ingrese el numero del consultorio: ")
+    consultorio = input("Ingrese el número del consultorio: ").strip()
 
     while True:
         fecha = input("Ingrese la fecha (AAAA-MM-DD): ")
-        if validarFecha(fecha):
-            break
-        else:
-            print("Formato de fecha inválido. Intente de nuevo.")
+        if not validarFecha(fecha):
+            print("Formato de fecha inválido.")
+            continue
+        break
 
     while True:
         hora = input("Ingrese la hora (HH:MM): ")
-        if validarHora(hora):
-            break
-        else:
-            print("Formato de hora inválido. Intente de nuevo.")
+        if not validarHora(hora):
+            print("Formato de hora inválido.")
+            continue
 
-    # Generar un nuevo ID para el turno
-    # Si la lista de turnos está vacía, el nuevo ID será 1
-    # Si no, se toma el máximo ID existente y se le suma 1
-    nuevo_id_turno = max(turnos, key=lambda x: x["id"])["id"] + 1 if turnos else 1
-    nuevo_turno = {
-        "id": nuevo_id_turno,
+        try:
+            nueva_fecha_hora = datetime.strptime(f"{fecha} {hora}", "%Y-%m-%d %H:%M")
+        except ValueError:
+            print("Fecha y hora inválidas.")
+            continue
+
+        conflicto = False
+        for turno in turnos:
+            if id_turno is not None and turno["id"] == id_turno:
+                continue  # Ignorar el mismo turno en caso de edición
+
+            turno_fecha_hora = datetime.strptime(f"{turno['fecha']} {turno['hora']}", "%Y-%m-%d %H:%M")
+            diferencia = abs((turno_fecha_hora - nueva_fecha_hora).total_seconds())
+
+            if turno["medico"] == id_medico and diferencia < 600:
+                print("Este médico ya tiene un turno dentro de 10 minutos.")
+                conflicto = True
+                break
+
+            if turno["consultorio"] == consultorio and turno["fecha"] == fecha and turno["hora"] == hora:
+                print("Consultorio ocupado en esa fecha y hora.")
+                conflicto = True
+                break
+
+        if conflicto:
+            continue
+        break
+
+    return {
+        "id": id_turno if id_turno is not None else (max([t["id"] for t in turnos], default=0) + 1),
         "paciente": id_paciente,
         "medico": id_medico,
         "consultorio": consultorio,
         "fecha": fecha,
         "hora": hora
     }
-    
-    turnos.append(nuevo_turno)  # Agregar el nuevo turno a la lista de turnos
-    guardar_json("turnos", turnos)  # Guardar los cambios en el archivo JSON
-    # Imprimir el turno agregado en formato tabular
-    print_tabla("Turno Agregado", [[nuevo_turno["fecha"], nuevo_turno["hora"], pacientes[id_paciente]["nombre"] + " " + pacientes[id_paciente]["apellido"], medicos[id_medico]["nombre"] + " " + medicos[id_medico]["apellido"], consultorio, "Pendiente"]], ["Fecha", "Hora", "Paciente", "Medico", "Consultorio", "Estado"], "horizontal")
-    print(f"Turno agregado con éxito. ID del turno: {nuevo_id_turno}")
+
+def agregar_turno(turnos, medicos, pacientes):
+    nuevo_turno = crear_o_editar_turno(turnos, medicos, pacientes)
+    if nuevo_turno:
+        turnos.append(nuevo_turno)
+        guardar_json("turnos", turnos)
+
+        print_tabla("Turno Agregado", [[
+            nuevo_turno["fecha"], nuevo_turno["hora"],
+            pacientes[nuevo_turno["paciente"]]["nombre"] + " " + pacientes[nuevo_turno["paciente"]]["apellido"],
+            medicos[nuevo_turno["medico"]]["nombre"] + " " + medicos[nuevo_turno["medico"]]["apellido"],
+            nuevo_turno["consultorio"], "Pendiente"
+        ]], ["Fecha", "Hora", "Paciente", "Medico", "Consultorio", "Estado"], "horizontal")
+
+        print(f"Turno agregado con éxito. ID: {nuevo_turno['id']}")
 
 def modificar_turno(turnos, medicos, pacientes):
     try:
-        id_turno =mensajesTipoNumerico ("Ingrese el ID del turno que quiere modificar: ")
+        id_turno = mensajesTipoNumerico("Ingrese el ID del turno a modificar: ")
     except ValueError:
-        print("Debe ingresar un número de ID válido.")
+        print("ID inválido.")
         return
 
-    turnoAModificar = None
-    for i in range(len(turnos)):
-        if turnos[i]["id"] == id_turno:
-            turnoAModificar = i
-            break
+    for i, turno in enumerate(turnos):
+        if turno["id"] == id_turno:
+            turno_modificado = crear_o_editar_turno(turnos, medicos, pacientes, id_turno)
+            if turno_modificado:
+                turnos[i] = turno_modificado
+                guardar_json("turnos", turnos)
+                print(f"Turno {id_turno} modificado con éxito.")
+            return
 
-    if turnoAModificar is None:
-        print(f"No se encontró un turno con el ID {id_turno}.")
-        return
-    turno = turnos[turnoAModificar] # Convertimos la tupla en lista para poder modificarla
+    print(f"No se encontró el turno con ID {id_turno}.")
 
-    # Pedir opción de modificación con validación
-    while True:
-        print("\n¿Qué desea modificar del turno?")
-        print("1. Paciente")
-        print("2. Médico")
-        print("3. Consultorio")
-        print("4. Fecha")
-        print("5. Hora")
-        print("6. Todo")
-        try:
-            opcion = int(input("Elija la opción (1-6): "))
-            if opcion not in range(1, 7):
-                print("Opción inválida. Debe ser un número entre 1 y 6.")
-                continue
-            break
-        except ValueError:
-            print("Debe ingresar un número entero.")
-
-
-    if opcion == 1:
-        while True:
-            id_paciente = int(input("Ingrese el nuevo ID del paciente (o -1 para cancelar): "))
-            if id_paciente == -1:
-                print("Operación cancelada.")
-                return
-            if verificarSiExiste(id_paciente, pacientes, "paciente"):
-                turno['paciente'] = id_paciente
-                print("ID del paciente modificado con éxito.")
-                break
-
-    elif opcion == 2:
-        while True:
-            id_medico = int(input("Ingrese el nuevo ID del médico (o -1 para cancelar): "))
-            if id_medico == -1:
-                print("Operación cancelada.")
-                return
-            if verificarSiExiste(id_medico, medicos, "médico"):
-                turno['medico'] = id_medico
-                print("ID del médico modificado con éxito.")
-                break
-
-    elif opcion == 3:
-        consultorio = input("Ingrese el nuevo nombre del consultorio: ")
-        turno['consultorio'] = consultorio
-        print("El nombre del consultorio fue modificado con éxito.")
-        
-    elif opcion == 4:
-        while True:
-            fecha = input("Ingrese la nueva fecha (AAAA-MM-DD) (o -1 para cancelar): ")
-            if fecha == "-1":
-                print("Operación cancelada.")
-                return
-            if validarFecha(fecha):
-                turno['fecha'] = fecha
-                print("La fecha fue modificada con éxito.")
-                break
-            else:
-                print("Formato de fecha inválido. Intente de nuevo.")
-
-    elif opcion == 5:
-        while True:
-            hora = input("Ingrese la nueva hora (HH:MM) (o -1 para cancelar): ")
-            if hora == "-1":
-                print("Operación cancelada.")
-                return
-            if validarHora(hora):
-                turno['hora'] = hora
-                print("La hora fue modificada con éxito.")
-                break
-            else:
-                print("Formato de hora inválido. Intente de nuevo.")
-
-    elif opcion == 6:
-        while True:
-            id_paciente = int(input("Ingrese el nuevo ID del paciente (o -1 para cancelar): "))
-            if id_paciente == -1:
-                print("Operación cancelada.")
-                return
-            if verificarSiExiste(id_paciente, pacientes, "paciente"):
-                turno['paciente'] = id_paciente
-                break
-
-        while True:
-            id_medico = int(input("Ingrese el nuevo ID del médico (o -1 para cancelar): "))
-            if id_medico == -1:
-                print("Operación cancelada.")
-                return
-            if verificarSiExiste(id_medico, medicos, "médico"):
-                turno['medico'] = id_medico
-                break
-
-        consultorio = input("Ingrese el nuevo nombre del consultorio: ")
-        turno['consultorio'] = consultorio
-        print("El nombre del consultorio fue modificado con éxito.")
-
-        while True:
-            fecha = input("Ingrese la nueva fecha (AAAA-MM-DD) (o -1 para cancelar): ")
-            if fecha == "-1":
-                print("Operación cancelada.")
-                return
-            if validarFecha(fecha):
-                turno['fecha'] = fecha
-                break
-            else:
-                print("Formato de fecha inválido. Intente de nuevo.")
-
-        while True:
-            hora = input("Ingrese la nueva hora (HH:MM) (o -1 para cancelar): ")
-            if hora == "-1":
-                print("Operación cancelada.")
-                return
-            if validarHora(hora):
-                turno['hora'] = hora
-                break
-            else:
-                print("El formato de la hora es inválido. Intente de nuevo.")
-        print("Toda la información fue modificada con éxito.")
-        
-    turnos[turnoAModificar] = turno # Volvemos a guardar como tupla
-    guardar_json('turnos', turnos)
-    
-    print(f"\n Turno {id_turno} modificado con éxito.")
 
 def eliminar_turno(turnos):
     id_turno= int(input("Ingrese el ID del turno que quiere eliminar: "))
@@ -421,7 +315,7 @@ def buscar_medico(medicos):
         if valor_actual == valor_buscado:
             resultados.append(medico)
     if resultados:
-        columnas = ["ID", "Nombre", "Apellido", "Especialidad", "DNI", "Fecha Nac.", "Domicilio", "Mail", "Teléfono", "Nacionalidad", "Título", "Matrícula", "Grupo Sanguíneo"]
+        columnas = ["ID", "Nombre", "Apellido", "Especialidad", "DNI", "Fecha Nac.", "Domicilio", "Mail", "Teléfono", "Nacionalidad", "Título", "Matrícula", "Horario", "Estado"]
         filas = [
             [
                 m.get("id"),
@@ -436,7 +330,8 @@ def buscar_medico(medicos):
                 m.get("nacionalidad"),
                 m.get("titulo"),
                 m.get("matricula"),
-                m.get("grupo_sanguineo")
+                m.get("horario"),
+                m.get("estado")
             ] for m in resultados
         ]
         print_tabla("Resultados de Médicos", filas, columnas, "vertical")
@@ -559,6 +454,9 @@ def agregar_medico(medicos):
     matricula = validar_campo_vacio("Matrícula: ")
     # Generar un nuevo ID para el médico
     nuevo_id = max(medicos, key=lambda x: x["id"])["id"] + 1 if medicos else 1
+    horarios = pedir_horarios_medico()
+
+    
     medico = {
         "id": nuevo_id,
         "nombre": nombre,
@@ -571,12 +469,14 @@ def agregar_medico(medicos):
         "num_tel": num_tel,
         "nacionalidad": nacionalidad,
         "titulo": titulo,
-        "matricula": matricula
+        "matricula": matricula,
+        "horario": horarios,
+        "estado": "Activo"
     }
 
     medicos.append(medico)  # Agregar el nuevo médico a la lista de médicos
     guardar_json("medicos", medicos)  # Guardar los cambios en el archivo JSON
-    print_tabla("Médico Agregado", [[medico["id"], medico["nombre"], medico["apellido"], medico["especialidad"], medico["dni"], medico["fecha_nac"], medico["domicilio"], medico["mail"], medico["num_tel"], medico["nacionalidad"], medico["titulo"], medico["matricula"]]], ["ID", "Nombre", "Apellido", "Especialidad", "DNI", "Fecha Nac.", "Domicilio", "Mail", "Teléfono", "Nacionalidad", "Título", "Matrícula"], "vertical")
+    print_tabla("Médico Agregado", [[medico["id"], medico["nombre"], medico["apellido"], medico["especialidad"], medico["dni"], medico["fecha_nac"], medico["domicilio"], medico["mail"], medico["num_tel"], medico["nacionalidad"], medico["titulo"], medico["matricula"], medico["horario"]]], ["ID", "Nombre", "Apellido", "Especialidad", "DNI", "Fecha Nac.", "Domicilio", "Mail", "Teléfono", "Nacionalidad", "Título", "Matrícula", "Horario"], "vertical")
     print(f"Médico agregado con éxito.")
     print(f"ID asignado: {nuevo_id}")
 

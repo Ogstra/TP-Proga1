@@ -2,7 +2,7 @@ import json
 from rich.console import Console
 from rich.table import Table
 from rich import box
-from datetime import datetime
+from datetime import datetime, timedelta
 
 def cargar_json(file_path):
     """
