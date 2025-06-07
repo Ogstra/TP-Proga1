@@ -6,11 +6,10 @@ pacientes = cargar_json("pacientes")
 medicos = cargar_json("medicos")
 turnos = cargar_json("turnos")
 roles = ('Admin', 'Médico', 'Paciente')
-rol = 'Admin'
 
     # Mostrar el menú y manejar las opciones
 print("Bienvenido al sistema de gestión de turnos médicos\n")
-menu_roles(roles)
+rol = menu_roles(roles)
 mostrar_menu(turnos, pacientes, medicos, rol)
 
 # Bucle principal para mantener el programa en ejecución

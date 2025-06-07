@@ -34,50 +34,41 @@ def mostrar_menu(turnos, pacientes, medicos, rol):
     - Si la opción es "0", finaliza el programa.
     - Si la opción es inválida, muestra un mensaje de error y vuelve a solicitar una opción.
     """
-    print("\nMenú de Turnos Médicos")
-    print("1. Ver lista de turnos")  
-    print("2. Agregar turno")  
-    print("3. Modificar turno")
-    print("4. Eliminar turno") 
-    print("5. Buscar paciente")
-    print("6. Crear paciente")
-    print("7. Eliminar paciente")
-    print("8. Buscar médico")
-    print("9. Eliminar médico")
-    print("10. Agregar médico")
-    print("11. Agenda médica")
-    try:
-        opcion = input("\nSeleccione una opción (0 para salir):")
-        if opcion == "1":
-            ver_turnos(turnos, pacientes, medicos)
-        elif opcion == "2":
-            agregar_turno(turnos, medicos, pacientes)
-        elif opcion == "3":
-            modificar_turno(turnos,medicos, pacientes)
-        elif opcion == "4":
-            eliminar_turno(turnos)
-        elif opcion == "5":
-            buscar_paciente(pacientes)
-        elif opcion == "6":
-            crear_paciente(pacientes)
-        elif opcion == "7":
-            eliminar_paciente(pacientes)
-        elif opcion == "8":
-            buscar_medico(medicos)
-        elif opcion == "9":
-            eliminar_medico(medicos, turnos, pacientes)
-        elif opcion == "10":
-            agregar_medico(medicos)
-        elif opcion == "11":
-            agenda_medico(medicos, turnos)
-        elif opcion == "0":
+    opciones = [
+        {"texto": "Ver turnos", "func": lambda: ver_turnos(turnos, pacientes, medicos), "roles": ["Admin", "Médico", "Paciente"]},
+        {"texto": "Agregar turno", "func": lambda: agregar_turno(turnos, medicos, pacientes), "roles": ["Admin", "Médico"]},
+        {"texto": "Modificar turno", "func": lambda: modificar_turno(turnos, medicos, pacientes), "roles": ["Admin", "Médico"]},
+        {"texto": "Eliminar turno", "func": lambda: eliminar_turno(turnos), "roles": ["Admin", "Médico"]},
+        {"texto": "Buscar paciente", "func": lambda: buscar_paciente(pacientes), "roles": ["Admin", "Médico"]},
+        {"texto": "Crear paciente", "func": lambda: crear_paciente(pacientes), "roles": ["Admin"]},
+        {"texto": "Eliminar paciente", "func": lambda: eliminar_paciente(pacientes), "roles": ["Admin"]},
+        {"texto": "Buscar médico", "func": lambda: buscar_medico(medicos), "roles": ["Admin", "Médico", "Paciente"]},
+        {"texto": "Eliminar médico", "func": lambda: eliminar_medico(medicos, turnos, pacientes), "roles": ["Admin"]},
+        {"texto": "Agregar médico", "func": lambda: agregar_medico(medicos), "roles": ["Admin"]},
+        {"texto": "Agenda médico", "func": lambda: agenda_medico(medicos, turnos), "roles": ["Médico"]}
+    ]
+
+    print(f"\n--- Menú para {rol} ---")
+    
+    opciones_validas = [op for op in opciones if rol.capitalize() in op["roles"]]
+
+    for i, op in enumerate(opciones_validas, start=1):
+        print(f"{i}. {op['texto']}")
+    print("0. Salir")
+
+    while True:
+        opcion = mensajesTipoNumerico("\nSeleccione una opción (0 para salir): ")
+        
+        if opcion == 0:
             print("Saliendo del programa...")
             exit()
+        elif 1 <= opcion <= len(opciones_validas):
+            opciones_validas[opcion - 1]["func"]()
         else:
             print("Opción no válida. Intente de nuevo.")
-        return opcion
-    except ValueError as e:
-        print(f"Error: {e}. Debe ingresar un número válido.")
+
+
+
 # Función para mostrar turnos con información expandida
 def ver_turnos(turnos, pacientes, medicos):
     """Función que muestra la lista de turnos con información detallada de pacientes y médicos.

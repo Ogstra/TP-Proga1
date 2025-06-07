@@ -14,12 +14,12 @@ def validar_campo_vacio(texto):
 
 def mensajesTipoNumerico(mensaje):
     while True:
-        valor = input(mensaje)
+        valor = input(mensaje).strip()
         if valor.isdigit():
             return int(valor)
         else:
             print("Error: Debe ingresar un número.")
-
+    
 def validarFecha(fecha):
     try:
         datetime.strptime(fecha, "%Y-%m-%d")
