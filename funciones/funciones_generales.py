@@ -25,7 +25,6 @@ def guardar_json(file_path, data):
     with open("./datos/"+file_path+".json", 'w', encoding='utf-8') as file:
         json.dump({file_path: data}, file, indent=4, ensure_ascii=False)
 
-
 def tieneTurnosAsignados(id, turnos, posicionDelId):
     """"Verifica si un ID tiene turnos asignados en la lista de turnos.
     Args:

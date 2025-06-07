@@ -1,25 +1,30 @@
 from funciones.funciones_validaciones import *
 from funciones.funciones_generales import *
 
+# Cargar los datos desde los archivos JSON
+pacientes = cargar_json("pacientes")
+medicos = cargar_json("medicos")
+turnos = cargar_json("turnos")
+config = cargar_json("config")
+
 def menu_roles(roles):
-    print('Seleccione rol:')
-    for i in range(len(roles)):
-        print(f'{i + 1}. {roles[i]}')
-    opcion = mensajesTipoNumerico("\nSeleccione una opción (0 para salir):")
-    if 0 < opcion < len(roles) + 1:
-        rol_seleccionado = roles[opcion - 1]
-        print(f"Rol seleccionado: {rol_seleccionado}")
-        return rol_seleccionado
-    elif opcion == 0:
-        print("Saliendo...")
-        exit()
-    else:
-        print("Opción inválida.")
-        return None
-        
+    while True:
+        print('Seleccione rol:')
+        for i in range(len(roles)):
+            print(f'{i + 1}. {roles[i]}')
+        opcion = mensajesTipoNumerico("\nSeleccione una opción (0 para salir):")
+        if 0 < opcion < len(roles) + 1:
+            rol_seleccionado = roles[opcion - 1]
+            print(f"Rol seleccionado: {rol_seleccionado}")
+            return rol_seleccionado
+        elif opcion == 0:
+            print("Saliendo...")
+            exit()
+        else:
+            print("*** Opción inválida.\n")        
 
 # Función para mostrar el menú
-def mostrar_menu(turnos, pacientes, medicos, rol, opciones):
+def mostrar_menu(rol, opciones):
     """Función que muestra el menú principal y maneja las opciones seleccionadas por el usuario.	
     Args:
         turnos (list): Lista de turnos médicos.
@@ -34,41 +39,50 @@ def mostrar_menu(turnos, pacientes, medicos, rol, opciones):
     - Si la opción es "0", finaliza el programa.
     - Si la opción es inválida, muestra un mensaje de error y vuelve a solicitar una opción.
     """
-    opciones = [
-        {"texto": "Ver turnos", "func": lambda: ver_turnos(turnos, pacientes, medicos), "roles": ["Admin", "Médico", "Paciente"]},
-        {"texto": "Agregar turno", "func": lambda: agregar_turno(turnos, medicos, pacientes), "roles": ["Admin", "Médico"]},
-        {"texto": "Modificar turno", "func": lambda: modificar_turno(turnos, medicos, pacientes), "roles": ["Admin", "Médico"]},
-        {"texto": "Eliminar turno", "func": lambda: eliminar_turno(turnos), "roles": ["Admin", "Médico"]},
-        {"texto": "Buscar paciente", "func": lambda: buscar_paciente(pacientes), "roles": ["Admin", "Médico"]},
-        {"texto": "Crear paciente", "func": lambda: crear_paciente(pacientes), "roles": ["Admin"]},
-        {"texto": "Eliminar paciente", "func": lambda: eliminar_paciente(pacientes), "roles": ["Admin"]},
-        {"texto": "Buscar médico", "func": lambda: buscar_medico(medicos), "roles": ["Admin", "Médico", "Paciente"]},
-        {"texto": "Eliminar médico", "func": lambda: eliminar_medico(medicos, turnos, pacientes), "roles": ["Admin"]},
-        {"texto": "Agregar médico", "func": lambda: agregar_medico(medicos), "roles": ["Admin"]},
-        {"texto": "Agenda médico", "func": lambda: agenda_medico(medicos, turnos), "roles": ["Médico"]}
-    ]
+    print(f"\n--- Menú para {rol} ---") 
 
-    print(f"\n--- Menú para {rol} ---")
+    contexto = {
+    "turnos": turnos,
+    "pacientes": pacientes,
+    "medicos": medicos,
+    "rol": rol,
+    "opciones": opciones
+    }
     
-    opciones_validas = [op for op in opciones if rol.capitalize() in op["roles"]]
+    funciones_disponibles = [
+        globals()[opcion['clave']]
+        for opcion in opciones
+        if opcion['clave'] in globals() and callable(globals()[opcion['clave']])
+        ]
+    
+    opciones_validas = [op for op in opciones if rol in op["roles"]]
+    opciones_validas.sort(key=lambda op: op["clave"] == "editar_config_menu") ## Editar configuracion siempre al final de la lista
+
     #print(opciones_validas)
+    #print(opciones)
+
     
     for i, op in enumerate(opciones_validas, start=1):
         print(f"{i}. {op['texto']}")
     print("0. Salir")
 
-    while True:
-        opcion = mensajesTipoNumerico("\nSeleccione una opción (0 para salir): ")
-        
-        if opcion == 0:
-            print("Saliendo del programa...")
-            exit()
-        elif 1 <= opcion <= len(opciones_validas):
-            opciones_validas[opcion - 1]["func"]()
-        else:
-            print("Opción no válida. Intente de nuevo.")
+    opcion = mensajesTipoNumerico("\nSeleccione una opción (0 para salir): ")
+    
+    if opcion == 0:
+        print("Saliendo del programa...")
+        exit()
+    if 1 <= opcion <= len(opciones_validas):
+        seleccionada = opciones_validas[opcion - 1]
+        nombre_funcion = seleccionada['clave']
+        argumentos = seleccionada.get('argumentos', [])
 
-
+        if nombre_funcion in globals() and callable(globals()[nombre_funcion]):
+            # Resolver los argumentos desde el contexto
+            args = [contexto[arg] for arg in argumentos if arg in contexto]
+            # Ejecutar la función con los argumentos
+            globals()[nombre_funcion](*args)
+    else:
+        print("Opción no válida. Intente de nuevo.")
 
 # Función para mostrar turnos con información expandida
 def ver_turnos(turnos, pacientes, medicos):
@@ -361,10 +375,11 @@ def buscar_paciente(pacientes):
     Muestra los resultados en formato tabular.
     """
     campos = ("nombre", "apellido", "dni", "mail", "grupo_sanguineo")
-    opcion = int(input("Buscar por:\n1) Nombre\n2) Apellido\n3) DNI\n4) Mail\n5) Grupo Sanguíneo\nOpción: "))
-
+    opcion = mensajesTipoNumerico("Buscar por:\n1) Nombre\n2) Apellido\n3) DNI\n4) Mail\n5) Grupo Sanguíneo\nOpción: ")
+    if opcion == 0:
+        return None
     while opcion < 1 or opcion > len(campos):
-        opcion = int(input("Opcion no valida\nBuscar por:\n1) Nombre\n2) Apellido\n3) DNI\n4) Mail\n5) Grupo Sanguíneo\nOpción: "))
+        opcion = mensajesTipoNumerico("Opcion no valida\nBuscar por:\n1) Nombre\n2) Apellido\n3) DNI\n4) Mail\n5) Grupo Sanguíneo\nOpción: ")
 
     campo_seleccionado = campos[opcion - 1]
     valor_buscado = quitar_acentos(input(f"Ingrese {campo_seleccionado}: ").lower())
@@ -616,4 +631,69 @@ def agenda_medico(medicos, turnos):
         tabla_agenda.append([item["fecha"], item["hora"], paciente, item["consultorio"]])
 
     print_tabla("Agenda del Médico", tabla_agenda, ["Fecha", "Hora", "Paciente", "Consultorio"])
-    
+  
+def editar_config_menu(): 
+    config = cargar_json("config")
+    roles = config["roles"]
+    opciones = config["opciones_menu"]  
+    while True:
+            print("\n--- Editor de Configuración ---")
+            print("1. Ver roles disponibles")
+            print("2. Agregar rol")
+            print("3. Eliminar rol")
+            print("4. Ver permisos de opciones")
+            print("5. Modificar permisos de una opción")
+            print("0. Salir")
+            
+            opcion = input("Seleccione una opción: ")
+
+            if opcion == "1":
+                print("\nRoles disponibles:", ", ".join(roles))
+
+            elif opcion == "2":
+                nuevo_rol = input("Ingrese el nombre del nuevo rol: ").strip()
+                if nuevo_rol and nuevo_rol not in roles:
+                    roles.append(nuevo_rol)
+                    print(f"Rol '{nuevo_rol}' agregado.")
+                else:
+                    print("Rol inválido o ya existe.")
+
+            elif opcion == "3":
+                eliminar_rol = input("Ingrese el nombre del rol a eliminar: ").strip()
+                if eliminar_rol in roles:
+                    roles.remove(eliminar_rol)
+                    for opcion in opciones:
+                        if eliminar_rol in opcion["roles"]:
+                            opcion["roles"].remove(eliminar_rol)
+                    print(f"Rol '{eliminar_rol}' eliminado.")
+                else:
+                    print("Rol no encontrado.")
+
+            elif opcion == "4":
+                print("\n--- Permisos por opción ---")
+                for o in opciones:
+                    print(f"{o['clave']} ({o['texto']}): {', '.join(o['roles'])}")
+
+            elif opcion == "5":
+                clave = input("Ingrese la clave de la opción a modificar: ").strip()
+                opcion_menu = next((o for o in opciones if o["clave"] == clave), None)
+                if opcion_menu:
+                    print(f"Permisos actuales: {', '.join(opcion_menu['roles'])}")
+                    nuevos_roles = input(f"Ingrese nuevos roles separados por coma (disponibles: {', '.join(roles)}): ")
+                    nuevos = [r.strip() for r in nuevos_roles.split(",") if r.strip() in roles]
+                    if nuevos:
+                        opcion_menu["roles"] = nuevos
+                        print(f"Permisos actualizados para '{clave}'.")
+                    else:
+                        print("No se ingresaron roles válidos.")
+                else:
+                    print("Clave no encontrada.")
+            elif opcion == "0":
+                break
+            else:
+                print("Opción inválida.")
+
+            guardar_json('config', {
+                "roles": roles,
+                "opciones_menu": opciones
+            })            
