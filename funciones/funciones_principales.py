@@ -6,6 +6,7 @@ pacientes = cargar_json("pacientes")
 medicos = cargar_json("medicos")
 turnos = cargar_json("turnos")
 config = cargar_json("config")
+consultorios = config["consultorios"]
 
 def menu_roles(roles):
     while True:
@@ -163,7 +164,7 @@ def crear_o_editar_turno(turnos, medicos, pacientes, id_turno=None):
                 break
         except ValueError:
             print("Debe ingresar un número entero válido.")
-
+            
     consultorio = input("Ingrese el número del consultorio: ").strip()
 
     while True:
@@ -186,6 +187,24 @@ def crear_o_editar_turno(turnos, medicos, pacientes, id_turno=None):
             continue
 
         conflicto = False
+        # Buscar consultorios ocupados en esa fecha y hora
+        consultorios_ocupados = [
+        turno['consultorio']
+        for turno in turnos
+        if turno['fecha'] == fecha and turno['hora'] == hora
+        ]
+        consultorios_disponibles = [
+            c for c in consultorios if c not in consultorios_ocupados
+        ]
+
+        if consultorios_disponibles:
+            print(f"\n *** Consultorios disponibles a las {hora or nueva_fecha_hora}: ***")
+            disponibles_por_piso = agrupar_consultorios_por_piso(consultorios)
+            print_tabla("Resultados de Médicos", [disponibles_por_piso], ["1","2","3","4","5"], "vertical")
+
+        else:
+            print("No hay consultorios disponibles en esa fecha y hora.")
+
         for turno in turnos:
             if id_turno is not None and turno["id"] == id_turno:
                 continue  # Ignorar el mismo turno en caso de edición
@@ -200,13 +219,18 @@ def crear_o_editar_turno(turnos, medicos, pacientes, id_turno=None):
 
             if turno["consultorio"] == consultorio and turno["fecha"] == fecha and turno["hora"] == hora:
                 print("Consultorio ocupado en esa fecha y hora.")
+                # Obtener disponibles
+                consultorios_disponibles = [
+                c for c in consultorios if c not in consultorios_ocupados
+                ]
                 conflicto = True
                 break
 
         if conflicto:
             continue
         break
-
+    
+    
     return {
         "id": id_turno if id_turno is not None else (max([t["id"] for t in turnos], default=0) + 1),
         "paciente": id_paciente,

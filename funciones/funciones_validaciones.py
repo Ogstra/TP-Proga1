@@ -87,3 +87,11 @@ def pedir_horarios_medico():
     horario_mañana = pedir_dos_horarios("turno mañana")
     horario_tarde = pedir_dos_horarios("turno tarde")
     return [horario_mañana, horario_tarde]
+
+def agrupar_consultorios_por_piso(consultorios):
+    por_piso = {str(piso): [] for piso in range(1, 6)}
+    for c in consultorios:
+        piso = str(c)[0]
+        if piso in por_piso:
+            por_piso[piso].append(c)
+    return list(por_piso.values())
