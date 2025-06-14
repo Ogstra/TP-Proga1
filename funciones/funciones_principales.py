@@ -26,43 +26,37 @@ def menu_roles(roles):
 
 # Función para mostrar el menú
 def mostrar_menu(rol, opciones):
-    """Función que muestra el menú principal y maneja las opciones seleccionadas por el usuario.	
+    """
+    Función que muestra el menú principal con las opciones disponibles en el json y maneja las opciones seleccionadas por el usuario.
+
     Args:
         turnos (list): Lista de turnos médicos.
         pacientes (dict): Diccionario de pacientes.
         medicos (dict): Diccionario de médicos.
+
     Returns:
         str: Opción seleccionada por el usuario.
-    Logica:
-    - Imprime el menú de opciones disponibles.
-    - Solicita al usuario que seleccione una opción.
-    - Dependiendo de la opción seleccionada, llama a la función correspondiente.
-    - Si la opción es "0", finaliza el programa.
-    - Si la opción es inválida, muestra un mensaje de error y vuelve a solicitar una opción.
+
+    Lógica:
+        - Imprime el menú de opciones disponibles.
+        - Solicita al usuario que seleccione una opción.
+        - Dependiendo de la opción seleccionada, llama a la función correspondiente.
+        - Si la opción es "0", finaliza el programa.
+        - Si la opción es inválida, muestra un mensaje de error y vuelve a solicitar una opción.
     """
     print(f"\n--- Menú para {rol} ---") 
 
     contexto = {
-    "turnos": turnos,
-    "pacientes": pacientes,
-    "medicos": medicos,
-    "rol": rol,
-    "opciones": opciones
+        "turnos": turnos,
+        "pacientes": pacientes,
+        "medicos": medicos,
+        "rol": rol,
+        "opciones": opciones
     }
     
-    funciones_disponibles = [
-        globals()[opcion['clave']]
-        for opcion in opciones
-        if opcion['clave'] in globals() and callable(globals()[opcion['clave']])
-        ]
-    
     opciones_validas = [op for op in opciones if rol in op["roles"]]
-    opciones_validas.sort(key=lambda op: op["clave"] == "editar_config_menu") ## Editar configuracion siempre al final de la lista
+    opciones_validas.sort(key=lambda op: op["clave"] == "editar_config_menu")
 
-    #print(opciones_validas)
-    #print(opciones)
-
-    
     for i, op in enumerate(opciones_validas, start=1):
         print(f"{i}. {op['texto']}")
     print("0. Salir")
@@ -77,14 +71,11 @@ def mostrar_menu(rol, opciones):
         nombre_funcion = seleccionada['clave']
         argumentos = seleccionada.get('argumentos', [])
 
-        if nombre_funcion in globals() and callable(globals()[nombre_funcion]):
-            # Resolver los argumentos desde el contexto
-            args = [contexto[arg] for arg in argumentos if arg in contexto]
-            # Ejecutar la función con los argumentos
-            globals()[nombre_funcion](*args)
+        args = [contexto[arg] for arg in argumentos if arg in contexto]
+        ejecutar(nombre_funcion, *args)
     else:
         print("Opción no válida. Intente de nuevo.")
-
+        
 # Función para mostrar turnos con información expandida
 def ver_turnos(turnos, pacientes, medicos):
     """Función que muestra la lista de turnos con información detallada de pacientes y médicos.
@@ -197,14 +188,6 @@ def crear_o_editar_turno(turnos, medicos, pacientes, id_turno=None):
             c for c in consultorios if c not in consultorios_ocupados
         ]
 
-        if consultorios_disponibles:
-            print(f"\n *** Consultorios disponibles a las {hora or nueva_fecha_hora}: ***")
-            disponibles_por_piso = agrupar_consultorios_por_piso(consultorios)
-            print_tabla("Resultados de Médicos", [disponibles_por_piso], ["Piso 1","Piso 2","Piso 3","Piso 4","Piso 5"], "vertical")
-
-        else:
-            print("No hay consultorios disponibles en esa fecha y hora.")
-
         for turno in turnos:
             if id_turno is not None and turno["id"] == id_turno:
                 continue  # Ignorar el mismo turno en caso de edición
@@ -213,7 +196,8 @@ def crear_o_editar_turno(turnos, medicos, pacientes, id_turno=None):
             diferencia = abs((turno_fecha_hora - nueva_fecha_hora).total_seconds())
 
             if turno["medico"] == id_medico and diferencia < 600:
-                print("Este médico ya tiene un turno dentro de 10 minutos.")
+                print(f"Este médico ya tiene un turno dentro de 10 minutos.")
+                
                 conflicto = True
                 break
 
@@ -224,6 +208,13 @@ def crear_o_editar_turno(turnos, medicos, pacientes, id_turno=None):
                 c for c in consultorios if c not in consultorios_ocupados
                 ]
                 conflicto = True
+                if consultorios_disponibles:
+                    print(f"\n *** Consultorios disponibles a las {hora or nueva_fecha_hora}: ***")
+                    disponibles_por_piso = agrupar_consultorios_por_piso(consultorios)
+                    print_tabla("Resultados de Médicos", [disponibles_por_piso], ["Piso 1","Piso 2","Piso 3","Piso 4","Piso 5"], "vertical")
+
+                else:
+                    print("No hay consultorios disponibles en esa fecha y hora.")
                 break
 
         if conflicto:

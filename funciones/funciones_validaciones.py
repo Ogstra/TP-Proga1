@@ -1,5 +1,26 @@
+import funciones.funciones_principales as funciones_principales
 import unicodedata
 from datetime import datetime, timedelta
+
+def ejecutar(nombre_funcion, *args, **kwargs):
+    """
+    Ejecuta dinámicamente una función por su nombre desde el módulo funciones_principales.
+
+    Parámetros:
+        nombre_funcion (str): Nombre de la función a ejecutar.
+        *args: Argumentos posicionales que se le pasarán a la función.
+        **kwargs: Argumentos nombrados que se le pasarán a la función.
+
+    Retorna:
+        El resultado de la función si existe y es ejecutable.
+        None si la función no existe o no es callable.
+    """
+    funcion = getattr(funciones_principales, nombre_funcion, None)
+    if callable(funcion):
+        return funcion(*args, **kwargs)
+    else:
+        print(f"*** La función '{nombre_funcion}' no existe o no es ejecutable. ***")
+
 def quitar_acentos(texto):
      texto = unicodedata.normalize('NFD', texto)
      texto = ''.join(c for c in texto if unicodedata.category(c) != 'Mn')
