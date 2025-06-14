@@ -468,25 +468,50 @@ def eliminar_paciente(pacientes):
         print(f"No se encontró un paciente con DNI {dni_paciente}.")
 
 def buscar_medico(medicos):
-    campos = ("nombre", "apellido", "dni", "mail", "grupo_sanguineo")
-    opcion = int(input("Buscar por:\n1) Nombre\n2) Apellido\n3) DNI\n4) Mail\nOpción: "))
-    while opcion < 1 or opcion > len(campos):
-        opcion = int(input("Opción no válida\nBuscar por:\n1) Nombre\n2) Apellido\n3) DNI\n4) Mail\nOpción: "))
+        campos = ("nombre", "apellido", "dni", "especialidad", "mail")
+        opcion = int(input("Buscar por:\n1) Nombre\n2) Apellido\n3) DNI\n4) Especialidad\n5) Mail\nOpción: "))
 
-    campo_seleccionado = campos[opcion - 1]
-    valor_buscado = input(f"Ingrese {campo_seleccionado}: ").lower()
-    resultados = []
-    for id_medico, datos_medico in medicos.items():
-        valor_actual = str(datos_medico[campo_seleccionado]).lower()
-        if valor_actual == valor_buscado:
-            resultados.append((id_medico, datos_medico))
-    if resultados:
-        for id_medico, datos in resultados:
-            print(f"\nID: {id_medico}")
-            for clave, valor in datos.items():
-                print(f"{clave.capitalize()}: {valor}")
-    else:
-        print("No se encontraron médicos con ese dato.")
+        while opcion < 1 or opcion > len(campos):
+            opcion = int(input("Opción no válida\nBuscar por:\n1) Nombre\n2) Apellido\n3) DNI\n4) Especialidad\n5) Mail\nOpción: "))
+
+        campo_seleccionado = campos[opcion - 1]
+        valor_buscado = quitar_acentos(input(f"Ingrese {campo_seleccionado}: ").lower())
+
+        resultados = []
+
+        for medico in medicos:
+            valor_actual = quitar_acentos(str(medico.get(campo_seleccionado, "")).lower())
+            if valor_actual == valor_buscado:
+                resultados.append(medico)
+
+        if len(resultados) == 1:
+            medico = resultados[0]
+            for clave in medico:
+                print(f"{clave.replace('_', ' ').capitalize()}: {medico[clave]}")
+
+        elif len(resultados) > 1:
+            print("\nSe encontraron varios médicos:")
+
+            campos_orden = ["nombre", "apellido", "dni", "especialidad"]
+
+            for i, medico in enumerate(resultados, start=1):
+                print(f"Médico {i}:")
+                for campo in campos_orden:
+                    print(f"{campo.replace('_', ' ').capitalize()}: {medico[campo]}")
+                print("-" * 30)
+
+            medico_elegido = int(input("Seleccione médico: "))
+            while medico_elegido < 1 or medico_elegido > len(resultados):
+                medico_elegido = int(input("Opción inválida, seleccione médico: "))
+
+            print("\nMédico seleccionado:")
+            medico = resultados[medico_elegido - 1]
+            for clave in medico:
+                print(f"{clave.replace('_', ' ').capitalize()}: {medico[clave]}")
+
+        else:
+            print("No se encontro ese medico.")
+    
 
 def eliminar_medico(medicos, turnos, pacientes):
     id_medico = mensajesTipoNumerico("Ingrese el ID del médico que desea eliminar: ")
