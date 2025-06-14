@@ -12,7 +12,12 @@
             "domicilio": "Av. Salud 789",
             "nacionalidad": "Argentina",
             "titulo": "Doctor en Medicina",
-            "matricula": "12345"
+            "matricula": "12345",
+            "horario": [
+                "08:00-12:00",
+                "13:00-18:00"
+            ],
+            "estado": "Activo"
         },
         {
             "id": 2,
@@ -26,7 +31,12 @@
             "domicilio": "Calle Piel 101",
             "nacionalidad": "Argentina",
             "titulo": "Doctor en Medicina",
-            "matricula": "67890"
+            "matricula": "67890",
+            "horario": [
+                "08:00-12:00",
+                "13:00-18:00"
+            ],
+            "estado": "Activo"
         },
         {
             "id": 3,
@@ -40,7 +50,12 @@
             "domicilio": "Av. Niños 202",
             "nacionalidad": "Argentina",
             "titulo": "Doctora en Medicina",
-            "matricula": "13579"
+            "matricula": "13579",
+            "horario": [
+                "08:00-12:00",
+                "13:00-18:00"
+            ],
+            "estado": "Activo"
         },
         {
             "id": 4,
@@ -54,7 +69,12 @@
             "domicilio": "Calle Huesos 303",
             "nacionalidad": "Argentina",
             "titulo": "Doctor en Medicina",
-            "matricula": "24680"
+            "matricula": "24680",
+            "horario": [
+                "08:00-12:00",
+                "13:00-18:00"
+            ],
+            "estado": "Inactivo"
         },
         {
             "id": 5,
@@ -68,7 +88,12 @@
             "domicilio": "Av. Cerebro 404",
             "nacionalidad": "Argentina",
             "titulo": "Doctora en Medicina",
-            "matricula": "11223"
+            "matricula": "11223",
+            "horario": [
+                "08:00-12:00",
+                "13:00-18:00"
+            ],
+            "estado": "Activo"
         },
         {
             "id": 6,
@@ -82,7 +107,12 @@
             "domicilio": "Calle Estómago 505",
             "nacionalidad": "Argentina",
             "titulo": "Doctor en Medicina",
-            "matricula": "44556"
+            "matricula": "44556",
+            "horario": [
+                "08:00-12:00",
+                "13:00-18:00"
+            ],
+            "estado": "Activo"
         },
         {
             "id": 7,
@@ -96,7 +126,12 @@
             "domicilio": "Av. Esperanza 606",
             "nacionalidad": "Argentina",
             "titulo": "Doctora en Medicina",
-            "matricula": "77889"
+            "matricula": "77889",
+            "horario": [
+                "08:00-12:00",
+                "13:00-18:00"
+            ],
+            "estado": "Activo"
         },
         {
             "id": 8,
@@ -110,7 +145,31 @@
             "domicilio": "Calle Vista 707",
             "nacionalidad": "Argentina",
             "titulo": "Doctor en Medicina",
-            "matricula": "99001"
+            "matricula": "99001",
+            "horario": [
+                "08:00-12:00",
+                "13:00-18:00"
+            ],
+            "estado": "Activo"
+        },
+        {
+            "id": 9,
+            "nombre": "asd",
+            "apellido": "asd",
+            "especialidad": "asd",
+            "dni": "asd",
+            "fecha_nac": "1990-12-12",
+            "domicilio": "123",
+            "mail": "asd",
+            "num_tel": "12312321",
+            "nacionalidad": "123",
+            "titulo": "1231",
+            "matricula": "123",
+            "horario": [
+                "12:00-13:00",
+                "14:00-15:00"
+            ],
+            "estado": "Activo"
         }
     ]
 }

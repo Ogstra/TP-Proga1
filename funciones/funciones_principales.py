@@ -1,65 +1,99 @@
-from funciones.funciones_validaciones import *
+from .funciones_validaciones import *
 from funciones.funciones_generales import *
+
+# Cargar los datos desde los archivos JSON
+pacientes = cargar_json("pacientes")
+medicos = cargar_json("medicos")
+turnos = cargar_json("turnos")
+config = cargar_json("config")
+consultorios = config["consultorios"]
+
+
+def menu_roles(roles):
+    """
+    Función que muestra un menú para seleccionar un rol.
+
+    Args:
+        roles (list): Lista de roles disponibles.
+
+    Returns:
+        str: Rol seleccionado por el usuario.
+
+    Lógica:
+        - Muestra las opciones de roles disponibles.
+        - Solicita al usuario que seleccione un rol.
+        - Devuelve el rol seleccionado o finaliza el programa si se elige salir.
+    """
+    while True:
+        print('Seleccione rol:')
+        for i in range(len(roles)):
+            print(f'{i + 1}. {roles[i]}')
+        opcion = mensajesTipoNumerico(
+            "\nSeleccione una opción (0 para salir):")
+        if 0 < opcion < len(roles) + 1:
+            rol_seleccionado = roles[opcion - 1]
+            print(f"Rol seleccionado: {rol_seleccionado}")
+            return rol_seleccionado
+        elif opcion == 0:
+            print("Saliendo...")
+            exit()
+        else:
+            print("*** Opción inválida.\n")
+
 # Función para mostrar el menú
-def mostrar_menu(turnos, pacientes, medicos):
-    """Función que muestra el menú principal y maneja las opciones seleccionadas por el usuario.	
+
+
+def mostrar_menu(rol, opciones):
+    """
+    Función que muestra el menú principal con las opciones disponibles en el json y maneja las opciones seleccionadas por el usuario.
+
     Args:
         turnos (list): Lista de turnos médicos.
         pacientes (dict): Diccionario de pacientes.
         medicos (dict): Diccionario de médicos.
+
     Returns:
         str: Opción seleccionada por el usuario.
-    Logica:
-    - Imprime el menú de opciones disponibles.
-    - Solicita al usuario que seleccione una opción.
-    - Dependiendo de la opción seleccionada, llama a la función correspondiente.
-    - Si la opción es "0", finaliza el programa.
-    - Si la opción es inválida, muestra un mensaje de error y vuelve a solicitar una opción.
+
+    Lógica:
+        - Imprime el menú de opciones disponibles.
+        - Solicita al usuario que seleccione una opción.
+        - Dependiendo de la opción seleccionada, llama a la función correspondiente.
+        - Si la opción es "0", finaliza el programa.
+        - Si la opción es inválida, muestra un mensaje de error y vuelve a solicitar una opción.
     """
-    print("\nMenú de Turnos Médicos")
-    print("1. Ver lista de turnos")  
-    print("2. Agregar turno")  
-    print("3. Modificar turno")
-    print("4. Eliminar turno") 
-    print("5. Buscar paciente")
-    print("6. Crear paciente")
-    print("7. Eliminar paciente")
-    print("8. Buscar médico")
-    print("9. Eliminar médico")
-    print("10. Agregar médico")
-    print("11. Agenda médica")
-    try:
-        opcion = input("\nSeleccione una opción (0 para salir):")
-        if opcion == "1":
-            ver_turnos(turnos, pacientes, medicos)
-        elif opcion == "2":
-            agregar_turno(turnos, medicos, pacientes)
-        elif opcion == "3":
-            modificar_turno(turnos,medicos, pacientes)
-        elif opcion == "4":
-            eliminar_turno(turnos)
-        elif opcion == "5":
-            buscar_paciente(pacientes)
-        elif opcion == "6":
-            crear_paciente(pacientes)
-        elif opcion == "7":
-            eliminar_paciente(pacientes)
-        elif opcion == "8":
-            buscar_medico(medicos)
-        elif opcion == "9":
-            eliminar_medico(medicos, turnos, pacientes)
-        elif opcion == "10":
-            agregar_medico(medicos)
-        elif opcion == "11":
-            agenda_medico(medicos, turnos)
-        elif opcion == "0":
-            print("Saliendo del programa...")
-            exit()
-        else:
-            print("Opción no válida. Intente de nuevo.")
-        return opcion
-    except ValueError as e:
-        print(f"Error: {e}. Debe ingresar un número válido.")
+    print(f"\n--- Menú para {rol} ---") 
+
+    contexto = {
+        "turnos": turnos,
+        "pacientes": pacientes,
+        "medicos": medicos,
+        "rol": rol,
+        "opciones": opciones
+    }
+    
+    opciones_validas = [op for op in opciones if rol in op["roles"]]
+    opciones_validas.sort(key=lambda op: op["clave"] == "editar_config_menu")
+
+    for i, op in enumerate(opciones_validas, start=1):
+        print(f"{i}. {op['texto']}")
+    print("0. Salir")
+
+    opcion = mensajesTipoNumerico("\nSeleccione una opción (0 para salir): ")
+    
+    if opcion == 0:
+        print("Saliendo del programa...")
+        exit()
+    if 1 <= opcion <= len(opciones_validas):
+        seleccionada = opciones_validas[opcion - 1]
+        nombre_funcion = seleccionada['clave']
+        argumentos = seleccionada.get('argumentos', [])
+
+        args = [contexto[arg] for arg in argumentos if arg in contexto]
+        ejecutar(nombre_funcion, *args)
+    else:
+        print("Opción no válida. Intente de nuevo.")
+        
 # Función para mostrar turnos con información expandida
 def ver_turnos(turnos, pacientes, medicos):
     """Función que muestra la lista de turnos con información detallada de pacientes y médicos.
@@ -107,36 +141,22 @@ def ver_turnos(turnos, pacientes, medicos):
             print(f"TYPE Error al procesar el turno: {e}")
         except KeyError as e:
             print(f"KEY Turno inválido. Falta la clave: {e}")
+            
     #ordenar la lista de turnos por fecha y hora
-    info_turno.sort(key=lambda x: (x[0], x[1]))  # Ordenar por fecha y hora
-    print_tabla("Lista de Turnos", info_turno, ["Fecha", "Hora", "Paciente", "Medico", "Consultorio", "Estado"])
+    info_turno.sort(key=lambda x: datetime.strptime(f"{x[0]} {x[1]}", "%Y-%m-%d %H:%M"))
 
-def agregar_turno(turnos, medicos, pacientes):
-    """Función que permite agregar un nuevo turno médico.
-    Args:
-        turnos (list): Lista de turnos médicos.
-        medicos (dict): Diccionario de médicos.
-        pacientes (dict): Diccionario de pacientes.
-    Returns:
-        None
-    Logica:
-    - Solicita al usuario el ID del paciente y verifica si existe.
-    - Solicita al usuario el ID del médico y verifica si existe.
-    - Solicita el nombre del consultorio, la fecha y la hora del turno.
-    - Valida la fecha y la hora ingresadas.
-    - Genera un nuevo ID para el turno y lo agrega a la lista de turnos.
-    """
-    print("Agregar Turno:")
-    
-    # Verificar si hay pacientes registrados
+    print_tabla("Lista de Turnos", info_turno, ["Fecha", "Hora", "Paciente", "Medico", "Consultorio", "Estado"], "horizontal")
+
+def crear_o_editar_turno(turnos, medicos, pacientes, id_turno=None):
+    print("Asignación de Turno:")
+
     if not pacientes:
-        print("No hay pacientes registrados. Por favor, registre un paciente antes de agregar un turno.")
-        return
-    
-    # Verificar si hay médicos registrados
+        print("No hay pacientes registrados.")
+        return None
+
     if not medicos:
-        print("No hay médicos registrados. Por favor, registre un médico antes de agregar un turno.")
-        return
+        print("No hay médicos registrados.")
+        return None
 
     while True:
         try:
@@ -153,180 +173,115 @@ def agregar_turno(turnos, medicos, pacientes):
                 break
         except ValueError:
             print("Debe ingresar un número entero válido.")
-
-    consultorio = input("Ingrese el numero del consultorio: ")
+            
+    consultorio = input("Ingrese el número del consultorio: ").strip()
 
     while True:
         fecha = input("Ingrese la fecha (AAAA-MM-DD): ")
-        if validarFecha(fecha):
-            break
-        else:
-            print("Formato de fecha inválido. Intente de nuevo.")
+        if not validarFecha(fecha):
+            print("Formato de fecha inválido.")
+            continue
+        break
 
     while True:
         hora = input("Ingrese la hora (HH:MM): ")
-        if validarHora(hora):
-            break
-        else:
-            print("Formato de hora inválido. Intente de nuevo.")
+        if not validarHora(hora):
+            print("Formato de hora inválido.")
+            continue
 
-    # Generar un nuevo ID para el turno
-    # Si la lista de turnos está vacía, el nuevo ID será 1
-    # Si no, se toma el máximo ID existente y se le suma 1
-    nuevo_id_turno = max(turnos, key=lambda x: x["id"])["id"] + 1 if turnos else 1
-    nuevo_turno = {
-        "id": nuevo_id_turno,
+        try:
+            nueva_fecha_hora = datetime.strptime(f"{fecha} {hora}", "%Y-%m-%d %H:%M")
+        except ValueError:
+            print("Fecha y hora inválidas.")
+            continue
+
+        conflicto = False
+        # Buscar consultorios ocupados en esa fecha y hora
+        consultorios_ocupados = [
+        turno['consultorio']
+        for turno in turnos
+        if turno['fecha'] == fecha and turno['hora'] == hora
+        ]
+        consultorios_disponibles = [
+            c for c in consultorios if c not in consultorios_ocupados
+        ]
+
+        for turno in turnos:
+            if id_turno is not None and turno["id"] == id_turno:
+                continue  # Ignorar el mismo turno en caso de edición
+
+            turno_fecha_hora = datetime.strptime(f"{turno['fecha']} {turno['hora']}", "%Y-%m-%d %H:%M")
+            diferencia = abs((turno_fecha_hora - nueva_fecha_hora).total_seconds())
+
+            if turno["medico"] == id_medico and diferencia < 600:
+                print(f"Este médico ya tiene un turno dentro de 10 minutos.")
+                
+                conflicto = True
+                break
+
+            if turno["consultorio"] == consultorio and turno["fecha"] == fecha and turno["hora"] == hora:
+                print("Consultorio ocupado en esa fecha y hora.")
+                # Obtener disponibles
+                consultorios_disponibles = [
+                c for c in consultorios if c not in consultorios_ocupados
+                ]
+                conflicto = True
+                if consultorios_disponibles:
+                    print(f"\n *** Consultorios disponibles a las {hora or nueva_fecha_hora}: ***")
+                    disponibles_por_piso = agrupar_consultorios_por_piso(consultorios)
+                    print_tabla("Resultados de Médicos", [disponibles_por_piso], ["Piso 1","Piso 2","Piso 3","Piso 4","Piso 5"], "vertical")
+
+                else:
+                    print("No hay consultorios disponibles en esa fecha y hora.")
+                break
+
+        if conflicto:
+            continue
+        break
+    
+    
+    return {
+        "id": id_turno if id_turno is not None else (max([t["id"] for t in turnos], default=0) + 1),
         "paciente": id_paciente,
         "medico": id_medico,
         "consultorio": consultorio,
         "fecha": fecha,
         "hora": hora
     }
-    
-    turnos.append(nuevo_turno)  # Agregar el nuevo turno a la lista de turnos
-    guardar_json("turnos", turnos)  # Guardar los cambios en el archivo JSON
-    # Imprimir el turno agregado en formato tabular
-    print_tabla("Turno Agregado", [[nuevo_turno["fecha"], nuevo_turno["hora"], pacientes[id_paciente]["nombre"] + " " + pacientes[id_paciente]["apellido"], medicos[id_medico]["nombre"] + " " + medicos[id_medico]["apellido"], consultorio, "Pendiente"]], ["Fecha", "Hora", "Paciente", "Medico", "Consultorio", "Estado"])
-    print(f"Turno agregado con éxito. ID del turno: {nuevo_id_turno}")
+
+def agregar_turno(turnos, medicos, pacientes):
+    nuevo_turno = crear_o_editar_turno(turnos, medicos, pacientes)
+    if nuevo_turno:
+        turnos.append(nuevo_turno)
+        guardar_json("turnos", turnos)
+
+        print_tabla("Turno Agregado", [[
+            nuevo_turno["fecha"], nuevo_turno["hora"],
+            pacientes[nuevo_turno["paciente"]]["nombre"] + " " + pacientes[nuevo_turno["paciente"]]["apellido"],
+            medicos[nuevo_turno["medico"]]["nombre"] + " " + medicos[nuevo_turno["medico"]]["apellido"],
+            nuevo_turno["consultorio"], "Pendiente"
+        ]], ["Fecha", "Hora", "Paciente", "Medico", "Consultorio", "Estado"], "horizontal")
+
+        print(f"Turno agregado con éxito. ID: {nuevo_turno['id']}")
 
 def modificar_turno(turnos, medicos, pacientes):
     try:
-        id_turno =mensajesTipoNumerico ("Ingrese el ID del turno que quiere modificar: ")
+        id_turno = mensajesTipoNumerico("Ingrese el ID del turno a modificar: ")
     except ValueError:
-        print("Debe ingresar un número de ID válido.")
+        print("ID inválido.")
         return
 
-    turnoAModificar = None
-    for i in range(len(turnos)):
-        if turnos[i]["id"] == id_turno:
-            turnoAModificar = i
-            break
+    for i, turno in enumerate(turnos):
+        if turno["id"] == id_turno:
+            turno_modificado = crear_o_editar_turno(turnos, medicos, pacientes, id_turno)
+            if turno_modificado:
+                turnos[i] = turno_modificado
+                guardar_json("turnos", turnos)
+                print(f"Turno {id_turno} modificado con éxito.")
+            return
 
-    if turnoAModificar is None:
-        print(f"No se encontró un turno con el ID {id_turno}.")
-        return
+    print(f"No se encontró el turno con ID {id_turno}.")
 
-    turno = list(turnos[turnoAModificar])  # Convertimos la tupla en lista para poder modificarla
-
-    # Pedir opción de modificación con validación
-    while True:
-        print("\n¿Qué desea modificar del turno?")
-        print("1. Paciente")
-        print("2. Médico")
-        print("3. Consultorio")
-        print("4. Fecha")
-        print("5. Hora")
-        print("6. Todo")
-        try:
-            opcion = int(input("Elija la opción (1-6): "))
-            if opcion not in range(1, 7):
-                print("Opción inválida. Debe ser un número entre 1 y 6.")
-                continue
-            break
-        except ValueError:
-            print("Debe ingresar un número entero.")
-
-
-    if opcion == 1:
-        while True:
-            id_paciente = int(input("Ingrese el nuevo ID del paciente (o -1 para cancelar): "))
-            if id_paciente == -1:
-                print("Operación cancelada.")
-                return
-            if verificarSiExiste(id_paciente, pacientes, "paciente"):
-                turno[1] = id_paciente
-                print("ID del paciente modificado con éxito.")
-                break
-
-    elif opcion == 2:
-        while True:
-            id_medico = int(input("Ingrese el nuevo ID del médico (o -1 para cancelar): "))
-            if id_medico == -1:
-                print("Operación cancelada.")
-                return
-            if verificarSiExiste(id_medico, medicos, "médico"):
-                turno[2] = id_medico
-                print("ID del médico modificado con éxito.")
-                break
-
-    elif opcion == 3:
-        consultorio = input("Ingrese el nuevo nombre del consultorio: ")
-        turno[3] = consultorio
-        print("El nombre del consultorio fue modificado con éxito.")
-
-    elif opcion == 4:
-        while True:
-            fecha = input("Ingrese la nueva fecha (AAAA-MM-DD) (o -1 para cancelar): ")
-            if fecha == "-1":
-                print("Operación cancelada.")
-                return
-            if validarFecha(fecha):
-                turno[4] = fecha
-                print("La fecha fue modificada con éxito.")
-                break
-            else:
-                print("Formato de fecha inválido. Intente de nuevo.")
-
-    elif opcion == 5:
-        while True:
-            hora = input("Ingrese la nueva hora (HH:MM) (o -1 para cancelar): ")
-            if hora == "-1":
-                print("Operación cancelada.")
-                return
-            if validarHora(hora):
-                turno[5] = hora
-                print("La hora fue modificada con éxito.")
-                break
-            else:
-                print("Formato de hora inválido. Intente de nuevo.")
-
-    elif opcion == 6:
-        while True:
-            id_paciente = int(input("Ingrese el nuevo ID del paciente (o -1 para cancelar): "))
-            if id_paciente == -1:
-                print("Operación cancelada.")
-                return
-            if verificarSiExiste(id_paciente, pacientes, "paciente"):
-                turno[1] = id_paciente
-                break
-
-        while True:
-            id_medico = int(input("Ingrese el nuevo ID del médico (o -1 para cancelar): "))
-            if id_medico == -1:
-                print("Operación cancelada.")
-                return
-            if verificarSiExiste(id_medico, medicos, "médico"):
-                turno[2] = id_medico
-                break
-
-        consultorio = input("Ingrese el nuevo nombre del consultorio: ")
-        turno[3] = consultorio
-        print("El nombre del consultorio fue modificado con éxito.")
-
-        while True:
-            fecha = input("Ingrese la nueva fecha (AAAA-MM-DD) (o -1 para cancelar): ")
-            if fecha == "-1":
-                print("Operación cancelada.")
-                return
-            if validarFecha(fecha):
-                turno[4] = fecha
-                break
-            else:
-                print("Formato de fecha inválido. Intente de nuevo.")
-
-        while True:
-            hora = input("Ingrese la nueva hora (HH:MM) (o -1 para cancelar): ")
-            if hora == "-1":
-                print("Operación cancelada.")
-                return
-            if validarHora(hora):
-                turno[5] = hora
-                break
-            else:
-                print("El formato de la hora es inválido. Intente de nuevo.")
-        print("Toda la información fue modificada con éxito.")
-    turnos[turnoAModificar] = tuple(turno)  # Volvemos a guardar como tupla
-    print(f"\n Turno {id_turno} modificado con éxito.")
 
 def eliminar_turno(turnos):
     id_turno= int(input("Ingrese el ID del turno que quiere eliminar: "))
@@ -346,67 +301,75 @@ def eliminar_turno(turnos):
 def buscar_paciente(pacientes):
     """
     Busca pacientes en una lista según un campo específico (nombre, apellido, DNI, etc.).
-
-    Parámetros:
-        pacientes (list[dict]): Lista de diccionarios con los datos de los pacientes.
-
-    Comportamiento:
-        - Pide al usuario que elija un campo para buscar.
-        - Solicita el valor a buscar (ignorando mayúsculas y acentos).
-        - Si hay un resultado, lo muestra.
-        - Si hay varios, muestra un submenú para elegir.
-        - Si no hay coincidencias, lo informa.
-
-    Retorna:
-        None
+    Muestra los resultados en formato tabular.
     """
-    
     campos = ("nombre", "apellido", "dni", "mail", "grupo_sanguineo")
-    opcion = int(input("Buscar por:\n1) Nombre\n2) Apellido\n3) DNI\n4) Mail\n5) Grupo Sanguíneo\nOpción: "))
-
+    opcion = mensajesTipoNumerico("Buscar por:\n1) Nombre\n2) Apellido\n3) DNI\n4) Mail\n5) Grupo Sanguíneo\nOpción: ")
+    if opcion == 0:
+        return None
     while opcion < 1 or opcion > len(campos):
-        opcion = int(input("Opcion no valida\nBuscar por:\n1) Nombre\n2) Apellido\n3) DNI\n4) Mail\n5) Grupo Sanguíneo\nOpción: "))
+        opcion = mensajesTipoNumerico("Opcion no valida\nBuscar por:\n1) Nombre\n2) Apellido\n3) DNI\n4) Mail\n5) Grupo Sanguíneo\nOpción: ")
 
     campo_seleccionado = campos[opcion - 1]
     valor_buscado = quitar_acentos(input(f"Ingrese {campo_seleccionado}: ").lower())
-    
+
     resultados = []
-    
-    for i in range(len(pacientes)):
-        valor_actual = quitar_acentos(str(pacientes[i][f"{campo_seleccionado}"]).lower())
+    for paciente in pacientes:
+        valor_actual = quitar_acentos(str(paciente.get(campo_seleccionado, "")).lower())
         if valor_actual == valor_buscado:
-            resultados.append(pacientes[i])
+            resultados.append(paciente)
 
-    if len(resultados) == 1:
-        paciente = resultados[0]
-        for i in paciente:
-            print(f"{i.replace('_', ' ').capitalize()}: {paciente[i]}")
-
-    elif len(resultados) > 1:
-        print("\nSe encontraron varios pacientes:")
-        
-        campos_orden = ["nombre", "apellido", "dni"] # Campos que se mostraran en el resultado (ordenados)
-        
-        for i, paciente in enumerate(resultados, start=1):
-            print(f"Paciente {i}:")
-            for i in campos_orden:
-                print(f"{i.replace('_', ' ').capitalize()}: {paciente[i]}")
-            print("-" * 30)
-            
-        pacienteElegido = int(input("Seleccione paciente: "))
-        while pacienteElegido < 1 or pacienteElegido > len(resultados):
-            pacienteElegido = int(input(f"Opción inválida: "))
-            
-        print("\nPaciente seleccionado:")
-        paciente = resultados[pacienteElegido - 1]
-        for i in paciente:
-            print(f"{i.replace('_', ' ').capitalize()}: {paciente[i]}")
+    if resultados:
+        columnas = ["ID", "Nombre", "Apellido", "DNI", "Fecha Nac.", "Domicilio", "Mail", "Teléfono", "Obra Social", "Nacionalidad", "Grupo Sanguíneo"]
+        filas = [[p.get("id"), p.get("nombre"), p.get("apellido"), p.get("dni"), p.get("fecha_nac"), p.get("domicilio"), p.get("mail"), p.get("num_tel"), p.get("obra_social"), p.get("nacionalidad"), p.get("grupo_sanguineo")] for p in resultados]
+        print_tabla("Resultados de Pacientes", filas, columnas, "vertical")
     else:
         print("No se encontraron pacientes.")
+
+def buscar_medico(medicos):
+    if not medicos:
+        print("No hay médicos registrados.")
         return
 
+    campos = ("nombre", "apellido", "dni", "mail", "grupo_sanguineo")
+    try:
+        opcion = int(input("Buscar por:\n1) Nombre\n2) Apellido\n3) DNI\n4) Mail\nOpción: "))
+        while opcion < 1 or opcion > len(campos):
+            opcion = int(input("Opción no válida\nBuscar por:\n1) Nombre\n2) Apellido\n3) DNI\n4) Mail\nOpción: "))
+    except ValueError:
+        print("Debe ingresar un número válido.")
+        return
 
-
+    campo_seleccionado = campos[opcion - 1]
+    valor_buscado = quitar_acentos(input(f"Ingrese {campo_seleccionado}: ").lower())
+    resultados = []
+    for medico in medicos:
+        valor_actual = quitar_acentos(str(medico.get(campo_seleccionado, "")).lower())
+        if valor_actual == valor_buscado:
+            resultados.append(medico)
+    if resultados:
+        columnas = ["ID", "Nombre", "Apellido", "Especialidad", "DNI", "Fecha Nac.", "Domicilio", "Mail", "Teléfono", "Nacionalidad", "Título", "Matrícula", "Horario", "Estado"]
+        filas = [
+            [
+                m.get("id"),
+                m.get("nombre"),
+                m.get("apellido"),
+                m.get("especialidad"),
+                m.get("dni"),
+                m.get("fecha_nac"),
+                m.get("domicilio"),
+                m.get("mail"),
+                m.get("num_tel"),
+                m.get("nacionalidad"),
+                m.get("titulo"),
+                m.get("matricula"),
+                m.get("horario"),
+                m.get("estado")
+            ] for m in resultados
+        ]
+        print_tabla("Resultados de Médicos", filas, columnas, "vertical")
+    else:
+        print("No se encontraron médicos con ese dato.")
 
 def crear_paciente(pacientes):
     """Función que permite crear un nuevo paciente y agregarlo a la lista de pacientes.	
@@ -449,7 +412,7 @@ def crear_paciente(pacientes):
     }
     pacientes.append(paciente)  # Agregar el nuevo paciente a la lista de pacientes
     guardar_json("pacientes", pacientes)  # Guardar los cambios en el archivo JSON
-    print_tabla("Paciente Agregado", [[paciente["id"], paciente["nombre"], paciente["apellido"], paciente["dni"], paciente["fecha_nac"], paciente["domicilio"], paciente["mail"], paciente["num_tel"], paciente["obra_social"], paciente["nacionalidad"], paciente["grupo_sanguineo"]]], ["ID", "Nombre", "Apellido", "DNI", "Fecha Nac.", "Domicilio", "Mail", "Teléfono", "Obra Social", "Nacionalidad", "Grupo Sanguíneo"])
+    print_tabla("Paciente Agregado", [[paciente["id"], paciente["nombre"], paciente["apellido"], paciente["dni"], paciente["fecha_nac"], paciente["domicilio"], paciente["mail"], paciente["num_tel"], paciente["obra_social"], paciente["nacionalidad"], paciente["grupo_sanguineo"]]], ["ID", "Nombre", "Apellido", "DNI", "Fecha Nac.", "Domicilio", "Mail", "Teléfono", "Obra Social", "Nacionalidad", "Grupo Sanguíneo"], "vertical")
     print(f"Paciente agregado con éxito.")
     print(f"ID asignado: {nuevo_id_paciente}")
 
@@ -468,50 +431,25 @@ def eliminar_paciente(pacientes):
         print(f"No se encontró un paciente con DNI {dni_paciente}.")
 
 def buscar_medico(medicos):
-        campos = ("nombre", "apellido", "dni", "especialidad", "mail")
-        opcion = int(input("Buscar por:\n1) Nombre\n2) Apellido\n3) DNI\n4) Especialidad\n5) Mail\nOpción: "))
+    campos = ("nombre", "apellido", "dni", "mail", "grupo_sanguineo")
+    opcion = int(input("Buscar por:\n1) Nombre\n2) Apellido\n3) DNI\n4) Mail\nOpción: "))
+    while opcion < 1 or opcion > len(campos):
+        opcion = int(input("Opción no válida\nBuscar por:\n1) Nombre\n2) Apellido\n3) DNI\n4) Mail\nOpción: "))
 
-        while opcion < 1 or opcion > len(campos):
-            opcion = int(input("Opción no válida\nBuscar por:\n1) Nombre\n2) Apellido\n3) DNI\n4) Especialidad\n5) Mail\nOpción: "))
-
-        campo_seleccionado = campos[opcion - 1]
-        valor_buscado = quitar_acentos(input(f"Ingrese {campo_seleccionado}: ").lower())
-
-        resultados = []
-
-        for medico in medicos:
-            valor_actual = quitar_acentos(str(medico.get(campo_seleccionado, "")).lower())
-            if valor_actual == valor_buscado:
-                resultados.append(medico)
-
-        if len(resultados) == 1:
-            medico = resultados[0]
-            for clave in medico:
-                print(f"{clave.replace('_', ' ').capitalize()}: {medico[clave]}")
-
-        elif len(resultados) > 1:
-            print("\nSe encontraron varios médicos:")
-
-            campos_orden = ["nombre", "apellido", "dni", "especialidad"]
-
-            for i, medico in enumerate(resultados, start=1):
-                print(f"Médico {i}:")
-                for campo in campos_orden:
-                    print(f"{campo.replace('_', ' ').capitalize()}: {medico[campo]}")
-                print("-" * 30)
-
-            medico_elegido = int(input("Seleccione médico: "))
-            while medico_elegido < 1 or medico_elegido > len(resultados):
-                medico_elegido = int(input("Opción inválida, seleccione médico: "))
-
-            print("\nMédico seleccionado:")
-            medico = resultados[medico_elegido - 1]
-            for clave in medico:
-                print(f"{clave.replace('_', ' ').capitalize()}: {medico[clave]}")
-
-        else:
-            print("No se encontro ese medico.")
-    
+    campo_seleccionado = campos[opcion - 1]
+    valor_buscado = input(f"Ingrese {campo_seleccionado}: ").lower()
+    resultados = []
+    for id_medico, datos_medico in medicos.items():
+        valor_actual = str(datos_medico[campo_seleccionado]).lower()
+        if valor_actual == valor_buscado:
+            resultados.append((id_medico, datos_medico))
+    if resultados:
+        for id_medico, datos in resultados:
+            print(f"\nID: {id_medico}")
+            for clave, valor in datos.items():
+                print(f"{clave.capitalize()}: {valor}")
+    else:
+        print("No se encontraron médicos con ese dato.")
 
 def eliminar_medico(medicos, turnos, pacientes):
     id_medico = mensajesTipoNumerico("Ingrese el ID del médico que desea eliminar: ")
@@ -569,6 +507,9 @@ def agregar_medico(medicos):
     matricula = validar_campo_vacio("Matrícula: ")
     # Generar un nuevo ID para el médico
     nuevo_id = max(medicos, key=lambda x: x["id"])["id"] + 1 if medicos else 1
+    horarios = pedir_horarios_medico()
+
+    
     medico = {
         "id": nuevo_id,
         "nombre": nombre,
@@ -581,12 +522,14 @@ def agregar_medico(medicos):
         "num_tel": num_tel,
         "nacionalidad": nacionalidad,
         "titulo": titulo,
-        "matricula": matricula
+        "matricula": matricula,
+        "horario": horarios,
+        "estado": "Activo"
     }
 
     medicos.append(medico)  # Agregar el nuevo médico a la lista de médicos
     guardar_json("medicos", medicos)  # Guardar los cambios en el archivo JSON
-    print_tabla("Médico Agregado", [[medico["id"], medico["nombre"], medico["apellido"], medico["especialidad"], medico["dni"], medico["fecha_nac"], medico["domicilio"], medico["mail"], medico["num_tel"], medico["nacionalidad"], medico["titulo"], medico["matricula"]]], ["ID", "Nombre", "Apellido", "Especialidad", "DNI", "Fecha Nac.", "Domicilio", "Mail", "Teléfono", "Nacionalidad", "Título", "Matrícula"])
+    print_tabla("Médico Agregado", [[medico["id"], medico["nombre"], medico["apellido"], medico["especialidad"], medico["dni"], medico["fecha_nac"], medico["domicilio"], medico["mail"], medico["num_tel"], medico["nacionalidad"], medico["titulo"], medico["matricula"], medico["horario"]]], ["ID", "Nombre", "Apellido", "Especialidad", "DNI", "Fecha Nac.", "Domicilio", "Mail", "Teléfono", "Nacionalidad", "Título", "Matrícula", "Horario"], "vertical")
     print(f"Médico agregado con éxito.")
     print(f"ID asignado: {nuevo_id}")
 
@@ -614,8 +557,13 @@ def agenda_medico(medicos, turnos):
     info_medicos = []
     for medico in medicos:
         info_medicos.append([medico["id"], medico["nombre"], medico["apellido"], medico["especialidad"]])
-    print_tabla("Lista de Médicos", info_medicos, ["ID", "Nombre", "Apellido", "Especialidad"])
+    print_tabla("Lista de Médicos", info_medicos, ["ID", "Nombre", "Apellido", "Especialidad"], "horizontal")
     id_medico = int(input("Ingrese el ID del médico para ver su agenda: "))
+    try:
+        id_medico = int(input("Ingrese el ID del médico para ver su agenda: "))
+    except ValueError:
+        print("Debe ingresar un número válido.")
+        return
     if not verificarSiExiste(id_medico, medicos, "médico"):
         return
     print(f"\nAgenda del Médico {medicos[id_medico]['nombre']} {medicos[id_medico]['apellido']}:")
@@ -637,5 +585,184 @@ def agenda_medico(medicos, turnos):
         paciente = item["paciente"]
         tabla_agenda.append([item["fecha"], item["hora"], paciente, item["consultorio"]])
 
-    print_tabla("Agenda del Médico", tabla_agenda, ["Fecha", "Hora", "Paciente", "Consultorio"])
+    print_tabla("Agenda del Médico", tabla_agenda, ["Fecha", "Hora", "Paciente", "Consultorio"], "horizontal")
+  
+def editar_config_menu(): 
+    roles_no_eliminables = ["Admin", "Paciente", "Médico"]
+    config = cargar_json("config")
+    roles = config["roles"]
+    opciones = config["opciones_menu"]
     
+    def guardar_config():
+        guardar_json('config', {
+            "roles": roles,
+            "consultorios": consultorios,
+            "opciones_menu": opciones,
+        })
+
+    while True:
+        print("\n--- Editor de Configuración ---")
+        print("1. Ver roles disponibles")
+        print("2. Agregar rol")
+        print("3. Eliminar rol")
+        print("4. Ver permisos de opciones")
+        print("5. Modificar permisos de una opción")
+        print("0. Volver")
+
+        opcion = input("Seleccione una opción: ")
+
+        if opcion == "1":
+            print("\nRoles disponibles:", ", ".join(roles))
+
+        elif opcion == "2":
+            nuevo_rol = input("Ingrese el nombre del nuevo rol: ").strip()
+            if nuevo_rol and nuevo_rol not in roles:
+                roles.append(nuevo_rol)
+                print(f"Rol '{nuevo_rol}' agregado.")
+                guardar_config()  # Guardar configuración inmediatamente
+            else:
+                print("Rol inválido o ya existe.")
+
+        elif opcion == "3":
+            if not roles:
+                print("No hay roles disponibles para eliminar.")
+            else:
+                print("\n--- Seleccione un rol para eliminar ---")
+                for i, rol in enumerate(roles, start=1):
+                    print(
+                        f"{i}. {rol} {'(No eliminable)' if rol in roles_no_eliminables else ''}")
+                rol_a_eliminar = input(
+                    "Ingrese el número del rol a eliminar: ")
+                try:
+                    rol_a_eliminar = int(rol_a_eliminar)
+                    if 1 <= rol_a_eliminar <= len(roles):
+                        rol_eliminado = roles[rol_a_eliminar - 1]
+                        if rol_eliminado not in roles_no_eliminables:
+                            roles.pop(rol_a_eliminar - 1)
+                            for opcion in opciones:
+                                if rol_eliminado in opcion["roles"]:
+                                    opcion["roles"].remove(rol_eliminado)
+                            print(f"Rol '{rol_eliminado}' eliminado.")
+                            guardar_config()  # Guardar configuración inmediatamente
+                        else:
+                            print(
+                                f"No se puede eliminar el rol '{rol_eliminado}'.")
+                    else:
+                        print("Número de rol inválido.")
+                except ValueError:
+                    print("Debe ingresar un número válido.")
+
+        elif opcion == "4":
+            print("\n--- Permisos por opción ---")
+            for o in opciones:
+                print(f"{o['clave']} ({o['texto']}): {', '.join(o['roles'])}")
+
+        elif opcion == "5":
+            while True:
+                print("\n--- Submenú de Roles ---")
+                print("Funciones disponibles:")
+                for i, opcion in enumerate(opciones, start=1):
+                    print(
+                        f"{i}. {opcion['texto']} (Roles: {', '.join(opcion['roles'])})")
+
+                print("0. Volver")
+
+                sub_opcion = input("Seleccione una opción: ")
+
+                if sub_opcion == "0":
+                    break
+
+                try:
+                    sub_opcion = int(sub_opcion)
+                    if 1 <= sub_opcion <= len(opciones):
+                        funcion_seleccionada = opciones[sub_opcion - 1]
+                        print(
+                            f"\nFunciones seleccionada: {funcion_seleccionada['texto']}")
+                        while True:
+                            print("\n--- Opciones para el rol ---")
+                            print("1. Agregar rol")
+                            print("2. Quitar rol")
+                            print("0. Volver")
+
+                            rol_opcion = input("Seleccione una opción: ")
+
+                            if rol_opcion == "0":
+                                break
+
+                            elif rol_opcion == "1":
+                                while True:
+                                    print("\n--- Submenú de Roles ---")
+                                    print("Roles disponibles:")
+                                    for i, rol in enumerate(roles, start=1):
+                                        print(f"{i}. {rol}")
+                                    print("0. Volver")
+
+                                    rol_seleccionado = input(
+                                        "Seleccione un rol para agregar a la función: ")
+
+                                    if rol_seleccionado == "0":
+                                        break
+
+                                    try:
+                                        rol_seleccionado = int(
+                                            rol_seleccionado)
+                                        if 1 <= rol_seleccionado <= len(roles):
+                                            nuevo_rol = roles[rol_seleccionado - 1]
+                                            if nuevo_rol not in funcion_seleccionada["roles"]:
+                                                funcion_seleccionada["roles"].append(
+                                                    nuevo_rol)
+                                                print(
+                                                    f"Rol '{nuevo_rol}' agregado a la función '{funcion_seleccionada['texto']}'.")
+                                                guardar_config()  # Guardar configuración inmediatamente
+                                                break
+                                            else:
+                                                print(
+                                                    "El rol ya existe en la función.")
+                                        else:
+                                            print("Número de rol inválido.")
+                                    except ValueError:
+                                        print("Debe ingresar un número válido.")
+
+                            elif rol_opcion == "2":
+                                if not funcion_seleccionada["roles"]:
+                                    print(
+                                        "No hay roles disponibles para eliminar.")
+                                else:
+                                    print(
+                                        "\n--- Seleccione un rol para eliminar ---")
+                                    for j, rol in enumerate(funcion_seleccionada["roles"], start=1):
+                                        print(
+                                            f"{j}. {rol} {'(No eliminable)' if rol in roles_no_eliminables else ''}")
+                                    rol_a_eliminar = input(
+                                        "Ingrese el número del rol a eliminar: ")
+                                    try:
+                                        rol_a_eliminar = int(rol_a_eliminar)
+                                        if 1 <= rol_a_eliminar <= len(funcion_seleccionada["roles"]):
+                                            rol_eliminado = funcion_seleccionada["roles"][rol_a_eliminar - 1]
+                                            if rol_eliminado not in roles_no_eliminables:
+                                                funcion_seleccionada["roles"].remove(
+                                                    rol_eliminado)
+                                                print(
+                                                    f"Rol '{rol_eliminado}' eliminado de la función '{funcion_seleccionada['texto']}'.")
+                                                guardar_config()  # Guardar configuración inmediatamente
+                                            else:
+                                                print(
+                                                    f"No se puede eliminar el rol '{rol_eliminado}'.")
+                                        else:
+                                            print("Número de rol inválido.")
+                                    except ValueError:
+                                        print("Debe ingresar un número válido.")
+
+                            elif rol_opcion == "0":
+                                break
+                            else:
+                                print("Opción inválida.")
+                    else:
+                        print("Número de opción inválido.")
+                except ValueError:
+                    print("Debe ingresar un número válido.")
+        
+        elif opcion == "0":
+            break
+        else:
+            print("Opción inválida.")

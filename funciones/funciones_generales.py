@@ -1,6 +1,8 @@
 import json
-import tabulate  
-from datetime import datetime
+from rich.console import Console
+from rich.table import Table
+from rich import box
+from datetime import datetime, timedelta
 
 def cargar_json(file_path):
     """
@@ -25,7 +27,6 @@ def guardar_json(file_path, data):
     with open("./datos/"+file_path+".json", 'w', encoding='utf-8') as file:
         json.dump({file_path: data}, file, indent=4, ensure_ascii=False)
 
-
 def tieneTurnosAsignados(id, turnos, posicionDelId):
     """"Verifica si un ID tiene turnos asignados en la lista de turnos.
     Args:
@@ -37,20 +38,42 @@ def tieneTurnosAsignados(id, turnos, posicionDelId):
     """
     return any(turno[posicionDelId] == id for turno in turnos)
 
-def print_tabla(titulo, info, columnas):
+def print_tabla(titulo, info, columnas, horientacion):
     """
     Imprime una tabla formateada en la consola.
     Args:
         titulo (str): Título de la tabla.
-        lista (list): Lista de diccionarios a imprimir.
+        info (list): Lista de diccionarios a imprimir.
         columnas (list): Lista de claves que se mostrarán como columnas.
+        horientacion (str): Orientación de la tabla ("vertical" u "horizontal").
     Returns:
         None   
     """
-    # Imprimir el título de la tabla
-    nombre_tabla = tabulate.tabulate([[titulo]], tablefmt="grid", stralign="center", numalign="center")
-    print(nombre_tabla)
-    # Imprimir la tabla
-    tabla = tabulate.tabulate(info, columnas, tablefmt="grid", stralign="center", numalign="center")
-    print(tabla)
-
+    console = Console()
+    table = Table()
+    
+    table = Table(
+            box=box.ROUNDED,
+            style="#8b8b8b",
+            header_style="bold",
+            row_styles=[],
+            show_lines=True
+        )
+        
+    if horientacion == "vertical":
+        datos_transpuestos = list(zip(*info))
+        table.add_column("Campo", justify="left")
+        for i in range(len(info)):
+            table.add_column(f"Registro {i+1}", justify="left")
+        for idx, campo in enumerate(columnas):
+            fila = [campo] + list(map(str, datos_transpuestos[idx]))
+            table.add_row(*fila)
+    else:
+        for col in columnas:
+            table.add_column(col, justify="center")
+        for fila in info:
+            table.add_row(*map(str, fila))
+            
+        indice_estado = columnas.index("Estado") if "Estado" in columnas else -1
+        
+    console.print(table)

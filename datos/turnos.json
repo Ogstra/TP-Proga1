@@ -2,19 +2,11 @@
     "turnos": [
         {
             "id": 1,
-            "paciente": 1,
-            "medico": 1,
-            "consultorio": "101",
-            "fecha": "2025-04-15",
-            "hora": "10:00"
-        },
-        {
-            "id": 2,
             "paciente": 2,
             "medico": 2,
-            "consultorio": "202",
-            "fecha": "2025-04-16",
-            "hora": "11:30"
+            "consultorio": "103",
+            "fecha": "2025-04-15",
+            "hora": "10:00"
         },
         {
             "id": 3,
@@ -87,6 +79,62 @@
             "consultorio": "114",
             "fecha": "2025-06-23",
             "hora": "15:45"
+        },
+        {
+            "id": 12,
+            "paciente": 1,
+            "medico": 1,
+            "consultorio": "103",
+            "fecha": "2025-04-15",
+            "hora": "10:09"
+        },
+        {
+            "id": 13,
+            "paciente": 1,
+            "medico": 1,
+            "consultorio": "103",
+            "fecha": "2025-04-16",
+            "hora": "10:09"
+        },
+        {
+            "id": 14,
+            "paciente": 1,
+            "medico": 1,
+            "consultorio": "103",
+            "fecha": "2025-04-16",
+            "hora": "10:19"
+        },
+        {
+            "id": 15,
+            "paciente": 1,
+            "medico": 1,
+            "consultorio": "206",
+            "fecha": "2025-04-16",
+            "hora": "09:59"
+        },
+        {
+            "id": 16,
+            "paciente": 1,
+            "medico": 1,
+            "consultorio": "103",
+            "fecha": "2025-04-12",
+            "hora": "10:00"
+        },
+        {
+            "id": 17,
+            "paciente": 1,
+            "medico": 2,
+            "consultorio": "103",
+            "fecha": "2025-04-12",
+            "hora": "10:15"
+        },
+        {
+            "id": 18,
+            "paciente": 1,
+            "medico": 2,
+            "consultorio": "222",
+            "fecha": "2025-12-04",
+            "hora": "10:15"
         }
     ]
 }

@@ -1,0 +1,192 @@
+{
+    "config": {
+        "roles": [
+            "Admin",
+            "Médico",
+            "Paciente"
+        ],
+        "consultorios": [
+            "101",
+            "102",
+            "103",
+            "104",
+            "105",
+            "106",
+            "107",
+            "108",
+            "109",
+            "201",
+            "202",
+            "203",
+            "204",
+            "205",
+            "206",
+            "207",
+            "208",
+            "209",
+            "210",
+            "211",
+            "212",
+            "213",
+            "301",
+            "302",
+            "303",
+            "304",
+            "305",
+            "306",
+            "307",
+            "308",
+            "309",
+            "310",
+            "401",
+            "402",
+            "403",
+            "404",
+            "405",
+            "406",
+            "407",
+            "408",
+            "409",
+            "410",
+            "501",
+            "502"
+        ],
+        "opciones_menu": [
+            {
+                "clave": "editar_config_menu",
+                "texto": "Editar Configuracion",
+                "roles": [
+                    "Admin"
+                ],
+                "argumentos": []
+            },
+            {
+                "clave": "ver_turnos",
+                "texto": "Ver turnos",
+                "roles": [
+                    "Admin",
+                    "Médico",
+                    "Paciente"
+                ],
+                "argumentos": [
+                    "turnos",
+                    "pacientes",
+                    "medicos"
+                ]
+            },
+            {
+                "clave": "agregar_turno",
+                "texto": "Agregar turno",
+                "roles": [
+                    "Admin",
+                    "Médico"
+                ],
+                "argumentos": [
+                    "turnos",
+                    "medicos",
+                    "pacientes"
+                ]
+            },
+            {
+                "clave": "modificar_turno",
+                "texto": "Modificar turno",
+                "roles": [
+                    "Admin",
+                    "Médico"
+                ],
+                "argumentos": [
+                    "turnos",
+                    "medicos",
+                    "pacientes"
+                ]
+            },
+            {
+                "clave": "eliminar_turno",
+                "texto": "Eliminar turno",
+                "roles": [
+                    "Admin",
+                    "Médico"
+                ],
+                "argumentos": [
+                    "turnos"
+                ]
+            },
+            {
+                "clave": "buscar_paciente",
+                "texto": "Buscar paciente",
+                "roles": [
+                    "Admin",
+                    "Médico"
+                ],
+                "argumentos": [
+                    "pacientes"
+                ]
+            },
+            {
+                "clave": "crear_paciente",
+                "texto": "Crear paciente",
+                "roles": [
+                    "Admin"
+                ],
+                "argumentos": [
+                    "pacientes"
+                ]
+            },
+            {
+                "clave": "eliminar_paciente",
+                "texto": "Eliminar paciente",
+                "roles": [
+                    "Admin"
+                ],
+                "argumentos": [
+                    "pacientes"
+                ]
+            },
+            {
+                "clave": "buscar_medico",
+                "texto": "Buscar médico",
+                "roles": [
+                    "Admin",
+                    "Médico",
+                    "Paciente"
+                ],
+                "argumentos": [
+                    "medicos"
+                ]
+            },
+            {
+                "clave": "eliminar_medico",
+                "texto": "Eliminar médico",
+                "roles": [
+                    "Admin"
+                ],
+                "argumentos": [
+                    "medicos",
+                    "turnos",
+                    "pacientes"
+                ]
+            },
+            {
+                "clave": "agregar_medico",
+                "texto": "Agregar médico",
+                "roles": [
+                    "Admin"
+                ],
+                "argumentos": [
+                    "medicos"
+                ]
+            },
+            {
+                "clave": "agenda_medico",
+                "texto": "Agenda médico",
+                "roles": [
+                    "Médico"
+                ],
+                "argumentos": [
+                    "medicos",
+                    "turnos"
+                ]
+            }
+        ]
+    }
+}

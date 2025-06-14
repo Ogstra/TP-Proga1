@@ -1,1 +1,6 @@
+<<<<<<< HEAD
 frases.txt
+=======
+__pycache__
+.pytest_cache
+>>>>>>> fb8322abb8c2bb275742696b8563ed8c208be8c8
