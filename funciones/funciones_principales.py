@@ -1,4 +1,4 @@
-from funciones.funciones_validaciones import *
+from .funciones_validaciones import *
 from funciones.funciones_generales import *
 
 # Cargar los datos desde los archivos JSON
@@ -8,12 +8,28 @@ turnos = cargar_json("turnos")
 config = cargar_json("config")
 consultorios = config["consultorios"]
 
+
 def menu_roles(roles):
+    """
+    Función que muestra un menú para seleccionar un rol.
+
+    Args:
+        roles (list): Lista de roles disponibles.
+
+    Returns:
+        str: Rol seleccionado por el usuario.
+
+    Lógica:
+        - Muestra las opciones de roles disponibles.
+        - Solicita al usuario que seleccione un rol.
+        - Devuelve el rol seleccionado o finaliza el programa si se elige salir.
+    """
     while True:
         print('Seleccione rol:')
         for i in range(len(roles)):
             print(f'{i + 1}. {roles[i]}')
-        opcion = mensajesTipoNumerico("\nSeleccione una opción (0 para salir):")
+        opcion = mensajesTipoNumerico(
+            "\nSeleccione una opción (0 para salir):")
         if 0 < opcion < len(roles) + 1:
             rol_seleccionado = roles[opcion - 1]
             print(f"Rol seleccionado: {rol_seleccionado}")
@@ -22,9 +38,11 @@ def menu_roles(roles):
             print("Saliendo...")
             exit()
         else:
-            print("*** Opción inválida.\n")        
+            print("*** Opción inválida.\n")
 
 # Función para mostrar el menú
+
+
 def mostrar_menu(rol, opciones):
     """
     Función que muestra el menú principal con las opciones disponibles en el json y maneja las opciones seleccionadas por el usuario.
@@ -550,67 +568,181 @@ def agenda_medico(medicos, turnos):
     print_tabla("Agenda del Médico", tabla_agenda, ["Fecha", "Hora", "Paciente", "Consultorio"], "horizontal")
   
 def editar_config_menu(): 
+    roles_no_eliminables = ["Admin", "Paciente", "Médico"]
     config = cargar_json("config")
     roles = config["roles"]
-    opciones = config["opciones_menu"]  
+    opciones = config["opciones_menu"]
+    
+    def guardar_config():
+        guardar_json('config', {
+            "roles": roles,
+            "consultorios": consultorios,
+            "opciones_menu": opciones,
+        })
+
     while True:
-            print("\n--- Editor de Configuración ---")
-            print("1. Ver roles disponibles")
-            print("2. Agregar rol")
-            print("3. Eliminar rol")
-            print("4. Ver permisos de opciones")
-            print("5. Modificar permisos de una opción")
-            print("0. Salir")
-            
-            opcion = input("Seleccione una opción: ")
+        print("\n--- Editor de Configuración ---")
+        print("1. Ver roles disponibles")
+        print("2. Agregar rol")
+        print("3. Eliminar rol")
+        print("4. Ver permisos de opciones")
+        print("5. Modificar permisos de una opción")
+        print("0. Volver")
 
-            if opcion == "1":
-                print("\nRoles disponibles:", ", ".join(roles))
+        opcion = input("Seleccione una opción: ")
 
-            elif opcion == "2":
-                nuevo_rol = input("Ingrese el nombre del nuevo rol: ").strip()
-                if nuevo_rol and nuevo_rol not in roles:
-                    roles.append(nuevo_rol)
-                    print(f"Rol '{nuevo_rol}' agregado.")
-                else:
-                    print("Rol inválido o ya existe.")
+        if opcion == "1":
+            print("\nRoles disponibles:", ", ".join(roles))
 
-            elif opcion == "3":
-                eliminar_rol = input("Ingrese el nombre del rol a eliminar: ").strip()
-                if eliminar_rol in roles:
-                    roles.remove(eliminar_rol)
-                    for opcion in opciones:
-                        if eliminar_rol in opcion["roles"]:
-                            opcion["roles"].remove(eliminar_rol)
-                    print(f"Rol '{eliminar_rol}' eliminado.")
-                else:
-                    print("Rol no encontrado.")
-
-            elif opcion == "4":
-                print("\n--- Permisos por opción ---")
-                for o in opciones:
-                    print(f"{o['clave']} ({o['texto']}): {', '.join(o['roles'])}")
-
-            elif opcion == "5":
-                clave = input("Ingrese la clave de la opción a modificar: ").strip()
-                opcion_menu = next((o for o in opciones if o["clave"] == clave), None)
-                if opcion_menu:
-                    print(f"Permisos actuales: {', '.join(opcion_menu['roles'])}")
-                    nuevos_roles = input(f"Ingrese nuevos roles separados por coma (disponibles: {', '.join(roles)}): ")
-                    nuevos = [r.strip() for r in nuevos_roles.split(",") if r.strip() in roles]
-                    if nuevos:
-                        opcion_menu["roles"] = nuevos
-                        print(f"Permisos actualizados para '{clave}'.")
-                    else:
-                        print("No se ingresaron roles válidos.")
-                else:
-                    print("Clave no encontrada.")
-            elif opcion == "0":
-                break
+        elif opcion == "2":
+            nuevo_rol = input("Ingrese el nombre del nuevo rol: ").strip()
+            if nuevo_rol and nuevo_rol not in roles:
+                roles.append(nuevo_rol)
+                print(f"Rol '{nuevo_rol}' agregado.")
+                guardar_config()  # Guardar configuración inmediatamente
             else:
-                print("Opción inválida.")
+                print("Rol inválido o ya existe.")
 
-            guardar_json('config', {
-                "roles": roles,
-                "opciones_menu": opciones
-            })            
+        elif opcion == "3":
+            if not roles:
+                print("No hay roles disponibles para eliminar.")
+            else:
+                print("\n--- Seleccione un rol para eliminar ---")
+                for i, rol in enumerate(roles, start=1):
+                    print(
+                        f"{i}. {rol} {'(No eliminable)' if rol in roles_no_eliminables else ''}")
+                rol_a_eliminar = input(
+                    "Ingrese el número del rol a eliminar: ")
+                try:
+                    rol_a_eliminar = int(rol_a_eliminar)
+                    if 1 <= rol_a_eliminar <= len(roles):
+                        rol_eliminado = roles[rol_a_eliminar - 1]
+                        if rol_eliminado not in roles_no_eliminables:
+                            roles.pop(rol_a_eliminar - 1)
+                            for opcion in opciones:
+                                if rol_eliminado in opcion["roles"]:
+                                    opcion["roles"].remove(rol_eliminado)
+                            print(f"Rol '{rol_eliminado}' eliminado.")
+                            guardar_config()  # Guardar configuración inmediatamente
+                        else:
+                            print(
+                                f"No se puede eliminar el rol '{rol_eliminado}'.")
+                    else:
+                        print("Número de rol inválido.")
+                except ValueError:
+                    print("Debe ingresar un número válido.")
+
+        elif opcion == "4":
+            print("\n--- Permisos por opción ---")
+            for o in opciones:
+                print(f"{o['clave']} ({o['texto']}): {', '.join(o['roles'])}")
+
+        elif opcion == "5":
+            while True:
+                print("\n--- Submenú de Roles ---")
+                print("Funciones disponibles:")
+                for i, opcion in enumerate(opciones, start=1):
+                    print(
+                        f"{i}. {opcion['texto']} (Roles: {', '.join(opcion['roles'])})")
+
+                print("0. Volver")
+
+                sub_opcion = input("Seleccione una opción: ")
+
+                if sub_opcion == "0":
+                    break
+
+                try:
+                    sub_opcion = int(sub_opcion)
+                    if 1 <= sub_opcion <= len(opciones):
+                        funcion_seleccionada = opciones[sub_opcion - 1]
+                        print(
+                            f"\nFunciones seleccionada: {funcion_seleccionada['texto']}")
+                        while True:
+                            print("\n--- Opciones para el rol ---")
+                            print("1. Agregar rol")
+                            print("2. Quitar rol")
+                            print("0. Volver")
+
+                            rol_opcion = input("Seleccione una opción: ")
+
+                            if rol_opcion == "0":
+                                break
+
+                            elif rol_opcion == "1":
+                                while True:
+                                    print("\n--- Submenú de Roles ---")
+                                    print("Roles disponibles:")
+                                    for i, rol in enumerate(roles, start=1):
+                                        print(f"{i}. {rol}")
+                                    print("0. Volver")
+
+                                    rol_seleccionado = input(
+                                        "Seleccione un rol para agregar a la función: ")
+
+                                    if rol_seleccionado == "0":
+                                        break
+
+                                    try:
+                                        rol_seleccionado = int(
+                                            rol_seleccionado)
+                                        if 1 <= rol_seleccionado <= len(roles):
+                                            nuevo_rol = roles[rol_seleccionado - 1]
+                                            if nuevo_rol not in funcion_seleccionada["roles"]:
+                                                funcion_seleccionada["roles"].append(
+                                                    nuevo_rol)
+                                                print(
+                                                    f"Rol '{nuevo_rol}' agregado a la función '{funcion_seleccionada['texto']}'.")
+                                                guardar_config()  # Guardar configuración inmediatamente
+                                                break
+                                            else:
+                                                print(
+                                                    "El rol ya existe en la función.")
+                                        else:
+                                            print("Número de rol inválido.")
+                                    except ValueError:
+                                        print("Debe ingresar un número válido.")
+
+                            elif rol_opcion == "2":
+                                if not funcion_seleccionada["roles"]:
+                                    print(
+                                        "No hay roles disponibles para eliminar.")
+                                else:
+                                    print(
+                                        "\n--- Seleccione un rol para eliminar ---")
+                                    for j, rol in enumerate(funcion_seleccionada["roles"], start=1):
+                                        print(
+                                            f"{j}. {rol} {'(No eliminable)' if rol in roles_no_eliminables else ''}")
+                                    rol_a_eliminar = input(
+                                        "Ingrese el número del rol a eliminar: ")
+                                    try:
+                                        rol_a_eliminar = int(rol_a_eliminar)
+                                        if 1 <= rol_a_eliminar <= len(funcion_seleccionada["roles"]):
+                                            rol_eliminado = funcion_seleccionada["roles"][rol_a_eliminar - 1]
+                                            if rol_eliminado not in roles_no_eliminables:
+                                                funcion_seleccionada["roles"].remove(
+                                                    rol_eliminado)
+                                                print(
+                                                    f"Rol '{rol_eliminado}' eliminado de la función '{funcion_seleccionada['texto']}'.")
+                                                guardar_config()  # Guardar configuración inmediatamente
+                                            else:
+                                                print(
+                                                    f"No se puede eliminar el rol '{rol_eliminado}'.")
+                                        else:
+                                            print("Número de rol inválido.")
+                                    except ValueError:
+                                        print("Debe ingresar un número válido.")
+
+                            elif rol_opcion == "0":
+                                break
+                            else:
+                                print("Opción inválida.")
+                    else:
+                        print("Número de opción inválido.")
+                except ValueError:
+                    print("Debe ingresar un número válido.")
+        
+        elif opcion == "0":
+            break
+        else:
+            print("Opción inválida.")

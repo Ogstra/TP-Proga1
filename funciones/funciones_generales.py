@@ -43,8 +43,9 @@ def print_tabla(titulo, info, columnas, horientacion):
     Imprime una tabla formateada en la consola.
     Args:
         titulo (str): Título de la tabla.
-        lista (list): Lista de diccionarios a imprimir.
+        info (list): Lista de diccionarios a imprimir.
         columnas (list): Lista de claves que se mostrarán como columnas.
+        horientacion (str): Orientación de la tabla ("vertical" u "horizontal").
     Returns:
         None   
     """
@@ -52,8 +53,6 @@ def print_tabla(titulo, info, columnas, horientacion):
     table = Table()
     
     table = Table(
-            
-            #title="Datos Verticales" if horientacion == "vertical" else "Datos Horizontales",
             box=box.ROUNDED,
             style="#8b8b8b",
             header_style="bold",
