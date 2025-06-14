@@ -429,28 +429,8 @@ def eliminar_paciente(pacientes):
         print(f"Paciente con DNI {dni_paciente} eliminado con éxito.")
     else:
         print(f"No se encontró un paciente con DNI {dni_paciente}.")
-
-def buscar_medico(medicos):
-    campos = ("nombre", "apellido", "dni", "mail", "grupo_sanguineo")
-    opcion = int(input("Buscar por:\n1) Nombre\n2) Apellido\n3) DNI\n4) Mail\nOpción: "))
-    while opcion < 1 or opcion > len(campos):
-        opcion = int(input("Opción no válida\nBuscar por:\n1) Nombre\n2) Apellido\n3) DNI\n4) Mail\nOpción: "))
-
-    campo_seleccionado = campos[opcion - 1]
-    valor_buscado = input(f"Ingrese {campo_seleccionado}: ").lower()
-    resultados = []
-    for id_medico, datos_medico in medicos.items():
-        valor_actual = str(datos_medico[campo_seleccionado]).lower()
-        if valor_actual == valor_buscado:
-            resultados.append((id_medico, datos_medico))
-    if resultados:
-        for id_medico, datos in resultados:
-            print(f"\nID: {id_medico}")
-            for clave, valor in datos.items():
-                print(f"{clave.capitalize()}: {valor}")
-    else:
-        print("No se encontraron médicos con ese dato.")
-
+        
+        
 def eliminar_medico(medicos, turnos, pacientes):
     id_medico = mensajesTipoNumerico("Ingrese el ID del médico que desea eliminar: ")
     
