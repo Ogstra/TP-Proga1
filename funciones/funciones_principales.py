@@ -386,13 +386,31 @@ def crear_paciente(pacientes):
     nombre = validar_campo_vacio("Nombre: ")
     apellido = validar_campo_vacio("Apellido: ")
     dni = validar_campo_vacio("DNI: ")
+    while True:
+        dni = validar_campo_vacio("DNI: ")
+        if validarDNI(dni):
+            break
+    print("DNI inválido. Debe contener 8 dígitos numéricos.")
+
     fecha_nac = input("Ingrese la fecha (AAAA-MM-DD): ")
     while not validarFecha(fecha_nac):
         print("El formato de la fecha es inválido.")
         fecha_nac = input("Ingrese la fecha de nacimiento(AAAA-MM-DD): ")  
     domicilio = validar_campo_vacio("Domicilio: ")
     mail = validar_campo_vacio("Mail: ")
+    while True:
+        mail = validar_campo_vacio("Mail: ")
+        if validarMail(mail):
+            break
+    print("Correo electrónico inválido.")
+
     num_tel = validar_campo_vacio("Número de Teléfono: ")
+    while True:
+        num_tel = validar_campo_vacio("Número de Teléfono (formato XXXX-XXXX): ")
+        if validarTelefono(num_tel):
+            break
+    print("Teléfono inválido. Use el formato XXXX-XXXX.")
+
     obra_social = validar_campo_vacio("Obra Social: ")
     nacionalidad = validar_campo_vacio("Nacionalidad: ")
     grupo_sanguineo = validar_campo_vacio("Grupo Sanguíneo: ")
@@ -475,12 +493,28 @@ def agregar_medico(medicos):
     apellido = validar_campo_vacio("Apellido: ")
     especialidad = validar_campo_vacio("Especialidad: ")
     mail = validar_campo_vacio("Mail: ")
+    while True:
+        mail = validar_campo_vacio("Mail: ")
+        if validarMail(mail):
+            break
+        print("Correo electrónico inválido.")
     dni = validar_campo_vacio("DNI: ")
+    while True:
+        dni = validar_campo_vacio("DNI: ")
+        if validarDNI(dni):
+            break
+        print("DNI inválido. Debe contener 8 dígitos numéricos.")
     fecha_nac = input("Ingrese la fecha (AAAA-MM-DD): ")
     while not validarFecha(fecha_nac):
         print("El formato de la fecha es inválido.")
         fecha_nac = input("Ingrese la fecha (AAAA-MM-DD): ") 
     num_tel = validar_campo_vacio("Número de Teléfono: ")
+    while True:
+        num_tel = validar_campo_vacio("Número de Teléfono (formato XXXX-XXXX): ")
+        if validarTelefono(num_tel):
+            break
+        print("Teléfono inválido. Use el formato XXXX-XXXX.")
+
     domicilio = validar_campo_vacio("Domicilio: ")
     nacionalidad = validar_campo_vacio("Nacionalidad: ")
     titulo = validar_campo_vacio("Título: ")

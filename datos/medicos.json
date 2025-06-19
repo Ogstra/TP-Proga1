@@ -170,6 +170,44 @@
                 "14:00-15:00"
             ],
             "estado": "Activo"
+        },
+        {
+            "id": 10,
+            "nombre": "camila",
+            "apellido": "gomes",
+            "especialidad": "kinesiologia",
+            "dni": "44550287",
+            "fecha_nac": "2025-11-04",
+            "domicilio": "mendoza 2345",
+            "mail": "camigomes@gmail.com",
+            "num_tel": "5969-4556",
+            "nacionalidad": "argentina",
+            "titulo": "kinesiologa",
+            "matricula": "123",
+            "horario": [
+                "12:00-13:00",
+                "14:00-15:00"
+            ],
+            "estado": "Activo"
+        },
+        {
+            "id": 11,
+            "nombre": "juan",
+            "apellido": "gomez",
+            "especialidad": "otottinonarinologo",
+            "dni": "33556753",
+            "fecha_nac": "2024-05-12",
+            "domicilio": "chile 345",
+            "mail": "juang@gmail.com",
+            "num_tel": "3070-2334",
+            "nacionalidad": "argentina",
+            "titulo": "fffff",
+            "matricula": "345667",
+            "horario": [
+                "08:00-12:00",
+                "13:00-18:00"
+            ],
+            "estado": "Activo"
         }
     ]
 }

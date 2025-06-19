@@ -103,6 +103,19 @@
             "obra_social": "osde",
             "nacionalidad": "Argentina",
             "grupo_sanguineo": "B+"
+        },
+        {
+            "id": 9,
+            "nombre": "jaun",
+            "apellido": "gomes",
+            "dni": "55667898",
+            "fecha_nac": "2020-12-08",
+            "domicilio": "fsbfgh",
+            "mail": "kellydominguez@gmail.com",
+            "num_tel": "3378-6778",
+            "obra_social": "odskd",
+            "nacionalidad": "sdsds",
+            "grupo_sanguineo": "ui"
         }
     ]
 }

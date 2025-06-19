@@ -42,16 +42,16 @@ def mensajesTipoNumerico(mensaje):
         else:
             print("Error: Debe ingresar un número.")
     
-def validarFecha(fecha):
+def validarFecha(fecha_nac):
     """
     Valida si la fecha tiene el formato AAAA-MM-DD usando expresión regular
     y verifica que sea una fecha válida en el calendario.
     """
     patron = r"^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$"
-    if not re.match(patron, fecha):
+    if not re.match(patron, fecha_nac):
         return False
     try:
-        datetime.strptime(fecha, "%Y-%m-%d")
+        datetime.strptime(fecha_nac, "%Y-%m-%d")
         return True
     except ValueError:
         return False
@@ -62,6 +62,29 @@ def validarHora(hora):
         return True
     except ValueError:
         return False
+
+def validarDNI(dni):
+    """
+    Valida si el DNI tiene un formato numérico de 8 dígitos.
+    """
+    patron = r"^\d{8}$"
+    return bool(re.fullmatch(patron, dni))
+
+def validarMail(mail):
+    """
+    Valida si el correo electrónico tiene un formato básico.
+    """
+    patron =  r"^[\w\.-]+@[\w\.-]+\.\w+$"
+    return bool(re.fullmatch(patron, mail))
+
+def validarTelefono(telefono):
+    """
+    Valida si el número de teléfono tiene un formato básico.
+    Permite números con o sin guiones, espacios o paréntesis.
+    """
+    patron = r"^\d{2,4}-\d{4,6}$"
+    return bool(re.fullmatch(patron, telefono.strip))
+    
 
 #Funcion para verificar si existe ese id en el json
 def verificarSiExiste(id, json, nombre_objeto):
