@@ -1,6 +1,7 @@
 import funciones.funciones_principales as funciones_principales
 import unicodedata
 from datetime import datetime, timedelta
+import re
 
 def ejecutar(nombre_funcion, *args, **kwargs):
     """
@@ -42,6 +43,13 @@ def mensajesTipoNumerico(mensaje):
             print("Error: Debe ingresar un número.")
     
 def validarFecha(fecha):
+    """
+    Valida si la fecha tiene el formato AAAA-MM-DD usando expresión regular
+    y verifica que sea una fecha válida en el calendario.
+    """
+    patron = r"^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$"
+    if not re.match(patron, fecha):
+        return False
     try:
         datetime.strptime(fecha, "%Y-%m-%d")
         return True
