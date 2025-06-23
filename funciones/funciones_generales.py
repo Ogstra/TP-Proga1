@@ -36,7 +36,7 @@ def tieneTurnosAsignados(id, turnos, posicionDelId):
     Returns:
         bool: True si el ID tiene turnos asignados, False en caso contrario.
     """
-    return any(turno[posicionDelId] == id for turno in turnos)
+    return any(turno.get(posicionDelId) == id for turno in turnos)
 
 def print_tabla(titulo, info, columnas, horientacion):
     """
