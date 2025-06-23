@@ -544,6 +544,7 @@ def eliminar_paciente(pacientes, turnos, medicos):
     guardar_json("turnos", turnos)
 
 def eliminar_turnos(turnos, medicos, pacientes, rol):
+    info_medicos = []
     print("\n--- Eliminar Turno ---")
 
     # Si el rol es Médico, pedimos su DNI asi solo te muestra los turno que tiene ese medico
@@ -569,7 +570,7 @@ def eliminar_turnos(turnos, medicos, pacientes, rol):
         try:
             id_turno = int(input("Ingrese el ID del turno que desea eliminar: "))
         except ValueError:
-            print("ID del turno inválido.")
+            print("ID del inválido.")
             return
 
         turno_a_eliminar = next((t for t in turnos_medico if t["id"] == id_turno), None)
@@ -581,7 +582,7 @@ def eliminar_turnos(turnos, medicos, pacientes, rol):
         dni = input("Ingrese su DNI: ").strip()
         paciente = next((p for p in pacientes if str(p["dni"]) == dni and p.get("estado", "activo").lower() == "activo"), None)
         if not paciente:
-            print("No se encontró un paciente con ese DNI.")
+            print("No se encontró un paciente activo con ese DNI.")
             return
 
         id_paciente = paciente["id"]
@@ -604,7 +605,11 @@ def eliminar_turnos(turnos, medicos, pacientes, rol):
             paciente = next((p for p in pacientes if p["id"] == t["paciente"]), {})
             nombre_medico = f"{medico.get('nombre', '')} {medico.get('apellido', '')}"
             nombre_paciente = f"{paciente.get('nombre', '')} {paciente.get('apellido', '')}"
-            print(f"ID: {t['id']} | Fecha: {t['fecha']} | Hora: {t['hora']} | Médico: {nombre_medico} | Paciente: {nombre_paciente} | Consultorio: {t['consultorio']}")
+            info_medicos.append([medico["id"], medico["nombre"], medico["apellido"], medico["especialidad"], t["hora"], paciente["nombre"], paciente["apellido"]])
+        print_tabla("Lista de Médicos", info_medicos, ["ID", "Nombre Del Doctor", "Apellido", "Especialidad", "Horario", "Paciente", "Apellido"], "horizontal")
+
+            
+            #print(f"ID: {t['id']} | Fecha: {t['fecha']} | Hora: {t['hora']} | Médico: {nombre_medico} | Paciente: {nombre_paciente} | Consultorio: {t['consultorio']}")
 
         try:
             id_turno = int(input("Ingrese el ID del turno que desea eliminar: "))
