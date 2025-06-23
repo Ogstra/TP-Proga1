@@ -11,37 +11,37 @@ consultorios = config["consultorios"]
 
 def menu_roles(roles):
     """
-    Función que muestra un menú para seleccionar un rol.
+    Función que muestra un menú para seleccionar un rol utilizando recursividad.
 
     Args:
         roles (list): Lista de roles disponibles.
 
     Returns:
-        str: Rol seleccionado por el usuario.
+        str: Rol seleccionado por el usuario o None si se elige salir.
 
     Lógica:
         - Muestra las opciones de roles disponibles.
         - Solicita al usuario que seleccione un rol.
         - Devuelve el rol seleccionado o finaliza el programa si se elige salir.
     """
-    while True:
-        print('Seleccione rol:')
-        for i in range(len(roles)):
-            print(f'{i + 1}. {roles[i]}')
-        opcion = mensajesTipoNumerico(
-            "\nSeleccione una opción (0 para salir):")
-        if 0 < opcion < len(roles) + 1:
-            rol_seleccionado = roles[opcion - 1]
-            print(f"Rol seleccionado: {rol_seleccionado}")
-            return rol_seleccionado
-        elif opcion == 0:
-            print("Saliendo...")
-            exit()
+    print('Seleccione rol:')
+    for i in range(len(roles)):
+        print(f'{i + 1}. {roles[i]}')
+    print("0. Salir")
+
+    try:
+        opcion = mensajesTipoNumerico("\nSeleccione una opción: ")
+        if opcion == 0:
+            print("Saliendo del programa...")
+            return None
+        elif 1 <= opcion <= len(roles):
+            return roles[opcion - 1]
         else:
-            print("*** Opción inválida.\n")
-
-# Función para mostrar el menú
-
+            print("Opción inválida. Intente nuevamente.")
+            return menu_roles(roles)
+    except ValueError:
+        print("Debe ingresar un número válido.")
+        return menu_roles(roles)
 
 def mostrar_menu(rol, opciones):
     """
@@ -624,7 +624,6 @@ def agenda_medico(medicos, turnos):
     for medico in medicos:
         info_medicos.append([medico["id"], medico["nombre"], medico["apellido"], medico["especialidad"]])
     print_tabla("Lista de Médicos", info_medicos, ["ID", "Nombre", "Apellido", "Especialidad"], "horizontal")
-    id_medico = int(input("Ingrese el ID del médico para ver su agenda: "))
     try:
         id_medico = int(input("Ingrese el ID del médico para ver su agenda: "))
     except ValueError:
@@ -637,9 +636,12 @@ def agenda_medico(medicos, turnos):
     for turno in turnos:
         if turno["medico"] == id_medico:
             #sacar el id del medico del turno para no mostrarlo en la agenda
-            turno.pop("medico", None)
-            turno.pop("id", None)
-            agenda.append(turno)
+            agenda.append({
+                "fecha": turno["fecha"],
+                "hora": turno["hora"],
+                "paciente": turno["paciente"],
+                "consultorio": turno["consultorio"]
+            })
     # Si no hay turnos asignados, se muestra un mensaje indicando que no hay turnos para ese médico
     if not agenda:
         print("No hay turnos asignados para este médico.")

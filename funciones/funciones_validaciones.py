@@ -83,7 +83,7 @@ def validarTelefono(telefono):
     Permite números con o sin guiones, espacios o paréntesis.
     """
     patron = r"^\d{2,4}-\d{4,6}$"
-    return bool(re.fullmatch(patron, telefono.strip))
+    return bool(re.fullmatch(patron, telefono.strip()))
     
 
 #Funcion para verificar si existe ese id en el json
