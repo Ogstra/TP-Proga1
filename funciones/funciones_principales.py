@@ -93,7 +93,10 @@ def mostrar_menu(rol, opciones):
     
     if opcion == 0:
         print("Saliendo del programa...")
-        save_log("Sesión finalizada por {rol_actual} con DNI {dni_actual}")
+        if rol_actual and dni_actual:
+            save_log(f"Sesión finalizada por {rol_actual} con DNI {dni_actual}")
+        else:
+            save_log("Sesión finalizada por el Administrador")
         exit()
     if 1 <= opcion <= len(opciones_validas):
         seleccionada = opciones_validas[opcion - 1]
