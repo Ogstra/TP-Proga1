@@ -38,3 +38,32 @@
 2025-06-23 16:32:40 - Datos guardados en turnos.json
 2025-06-23 16:32:40 - Turno eliminado: ID 16, Fecha 2025-04-12, Hora 10:00, Médico ID 1, Paciente ID 1, Consultorio 103
 2025-06-23 16:33:01 - Saliendo del sistema. {rol} con DNI {dni_ingresado} ha cerrado sesión.
+2025-06-23 17:38:11 - Datos cargados desde pacientes.json
+2025-06-23 17:38:11 - Datos cargados desde medicos.json
+2025-06-23 17:38:11 - Datos cargados desde turnos.json
+2025-06-23 17:38:11 - Datos cargados desde config.json
+2025-06-23 17:38:11 - Datos cargados desde config.json
+2025-06-23 17:39:27 - Sesión iniciada: Rol Médico, DNI 76543210
+2025-06-23 17:39:40 - Saliendo del sistema. {rol} con DNI {dni_ingresado} ha cerrado sesión.
+2025-06-23 17:39:43 - Datos cargados desde pacientes.json
+2025-06-23 17:39:43 - Datos cargados desde medicos.json
+2025-06-23 17:39:43 - Datos cargados desde turnos.json
+2025-06-23 17:39:43 - Datos cargados desde config.json
+2025-06-23 17:39:43 - Datos cargados desde config.json
+2025-06-23 17:39:50 - Sesión iniciada: Rol Médico, DNI 76543210
+2025-06-23 17:40:31 - Saliendo del sistema. {rol} con DNI {dni_ingresado} ha cerrado sesión.
+2025-06-23 17:40:33 - Datos cargados desde pacientes.json
+2025-06-23 17:40:33 - Datos cargados desde medicos.json
+2025-06-23 17:40:33 - Datos cargados desde turnos.json
+2025-06-23 17:40:33 - Datos cargados desde config.json
+2025-06-23 17:40:33 - Datos cargados desde config.json
+2025-06-23 17:41:51 - Sesión iniciada: Rol Paciente, DNI 67890123
+2025-06-23 17:55:21 - Sesión finalizada por {rol_actual} con DNI {dni_actual}
+2025-06-23 17:55:23 - Datos cargados desde pacientes.json
+2025-06-23 17:55:23 - Datos cargados desde medicos.json
+2025-06-23 17:55:23 - Datos cargados desde turnos.json
+2025-06-23 17:55:23 - Datos cargados desde config.json
+2025-06-23 17:55:23 - Datos cargados desde config.json
+2025-06-23 17:55:29 - Datos cargados desde admins.json
+2025-06-23 17:55:42 - Inicio de sesión exitoso para el usuario admin.
+2025-06-23 17:56:34 - Saliendo del sistema. {rol} con DNI {dni_ingresado} ha cerrado sesión.

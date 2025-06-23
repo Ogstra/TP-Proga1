@@ -569,7 +569,7 @@ def eliminar_turnos(turnos, medicos, pacientes, rol):
         try:
             id_turno = int(input("Ingrese el ID del turno que desea eliminar: "))
         except ValueError:
-            print("ID inválido.")
+            print("ID del turno inválido.")
             return
 
         turno_a_eliminar = next((t for t in turnos_medico if t["id"] == id_turno), None)
@@ -581,7 +581,7 @@ def eliminar_turnos(turnos, medicos, pacientes, rol):
         dni = input("Ingrese su DNI: ").strip()
         paciente = next((p for p in pacientes if str(p["dni"]) == dni and p.get("estado", "activo").lower() == "activo"), None)
         if not paciente:
-            print("No se encontró un paciente activo con ese DNI.")
+            print("No se encontró un paciente con ese DNI.")
             return
 
         id_paciente = paciente["id"]
