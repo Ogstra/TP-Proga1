@@ -93,7 +93,10 @@ def mostrar_menu(rol, opciones):
     
     if opcion == 0:
         print("Saliendo del programa...")
-        save_log("Sesión finalizada por {rol_actual} con DNI {dni_actual}")
+        if rol_actual and dni_actual:
+            save_log(f"Sesión finalizada por {rol_actual} con DNI {dni_actual}")
+        else:
+            save_log("Sesión finalizada por el Administrador")
         exit()
     if 1 <= opcion <= len(opciones_validas):
         seleccionada = opciones_validas[opcion - 1]
@@ -257,7 +260,7 @@ def crear_o_editar_turno(turnos, medicos, pacientes, id_turno=None):
                     print(f"\n *** Consultorios disponibles a las {hora or nueva_fecha_hora}: ***")
                     disponibles_por_piso = agrupar_consultorios_por_piso(consultorios)
                     print_tabla("Resultados de Médicos", [disponibles_por_piso], ["Piso 1","Piso 2","Piso 3","Piso 4","Piso 5"], "vertical")
-
+                    consultorio = input("Ingrese el número del consultorio: ").strip()
                 else:
                     print("No hay consultorios disponibles en esa fecha y hora.")
                 break
