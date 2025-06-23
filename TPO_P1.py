@@ -32,9 +32,20 @@ if rol.lower() == "admin":
     if not login_admin(admins):
         print("No autorizado. Saliendo del sistema.")
         exit()
-
-mostrar_menu(rol, opciones_menu)
-
+        
+    mostrar_menu(rol, opciones_menu)
+else:
+    # Solicitar DNI para médicos y pacientes
+    if rol.lower() in ("médico", "medico"):
+        lista = medicos
+    else:
+        lista = pacientes
+    dni_ingresado = input("Ingrese su DNI: ").strip()
+    while not any(persona["dni"] == dni_ingresado for persona in lista):
+        print("DNI no encontrado. Intente nuevamente.")
+        dni_ingresado = input("Ingrese su DNI: ").strip()
+    establecer_sesion(rol, dni_ingresado)
+    mostrar_menu(rol, opciones_menu)
 
 # Bucle principal para mantener el programa en ejecución
 while True:

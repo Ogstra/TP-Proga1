@@ -43,6 +43,15 @@ def menu_roles(roles):
         print("Debe ingresar un número válido.")
         return menu_roles(roles)
 
+rol_actual = None
+dni_actual = None
+
+def establecer_sesion(rol, dni):
+    """Guarda el rol y DNI del usuario logueado."""
+    global rol_actual, dni_actual
+    rol_actual = rol
+    dni_actual = dni
+
 def mostrar_menu(rol, opciones):
     """
     Función que muestra el menú principal con las opciones disponibles en el json y maneja las opciones seleccionadas por el usuario.
@@ -112,8 +121,19 @@ def ver_turnos(turnos, pacientes, medicos):
     - Determina el estado del turno comparando la fecha y hora actual con la del turno.
     - Imprime la lista de turnos en formato tabular.
     """
+    global rol_actual, dni_actual
     info_turno = []
     for turno in turnos:
+        # Filtrar por DNI segun rol medico o paciente
+        if rol_actual and dni_actual:
+            if rol_actual.lower() in ("paciente",):
+                paciente_ref = next((p for p in pacientes if p["dni"] == dni_actual), None)
+                if not paciente_ref or turno["paciente"] != paciente_ref["id"]:
+                    continue
+            elif rol_actual.lower() in ("médico", "medico"):
+                medico_ref = next((m for m in medicos if m["dni"] == dni_actual), None)
+                if not medico_ref or turno["medico"] != medico_ref["id"]:
+                    continue
         try:
             id_medico = turno["medico"]
             id_paciente = turno["paciente"]
@@ -145,7 +165,6 @@ def ver_turnos(turnos, pacientes, medicos):
             
     #ordenar la lista de turnos por fecha y hora
     info_turno.sort(key=lambda x: datetime.strptime(f"{x[0]} {x[1]}", "%Y-%m-%d %H:%M"))
-
     print_tabla("Lista de Turnos", info_turno, ["Fecha", "Hora", "Paciente", "Medico", "Consultorio", "Estado"], "horizontal")
 
 def crear_o_editar_turno(turnos, medicos, pacientes, id_turno=None):
@@ -170,6 +189,11 @@ def crear_o_editar_turno(turnos, medicos, pacientes, id_turno=None):
     while True:
         try:
             id_medico = int(input("Ingrese el ID del médico: "))
+            if rol_actual and rol_actual.lower() in ("médico", "medico"):
+                medico_ref = next((m for m in medicos if m["dni"] == dni_actual), None)
+                if medico_ref and id_medico != medico_ref["id"]:
+                    print("Solo puede asignar turnos a su propio ID.")
+                    continue
             if verificarSiExiste(id_medico, medicos, "médico"):
                 break
         except ValueError:
@@ -239,7 +263,7 @@ def crear_o_editar_turno(turnos, medicos, pacientes, id_turno=None):
         if conflicto:
             continue
         break
-    
+    save_log(f"Turno {'editado' if id_turno else 'creado'}: Paciente ID {id_paciente}, Médico ID {id_medico}, Consultorio {consultorio}, Fecha {fecha}, Hora {hora}")
     
     return {
         "id": id_turno if id_turno is not None else (max([t["id"] for t in turnos], default=0) + 1),
@@ -262,7 +286,7 @@ def agregar_turno(turnos, medicos, pacientes):
             medicos[nuevo_turno["medico"]]["nombre"] + " " + medicos[nuevo_turno["medico"]]["apellido"],
             nuevo_turno["consultorio"], "Pendiente"
         ]], ["Fecha", "Hora", "Paciente", "Medico", "Consultorio", "Estado"], "horizontal")
-
+        save_log(f"Turno agregado: Paciente ID {nuevo_turno['paciente']}, Médico ID {nuevo_turno['medico']}, Consultorio {nuevo_turno['consultorio']}, Fecha {nuevo_turno['fecha']}, Hora {nuevo_turno['hora']}")
         print(f"Turno agregado con éxito. ID: {nuevo_turno['id']}")
 
 def modificar_turno(turnos, medicos, pacientes):
@@ -274,11 +298,18 @@ def modificar_turno(turnos, medicos, pacientes):
 
     for i, turno in enumerate(turnos):
         if turno["id"] == id_turno:
+            if rol_actual and dni_actual:
+                if rol_actual.lower() in ("médico", "medico"):
+                    medico_ref = next((m for m in medicos if m["dni"] == dni_actual), None)
+                    if not medico_ref or turno["medico"] != medico_ref["id"]:
+                        print("Solo puede modificar sus propios turnos.")
+                        return
             turno_modificado = crear_o_editar_turno(turnos, medicos, pacientes, id_turno)
             if turno_modificado:
                 turnos[i] = turno_modificado
                 guardar_json("turnos", turnos)
                 print(f"Turno {id_turno} modificado con éxito.")
+                save_log(f"Turno modificado: ID {id_turno}, Paciente ID {turno_modificado['paciente']}, Médico ID {turno_modificado['medico']}, Consultorio {turno_modificado['consultorio']}, Fecha {turno_modificado['fecha']}, Hora {turno_modificado['hora']}")
             return
 
     print(f"No se encontró el turno con ID {id_turno}.")
@@ -316,6 +347,7 @@ def eliminar_medico(medicos, turnos, pacientes):
    
     medico["estado"] = "inactivo"
     print("Médico marcado como inactivo.")
+    save_log(f"Médico eliminado: DNI {dni_medico}, Estado cambiado a inactivo.")
 
     # Guardar cambios
     guardar_json("medicos", medicos)
@@ -423,31 +455,28 @@ def crear_paciente(pacientes):
     """
     nombre = validar_campo_vacio("Nombre: ")
     apellido = validar_campo_vacio("Apellido: ")
-    dni = validar_campo_vacio("DNI: ")
     while True:
         dni = validar_campo_vacio("DNI: ")
         if validarDNI(dni):
             break
-    print("DNI inválido. Debe contener 8 dígitos numéricos.")
+        print("DNI inválido. Debe contener 8 dígitos numéricos.")
 
     fecha_nac = input("Ingrese la fecha (AAAA-MM-DD): ")
     while not validarFecha(fecha_nac):
         print("El formato de la fecha es inválido.")
         fecha_nac = input("Ingrese la fecha de nacimiento(AAAA-MM-DD): ")  
     domicilio = validar_campo_vacio("Domicilio: ")
-    mail = validar_campo_vacio("Mail: ")
     while True:
         mail = validar_campo_vacio("Mail: ")
         if validarMail(mail):
             break
-    print("Correo electrónico inválido.")
+        print("Correo electrónico inválido.")
 
-    num_tel = validar_campo_vacio("Número de Teléfono: ")
     while True:
         num_tel = validar_campo_vacio("Número de Teléfono (formato XXXX-XXXX): ")
         if validarTelefono(num_tel):
             break
-    print("Teléfono inválido. Use el formato XXXX-XXXX.")
+        print("Teléfono inválido. Use el formato XXXX-XXXX.")
 
     obra_social = validar_campo_vacio("Obra Social: ")
     nacionalidad = validar_campo_vacio("Nacionalidad: ")
@@ -471,6 +500,7 @@ def crear_paciente(pacientes):
     print_tabla("Paciente Agregado", [[paciente["id"], paciente["nombre"], paciente["apellido"], paciente["dni"], paciente["fecha_nac"], paciente["domicilio"], paciente["mail"], paciente["num_tel"], paciente["obra_social"], paciente["nacionalidad"], paciente["grupo_sanguineo"]]], ["ID", "Nombre", "Apellido", "DNI", "Fecha Nac.", "Domicilio", "Mail", "Teléfono", "Obra Social", "Nacionalidad", "Grupo Sanguíneo"], "vertical")
     print(f"Paciente agregado con éxito.")
     print(f"ID asignado: {nuevo_id_paciente}")
+    save_log(f"Paciente creado: ID {nuevo_id_paciente}, Nombre {nombre}, Apellido {apellido}, DNI {dni}, Fecha Nac. {fecha_nac}, Domicilio {domicilio}, Mail {mail}, Teléfono {num_tel}, Obra Social {obra_social}, Nacionalidad {nacionalidad}, Grupo Sanguíneo {grupo_sanguineo}")
 
 def eliminar_paciente(pacientes, turnos, medicos):
     dni_paciente = input("Ingrese el DNI del paciente que desea eliminar: ").strip()
@@ -495,22 +525,25 @@ def eliminar_paciente(pacientes, turnos, medicos):
         confirmar = input("¿Deseás eliminar estos turnos y desactivar al paciente? (s/n): ").strip().lower()
         if confirmar != "s":
             print("Operación cancelada.")
+            save_log(f"Eliminación de paciente cancelada: DNI {dni_paciente}")
             return
 
         # Eliminar turnos del paciente
         turnos[:] = [t for t in turnos if t["dni_paciente"] != dni_paciente]
         print("Turnos eliminados.")
+        save_log(f"Turnos eliminados para paciente: DNI {dni_paciente}")
 
     # Marcar paciente como inactivo
     paciente["estado"] = "Inactivo"
     print("Paciente marcado como inactivo.")
-
+    save_log(f"Paciente eliminado: DNI {dni_paciente}, Estado cambiado a inactivo.")
     # Guardar cambios
     guardar_json("pacientes", pacientes)
     guardar_json("turnos", turnos)
 
 def eliminar_turnos(turnos, medicos, pacientes, rol):
     print("\n--- Eliminar Turno ---")
+<<<<<<< HEAD
 
     # Si el rol es Médico, pedimos su DNI asi solo te muestra los turno que tiene ese medico
     if rol == "Médico":
@@ -532,6 +565,17 @@ def eliminar_turnos(turnos, medicos, pacientes, rol):
             nombre_paciente = f"{paciente.get('nombre', '')} {paciente.get('apellido', '')}"
             print(f"ID: {t['id']} | Fecha: {t['fecha']} | Hora: {t['hora']} | Paciente: {nombre_paciente} | Consultorio: {t['consultorio']}")
 
+=======
+    # Mostrar lista de turnos con ID
+    print("Turnos disponibles:")
+    global rol_actual, dni_actual
+    info_turno = []
+    for turno in turnos:
+        if rol_actual and dni_actual and rol_actual.lower() in ("médico", "medico"):
+            medico_ref = next((m for m in medicos if m["dni"] == dni_actual), None)
+            if not medico_ref or turno["medico"] != medico_ref["id"]:
+                continue
+>>>>>>> ae87df1c48c7cae7b1f76b95de0ffeaff7f21959
         try:
             id_turno = int(input("Ingrese el ID del turno que desea eliminar: "))
         except ValueError:
@@ -572,25 +616,61 @@ def eliminar_turnos(turnos, medicos, pacientes, rol):
             nombre_paciente = f"{paciente.get('nombre', '')} {paciente.get('apellido', '')}"
             print(f"ID: {t['id']} | Fecha: {t['fecha']} | Hora: {t['hora']} | Médico: {nombre_medico} | Paciente: {nombre_paciente} | Consultorio: {t['consultorio']}")
 
+<<<<<<< HEAD
         try:
             id_turno = int(input("Ingrese el ID del turno que desea eliminar: "))
         except ValueError:
             print("ID inválido.")
             return
+=======
+        except (ValueError, TypeError, KeyError) as e:
+            print(f"Error procesando turno: {e}")
+            save_log(f"Error procesando turno: {e}")
+>>>>>>> ae87df1c48c7cae7b1f76b95de0ffeaff7f21959
 
         turno_a_eliminar = next((t for t in turnos if t["id"] == id_turno), None)
         if not turno_a_eliminar:
             print("Turno no encontrado.")
             return
 
+<<<<<<< HEAD
     confirmar = input(f"¿Está seguro que desea eliminar el turno del {turno_a_eliminar['fecha']} a las {turno_a_eliminar['hora']}? (s/n): ").strip().lower()
+=======
+    # Mostrar tabla incluyendo el ID
+    print_tabla(
+        "Lista de Turnos",
+        info_turno,
+        ["ID", "Fecha", "Hora", "Paciente", "Medico", "Consultorio", "Estado"],
+        "horizontal"
+    )
+    try:
+        id_turno = int(input("Ingrese el ID del turno que desea eliminar: ").strip())
+    except ValueError:
+        print("ID inválido. Debe ser un número.")
+        return
+
+    turno = next((t for t in turnos if t["id"] == id_turno), None)
+    if turno and rol_actual and dni_actual and rol_actual.lower() in ("médico", "medico"):
+        medico_ref = next((m for m in medicos if m["dni"] == dni_actual), None)
+        if not medico_ref or turno["medico"] != medico_ref["id"]:
+            print("Solo puede eliminar sus propios turnos.")
+            return
+
+    if not turno:
+        print(f"No se encontró un turno con ID {id_turno}.")
+        return
+
+    confirmar = input(f"¿Está seguro que desea eliminar el turno del día {turno['fecha']} a las {turno['hora']}? (s/n): ").strip().lower()
+>>>>>>> ae87df1c48c7cae7b1f76b95de0ffeaff7f21959
     if confirmar != 's':
         print("Operación cancelada.")
+        save_log(f"Eliminación de turno cancelada: ID {id_turno}")
         return
 
     turnos.remove(turno_a_eliminar)
     guardar_json("turnos", turnos)
     print("Turno eliminado correctamente.")
+    save_log(f"Turno eliminado: ID {id_turno}, Fecha {turno['fecha']}, Hora {turno['hora']}, Paciente ID {turno['paciente']}, Médico ID {turno['medico']}")
 
 
     
@@ -621,15 +701,18 @@ def eliminar_medico(medicos, turnos, pacientes):
         confirmar = input("¿Deseás eliminar estos turnos y desactivar al médico? (s/n): ").strip().lower()
         if confirmar != "s":
             print("Operación cancelada.")
+            save_log(f"Eliminación de médico cancelada: DNI {dni_medico}")
             return
 
         # Eliminar turnos del médico
         turnos[:] = [t for t in turnos if t["dni_medico"] != dni_medico]
         print("El turno fue eliminado.")
+        save_log(f"Turnos eliminados para médico: DNI {dni_medico}")
 
     # Marcar médico como inactivo (guardando el mismo formato que en JSON)
     medico["estado"] = "Inactivo"
     print("Médico marcado como inactivo.")
+    save_log(f"Médico eliminado: DNI {dni_medico}, Estado cambiado a inactivo.")
 
     # Guardar cambios
     guardar_json("medicos", medicos)
@@ -652,13 +735,11 @@ def agregar_medico(medicos):
     nombre = validar_campo_vacio("Nombre: ")
     apellido = validar_campo_vacio("Apellido: ")
     especialidad = validar_campo_vacio("Especialidad: ")
-    mail = validar_campo_vacio("Mail: ")
     while True:
         mail = validar_campo_vacio("Mail: ")
         if validarMail(mail):
             break
         print("Correo electrónico inválido.")
-    dni = validar_campo_vacio("DNI: ")
     while True:
         dni = validar_campo_vacio("DNI: ")
         if validarDNI(dni):
@@ -668,7 +749,6 @@ def agregar_medico(medicos):
     while not validarFecha(fecha_nac):
         print("El formato de la fecha es inválido.")
         fecha_nac = input("Ingrese la fecha (AAAA-MM-DD): ") 
-    num_tel = validar_campo_vacio("Número de Teléfono: ")
     while True:
         num_tel = validar_campo_vacio("Número de Teléfono (formato XXXX-XXXX): ")
         if validarTelefono(num_tel):
@@ -702,6 +782,7 @@ def agregar_medico(medicos):
     }
 
     medicos.append(medico)  # Agregar el nuevo médico a la lista de médicos
+    save_log(f"Médico creado: ID {nuevo_id}, Nombre {nombre}, Apellido {apellido}, Especialidad {especialidad}, DNI {dni}, Fecha Nac. {fecha_nac}, Domicilio {domicilio}, Mail {mail}, Teléfono {num_tel}, Nacionalidad {nacionalidad}, Título {titulo}, Matrícula {matricula}, Horario {horarios}")
     guardar_json("medicos", medicos)  # Guardar los cambios en el archivo JSON
     print_tabla("Médico Agregado", [[medico["id"], medico["nombre"], medico["apellido"], medico["especialidad"], medico["dni"], medico["fecha_nac"], medico["domicilio"], medico["mail"], medico["num_tel"], medico["nacionalidad"], medico["titulo"], medico["matricula"], medico["horario"]]], ["ID", "Nombre", "Apellido", "Especialidad", "DNI", "Fecha Nac.", "Domicilio", "Mail", "Teléfono", "Nacionalidad", "Título", "Matrícula", "Horario"], "vertical")
     print(f"Médico agregado con éxito.")
@@ -723,22 +804,30 @@ def agenda_medico(medicos, turnos):
     - Si hay turnos, ordena la agenda por fecha y hora.
     - Imprime la agenda del médico en formato tabular.
     """
+    global rol_actual, dni_actual
     print("Agenda Médica:")
     if not medicos:
         print("No hay médicos registrados.")
         return
-    print("Médicos disponibles:")
-    info_medicos = []
-    for medico in medicos:
-        info_medicos.append([medico["id"], medico["nombre"], medico["apellido"], medico["especialidad"]])
-    print_tabla("Lista de Médicos", info_medicos, ["ID", "Nombre", "Apellido", "Especialidad"], "horizontal")
-    try:
-        id_medico = int(input("Ingrese el ID del médico para ver su agenda: "))
-    except ValueError:
-        print("Debe ingresar un número válido.")
-        return
-    if not verificarSiExiste(id_medico, medicos, "médico"):
-        return
+    if rol_actual and rol_actual.lower() in ("médico", "medico") and dni_actual:
+        medico_ref = next((m for m in medicos if m["dni"] == dni_actual), None)
+        if not medico_ref:
+            print("DNI no encontrado.")
+            return
+        id_medico = medico_ref["id"]
+    else:
+        print("Médicos disponibles:")
+        info_medicos = []
+        for medico in medicos:
+            info_medicos.append([medico["id"], medico["nombre"], medico["apellido"], medico["especialidad"]])
+        print_tabla("Lista de Médicos", info_medicos, ["ID", "Nombre", "Apellido", "Especialidad"], "horizontal")
+        try:
+            id_medico = int(input("Ingrese el ID del médico para ver su agenda: "))
+        except ValueError:
+            print("Debe ingresar un número válido.")
+            return
+        if not verificarSiExiste(id_medico, medicos, "médico"):
+            return
     print(f"\nAgenda del Médico {medicos[id_medico]['nombre']} {medicos[id_medico]['apellido']}:")
     agenda = []
     for turno in turnos:
@@ -796,6 +885,7 @@ def editar_config_menu():
                 roles.append(nuevo_rol)
                 print(f"Rol '{nuevo_rol}' agregado.")
                 guardar_config()  # Guardar configuración inmediatamente
+                save_log(f"Rol agregado: {nuevo_rol}")
             else:
                 print("Rol inválido o ya existe.")
 
@@ -819,6 +909,7 @@ def editar_config_menu():
                                 if rol_eliminado in opcion["roles"]:
                                     opcion["roles"].remove(rol_eliminado)
                             print(f"Rol '{rol_eliminado}' eliminado.")
+                            save_log(f"Rol eliminado: {rol_eliminado}")
                             guardar_config()  # Guardar configuración inmediatamente
                         else:
                             print(
@@ -890,6 +981,7 @@ def editar_config_menu():
                                                 print(
                                                     f"Rol '{nuevo_rol}' agregado a la función '{funcion_seleccionada['texto']}'.")
                                                 guardar_config()  # Guardar configuración inmediatamente
+                                                save_log(f"Rol '{nuevo_rol}' agregado a la función '{funcion_seleccionada['texto']}'.")
                                                 break
                                             else:
                                                 print(
@@ -897,6 +989,7 @@ def editar_config_menu():
                                         else:
                                             print("Número de rol inválido.")
                                     except ValueError:
+                                        save_log("Error al agregar rol: Debe ingresar un número válido.")
                                         print("Debe ingresar un número válido.")
 
                             elif rol_opcion == "2":
@@ -920,6 +1013,7 @@ def editar_config_menu():
                                                     rol_eliminado)
                                                 print(
                                                     f"Rol '{rol_eliminado}' eliminado de la función '{funcion_seleccionada['texto']}'.")
+                                                save_log(f"Rol '{rol_eliminado}' eliminado de la función '{funcion_seleccionada['texto']}'.")
                                                 guardar_config()  # Guardar configuración inmediatamente
                                             else:
                                                 print(
