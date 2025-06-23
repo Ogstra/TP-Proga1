@@ -77,3 +77,24 @@ def print_tabla(titulo, info, columnas, horientacion):
         indice_estado = columnas.index("Estado") if "Estado" in columnas else -1
         
     console.print(table)
+
+
+def login_admin(admins):
+    print("\n--- Inicio de sesión administrador ---")
+    intentos = 3
+    while intentos > 0:
+        usuario = input("Usuario: ").strip()
+        contrasena = input("Contraseña: ").strip()
+
+        # Verificar credenciales
+        admin = next((a for a in admins if a["usuario"] == usuario and a["contrasena"] == contrasena), None)
+
+        if admin:
+            print("Inicio de sesión exitoso.\n")
+            return True
+        else:
+            intentos -= 1
+            print(f"Credenciales incorrectas. Intentos restantes: {intentos}")
+
+    print("Demasiados intentos fallidos. Acceso denegado.")
+    return False

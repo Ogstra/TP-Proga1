@@ -22,7 +22,19 @@ opciones_menu = config["opciones_menu"]
 # Mostrar el menú y manejar las opciones
 print("Bienvenido al sistema de gestión de turnos médicos\n")
 rol = menu_roles(roles)
+if rol.lower() == "admin":
+    try:
+        admins = cargar_json("admins")
+    except FileNotFoundError:
+        print("Error: No se encontró el archivo de administradores.")
+        exit()
+
+    if not login_admin(admins):
+        print("No autorizado. Saliendo del sistema.")
+        exit()
+
 mostrar_menu(rol, opciones_menu)
+
 
 # Bucle principal para mantener el programa en ejecución
 while True:
