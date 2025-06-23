@@ -12,10 +12,20 @@ def cargar_json(file_path):
         Returns:
         dict: Datos cargados desde el archivo JSON.
     """
-    with open("./datos/"+file_path+".json", 'r', encoding='utf-8') as file:
-        data_json = json.load(file)
-        data = data_json[file_path]
-    return data
+    try:
+        with open("./datos/"+file_path+".json", 'r', encoding='utf-8') as file:
+            data_json = json.load(file)
+            data = data_json[file_path]
+        save_log(f"Datos cargados desde {file_path}.json")
+        return data
+    except FileNotFoundError:
+        print(f"Error: El archivo {file_path}.json no se encuentra.")
+        save_log(f"Error al cargar datos desde {file_path}.json: Archivo no encontrado.")
+        return {}
+    except json.JSONDecodeError:
+        print(f"Error: El archivo {file_path}.json no es un JSON válido.")
+        save_log(f"Error al cargar datos desde {file_path}.json: JSON inválido.")
+        return {}
 
 def guardar_json(file_path, data):
     """
@@ -24,8 +34,13 @@ def guardar_json(file_path, data):
         file_path (str): Ruta del archivo JSON sin la extensión.
         data (dict): Datos a guardar en el archivo JSON.
     """
-    with open("./datos/"+file_path+".json", 'w', encoding='utf-8') as file:
-        json.dump({file_path: data}, file, indent=4, ensure_ascii=False)
+    try:
+        with open("./datos/"+file_path+".json", 'w', encoding='utf-8') as file:
+            json.dump({file_path: data}, file, indent=4, ensure_ascii=False)
+            save_log(f"Datos guardados en {file_path}.json")
+    except IOError as e:
+        print(f"Error al guardar datos en {file_path}.json: {e}")
+        save_log(f"Error al guardar datos en {file_path}.json: {e}")
 
 def tieneTurnosAsignados(id, turnos, posicionDelId):
     """"Verifica si un ID tiene turnos asignados en la lista de turnos.
@@ -91,10 +106,22 @@ def login_admin(admins):
 
         if admin:
             print("Inicio de sesión exitoso.\n")
+            save_log(f"Inicio de sesión exitoso para el usuario {usuario}.")
             return True
         else:
             intentos -= 1
             print(f"Credenciales incorrectas. Intentos restantes: {intentos}")
 
     print("Demasiados intentos fallidos. Acceso denegado.")
+    save_log(f"Intentos fallidos de inicio de sesión para el usuario {usuario}.")
     return False
+
+def save_log(message):
+    """
+    Guarda un mensaje en un archivo de log con la fecha y hora actual.
+    Args:
+        message (str): Mensaje a guardar en el log.
+    """
+    with open("./datos/log.txt", 'a', encoding='utf-8') as file:
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        file.write(f"{timestamp} - {message}\n")

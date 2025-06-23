@@ -164,7 +164,6 @@ def ver_turnos(turnos, pacientes, medicos):
             
     #ordenar la lista de turnos por fecha y hora
     info_turno.sort(key=lambda x: datetime.strptime(f"{x[0]} {x[1]}", "%Y-%m-%d %H:%M"))
-
     print_tabla("Lista de Turnos", info_turno, ["Fecha", "Hora", "Paciente", "Medico", "Consultorio", "Estado"], "horizontal")
 
 def crear_o_editar_turno(turnos, medicos, pacientes, id_turno=None):
@@ -263,7 +262,7 @@ def crear_o_editar_turno(turnos, medicos, pacientes, id_turno=None):
         if conflicto:
             continue
         break
-    
+    save_log(f"Turno {'editado' if id_turno else 'creado'}: Paciente ID {id_paciente}, Médico ID {id_medico}, Consultorio {consultorio}, Fecha {fecha}, Hora {hora}")
     
     return {
         "id": id_turno if id_turno is not None else (max([t["id"] for t in turnos], default=0) + 1),
@@ -286,7 +285,7 @@ def agregar_turno(turnos, medicos, pacientes):
             medicos[nuevo_turno["medico"]]["nombre"] + " " + medicos[nuevo_turno["medico"]]["apellido"],
             nuevo_turno["consultorio"], "Pendiente"
         ]], ["Fecha", "Hora", "Paciente", "Medico", "Consultorio", "Estado"], "horizontal")
-
+        save_log(f"Turno agregado: Paciente ID {nuevo_turno['paciente']}, Médico ID {nuevo_turno['medico']}, Consultorio {nuevo_turno['consultorio']}, Fecha {nuevo_turno['fecha']}, Hora {nuevo_turno['hora']}")
         print(f"Turno agregado con éxito. ID: {nuevo_turno['id']}")
 
 def modificar_turno(turnos, medicos, pacientes):
@@ -309,6 +308,7 @@ def modificar_turno(turnos, medicos, pacientes):
                 turnos[i] = turno_modificado
                 guardar_json("turnos", turnos)
                 print(f"Turno {id_turno} modificado con éxito.")
+                save_log(f"Turno modificado: ID {id_turno}, Paciente ID {turno_modificado['paciente']}, Médico ID {turno_modificado['medico']}, Consultorio {turno_modificado['consultorio']}, Fecha {turno_modificado['fecha']}, Hora {turno_modificado['hora']}")
             return
 
     print(f"No se encontró el turno con ID {id_turno}.")
@@ -346,6 +346,7 @@ def eliminar_medico(medicos, turnos, pacientes):
    
     medico["estado"] = "inactivo"
     print("Médico marcado como inactivo.")
+    save_log(f"Médico eliminado: DNI {dni_medico}, Estado cambiado a inactivo.")
 
     # Guardar cambios
     guardar_json("medicos", medicos)
@@ -498,6 +499,7 @@ def crear_paciente(pacientes):
     print_tabla("Paciente Agregado", [[paciente["id"], paciente["nombre"], paciente["apellido"], paciente["dni"], paciente["fecha_nac"], paciente["domicilio"], paciente["mail"], paciente["num_tel"], paciente["obra_social"], paciente["nacionalidad"], paciente["grupo_sanguineo"]]], ["ID", "Nombre", "Apellido", "DNI", "Fecha Nac.", "Domicilio", "Mail", "Teléfono", "Obra Social", "Nacionalidad", "Grupo Sanguíneo"], "vertical")
     print(f"Paciente agregado con éxito.")
     print(f"ID asignado: {nuevo_id_paciente}")
+    save_log(f"Paciente creado: ID {nuevo_id_paciente}, Nombre {nombre}, Apellido {apellido}, DNI {dni}, Fecha Nac. {fecha_nac}, Domicilio {domicilio}, Mail {mail}, Teléfono {num_tel}, Obra Social {obra_social}, Nacionalidad {nacionalidad}, Grupo Sanguíneo {grupo_sanguineo}")
 
 def eliminar_paciente(pacientes, turnos, medicos):
     dni_paciente = input("Ingrese el DNI del paciente que desea eliminar: ").strip()
@@ -522,16 +524,18 @@ def eliminar_paciente(pacientes, turnos, medicos):
         confirmar = input("¿Deseás eliminar estos turnos y desactivar al paciente? (s/n): ").strip().lower()
         if confirmar != "s":
             print("Operación cancelada.")
+            save_log(f"Eliminación de paciente cancelada: DNI {dni_paciente}")
             return
 
         # Eliminar turnos del paciente
         turnos[:] = [t for t in turnos if t["dni_paciente"] != dni_paciente]
         print("Turnos eliminados.")
+        save_log(f"Turnos eliminados para paciente: DNI {dni_paciente}")
 
     # Marcar paciente como inactivo
     paciente["estado"] = "Inactivo"
     print("Paciente marcado como inactivo.")
-
+    save_log(f"Paciente eliminado: DNI {dni_paciente}, Estado cambiado a inactivo.")
     # Guardar cambios
     guardar_json("pacientes", pacientes)
     guardar_json("turnos", turnos)
@@ -580,6 +584,7 @@ def eliminar_turnos(turnos, medicos, pacientes):
 
         except (ValueError, TypeError, KeyError) as e:
             print(f"Error procesando turno: {e}")
+            save_log(f"Error procesando turno: {e}")
 
     # Ordenar por fecha y hora
     info_turno.sort(key=lambda x: datetime.strptime(f"{x[1]} {x[2]}", "%Y-%m-%d %H:%M"))
@@ -611,11 +616,13 @@ def eliminar_turnos(turnos, medicos, pacientes):
     confirmar = input(f"¿Está seguro que desea eliminar el turno del día {turno['fecha']} a las {turno['hora']}? (s/n): ").strip().lower()
     if confirmar != 's':
         print("Operación cancelada.")
+        save_log(f"Eliminación de turno cancelada: ID {id_turno}")
         return
 
     turnos.remove(turno)
     guardar_json("turnos", turnos)
     print("Turno eliminado correctamente.")
+    save_log(f"Turno eliminado: ID {id_turno}, Fecha {turno['fecha']}, Hora {turno['hora']}, Paciente ID {turno['paciente']}, Médico ID {turno['medico']}")
 
 
 
@@ -648,15 +655,18 @@ def eliminar_medico(medicos, turnos, pacientes):
         confirmar = input("¿Deseás eliminar estos turnos y desactivar al médico? (s/n): ").strip().lower()
         if confirmar != "s":
             print("Operación cancelada.")
+            save_log(f"Eliminación de médico cancelada: DNI {dni_medico}")
             return
 
         # Eliminar turnos del médico
         turnos[:] = [t for t in turnos if t["dni_medico"] != dni_medico]
         print("El turno fue eliminado.")
+        save_log(f"Turnos eliminados para médico: DNI {dni_medico}")
 
     # Marcar médico como inactivo (guardando el mismo formato que en JSON)
     medico["estado"] = "Inactivo"
     print("Médico marcado como inactivo.")
+    save_log(f"Médico eliminado: DNI {dni_medico}, Estado cambiado a inactivo.")
 
     # Guardar cambios
     guardar_json("medicos", medicos)
@@ -726,6 +736,7 @@ def agregar_medico(medicos):
     }
 
     medicos.append(medico)  # Agregar el nuevo médico a la lista de médicos
+    save_log(f"Médico creado: ID {nuevo_id}, Nombre {nombre}, Apellido {apellido}, Especialidad {especialidad}, DNI {dni}, Fecha Nac. {fecha_nac}, Domicilio {domicilio}, Mail {mail}, Teléfono {num_tel}, Nacionalidad {nacionalidad}, Título {titulo}, Matrícula {matricula}, Horario {horarios}")
     guardar_json("medicos", medicos)  # Guardar los cambios en el archivo JSON
     print_tabla("Médico Agregado", [[medico["id"], medico["nombre"], medico["apellido"], medico["especialidad"], medico["dni"], medico["fecha_nac"], medico["domicilio"], medico["mail"], medico["num_tel"], medico["nacionalidad"], medico["titulo"], medico["matricula"], medico["horario"]]], ["ID", "Nombre", "Apellido", "Especialidad", "DNI", "Fecha Nac.", "Domicilio", "Mail", "Teléfono", "Nacionalidad", "Título", "Matrícula", "Horario"], "vertical")
     print(f"Médico agregado con éxito.")
@@ -828,6 +839,7 @@ def editar_config_menu():
                 roles.append(nuevo_rol)
                 print(f"Rol '{nuevo_rol}' agregado.")
                 guardar_config()  # Guardar configuración inmediatamente
+                save_log(f"Rol agregado: {nuevo_rol}")
             else:
                 print("Rol inválido o ya existe.")
 
@@ -851,6 +863,7 @@ def editar_config_menu():
                                 if rol_eliminado in opcion["roles"]:
                                     opcion["roles"].remove(rol_eliminado)
                             print(f"Rol '{rol_eliminado}' eliminado.")
+                            save_log(f"Rol eliminado: {rol_eliminado}")
                             guardar_config()  # Guardar configuración inmediatamente
                         else:
                             print(
@@ -922,6 +935,7 @@ def editar_config_menu():
                                                 print(
                                                     f"Rol '{nuevo_rol}' agregado a la función '{funcion_seleccionada['texto']}'.")
                                                 guardar_config()  # Guardar configuración inmediatamente
+                                                save_log(f"Rol '{nuevo_rol}' agregado a la función '{funcion_seleccionada['texto']}'.")
                                                 break
                                             else:
                                                 print(
@@ -929,6 +943,7 @@ def editar_config_menu():
                                         else:
                                             print("Número de rol inválido.")
                                     except ValueError:
+                                        save_log("Error al agregar rol: Debe ingresar un número válido.")
                                         print("Debe ingresar un número válido.")
 
                             elif rol_opcion == "2":
@@ -952,6 +967,7 @@ def editar_config_menu():
                                                     rol_eliminado)
                                                 print(
                                                     f"Rol '{rol_eliminado}' eliminado de la función '{funcion_seleccionada['texto']}'.")
+                                                save_log(f"Rol '{rol_eliminado}' eliminado de la función '{funcion_seleccionada['texto']}'.")
                                                 guardar_config()  # Guardar configuración inmediatamente
                                             else:
                                                 print(
