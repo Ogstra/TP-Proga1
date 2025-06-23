@@ -38,14 +38,14 @@ def tieneTurnosAsignados(id, turnos, posicionDelId):
     """
     return any(turno.get(posicionDelId) == id for turno in turnos)
 
-def print_tabla(titulo, info, columnas, horientacion):
+def print_tabla(titulo, info, columnas, orientacion):
     """
     Imprime una tabla formateada en la consola.
     Args:
         titulo (str): Título de la tabla.
         info (list): Lista de diccionarios a imprimir.
         columnas (list): Lista de claves que se mostrarán como columnas.
-        horientacion (str): Orientación de la tabla ("vertical" u "horizontal").
+        orientacion (str): Orientación de la tabla ("vertical" u "horizontal").
     Returns:
         None   
     """
@@ -60,7 +60,7 @@ def print_tabla(titulo, info, columnas, horientacion):
             show_lines=True
         )
         
-    if horientacion == "vertical":
+    if orientacion == "vertical":
         datos_transpuestos = list(zip(*info))
         table.add_column("Campo", justify="left")
         for i in range(len(info)):
