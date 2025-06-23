@@ -43,6 +43,15 @@ def menu_roles(roles):
         print("Debe ingresar un número válido.")
         return menu_roles(roles)
 
+rol_actual = None
+dni_actual = None
+
+def establecer_sesion(rol, dni):
+    """Guarda el rol y DNI del usuario logueado."""
+    global rol_actual, dni_actual
+    rol_actual = rol
+    dni_actual = dni
+
 def mostrar_menu(rol, opciones):
     """
     Función que muestra el menú principal con las opciones disponibles en el json y maneja las opciones seleccionadas por el usuario.
@@ -111,8 +120,19 @@ def ver_turnos(turnos, pacientes, medicos):
     - Determina el estado del turno comparando la fecha y hora actual con la del turno.
     - Imprime la lista de turnos en formato tabular.
     """
+    global rol_actual, dni_actual
     info_turno = []
     for turno in turnos:
+        # Filtrar por DNI segun rol medico o paciente
+        if rol_actual and dni_actual:
+            if rol_actual.lower() in ("paciente",):
+                paciente_ref = next((p for p in pacientes if p["dni"] == dni_actual), None)
+                if not paciente_ref or turno["paciente"] != paciente_ref["id"]:
+                    continue
+            elif rol_actual.lower() in ("médico", "medico"):
+                medico_ref = next((m for m in medicos if m["dni"] == dni_actual), None)
+                if not medico_ref or turno["medico"] != medico_ref["id"]:
+                    continue
         try:
             id_medico = turno["medico"]
             id_paciente = turno["paciente"]
@@ -169,6 +189,11 @@ def crear_o_editar_turno(turnos, medicos, pacientes, id_turno=None):
     while True:
         try:
             id_medico = int(input("Ingrese el ID del médico: "))
+            if rol_actual and rol_actual.lower() in ("médico", "medico"):
+                medico_ref = next((m for m in medicos if m["dni"] == dni_actual), None)
+                if medico_ref and id_medico != medico_ref["id"]:
+                    print("Solo puede asignar turnos a su propio ID.")
+                    continue
             if verificarSiExiste(id_medico, medicos, "médico"):
                 break
         except ValueError:
@@ -273,6 +298,12 @@ def modificar_turno(turnos, medicos, pacientes):
 
     for i, turno in enumerate(turnos):
         if turno["id"] == id_turno:
+            if rol_actual and dni_actual:
+                if rol_actual.lower() in ("médico", "medico"):
+                    medico_ref = next((m for m in medicos if m["dni"] == dni_actual), None)
+                    if not medico_ref or turno["medico"] != medico_ref["id"]:
+                        print("Solo puede modificar sus propios turnos.")
+                        return
             turno_modificado = crear_o_editar_turno(turnos, medicos, pacientes, id_turno)
             if turno_modificado:
                 turnos[i] = turno_modificado
@@ -512,8 +543,13 @@ def eliminar_turnos(turnos, medicos, pacientes):
     print("\n--- Eliminar Turno ---")
     # Mostrar lista de turnos con ID
     print("Turnos disponibles:")
+    global rol_actual, dni_actual
     info_turno = []
     for turno in turnos:
+        if rol_actual and dni_actual and rol_actual.lower() in ("médico", "medico"):
+            medico_ref = next((m for m in medicos if m["dni"] == dni_actual), None)
+            if not medico_ref or turno["medico"] != medico_ref["id"]:
+                continue
         try:
             id_turno = turno["id"]
             id_medico = turno["medico"]
@@ -565,6 +601,11 @@ def eliminar_turnos(turnos, medicos, pacientes):
         return
 
     turno = next((t for t in turnos if t["id"] == id_turno), None)
+    if turno and rol_actual and dni_actual and rol_actual.lower() in ("médico", "medico"):
+        medico_ref = next((m for m in medicos if m["dni"] == dni_actual), None)
+        if not medico_ref or turno["medico"] != medico_ref["id"]:
+            print("Solo puede eliminar sus propios turnos.")
+            return
 
     if not turno:
         print(f"No se encontró un turno con ID {id_turno}.")
@@ -712,10 +753,30 @@ def agenda_medico(medicos, turnos):
     - Si hay turnos, ordena la agenda por fecha y hora.
     - Imprime la agenda del médico en formato tabular.
     """
+    global rol_actual, dni_actual
     print("Agenda Médica:")
     if not medicos:
         print("No hay médicos registrados.")
         return
+    if rol_actual and rol_actual.lower() in ("médico", "medico") and dni_actual:
+        medico_ref = next((m for m in medicos if m["dni"] == dni_actual), None)
+        if not medico_ref:
+            print("DNI no encontrado.")
+            return
+        id_medico = medico_ref["id"]
+    else:
+        print("Médicos disponibles:")
+        info_medicos = []
+        for medico in medicos:
+            info_medicos.append([medico["id"], medico["nombre"], medico["apellido"], medico["especialidad"]])
+        print_tabla("Lista de Médicos", info_medicos, ["ID", "Nombre", "Apellido", "Especialidad"], "horizontal")
+        try:
+            id_medico = int(input("Ingrese el ID del médico para ver su agenda: "))
+        except ValueError:
+            print("Debe ingresar un número válido.")
+            return
+        if not verificarSiExiste(id_medico, medicos, "médico"):
+            return
     print("Médicos disponibles:")
     info_medicos = []
     for medico in medicos:
