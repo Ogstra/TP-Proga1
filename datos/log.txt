@@ -43,3 +43,190 @@
 2025-06-23 19:49:03 - Inicio de sesión exitoso para el usuario admin.
 2025-06-23 19:49:09 - Datos guardados en turnos.json
 2025-06-23 19:49:09 - Turno eliminado: ID 23, Fecha 2025-07-08, Hora 15:00, Médico ID 19, Paciente ID 18, Consultorio 219
+2025-06-23 19:49:51 - Datos cargados desde pacientes.json
+2025-06-23 19:49:51 - Datos cargados desde medicos.json
+2025-06-23 19:49:51 - Datos cargados desde turnos.json
+2025-06-23 19:49:51 - Datos cargados desde config.json
+2025-06-23 19:49:51 - Datos cargados desde config.json
+2025-06-23 19:49:57 - Sesión iniciada: Rol Médico, DNI 76543210
+2025-06-23 19:50:03 - Datos cargados desde pacientes.json
+2025-06-23 19:50:03 - Datos cargados desde medicos.json
+2025-06-23 19:50:03 - Datos cargados desde turnos.json
+2025-06-23 19:50:03 - Datos cargados desde config.json
+2025-06-23 19:50:03 - Datos cargados desde config.json
+2025-06-23 19:50:17 - Sesión iniciada: Rol Médico, DNI 76543210
+2025-06-23 19:50:24 - Datos cargados desde pacientes.json
+2025-06-23 19:50:24 - Datos cargados desde medicos.json
+2025-06-23 19:50:24 - Datos cargados desde turnos.json
+2025-06-23 19:50:24 - Datos cargados desde config.json
+2025-06-23 19:50:24 - Datos cargados desde config.json
+2025-06-23 19:50:27 - Sesión iniciada: Rol Médico, DNI 76543210
+2025-06-23 19:50:50 - Datos cargados desde pacientes.json
+2025-06-23 19:50:50 - Datos cargados desde medicos.json
+2025-06-23 19:50:50 - Datos cargados desde turnos.json
+2025-06-23 19:50:50 - Datos cargados desde config.json
+2025-06-23 19:50:50 - Datos cargados desde config.json
+2025-06-23 19:50:56 - Sesión iniciada: Rol Médico, DNI 65432109
+2025-06-23 19:51:09 - Datos cargados desde pacientes.json
+2025-06-23 19:51:09 - Datos cargados desde medicos.json
+2025-06-23 19:51:09 - Datos cargados desde turnos.json
+2025-06-23 19:51:09 - Datos cargados desde config.json
+2025-06-23 19:51:09 - Datos cargados desde config.json
+2025-06-23 19:51:10 - Sesión iniciada: Rol Médico, DNI 76543210
+2025-06-23 19:52:24 - Datos cargados desde pacientes.json
+2025-06-23 19:52:24 - Datos cargados desde medicos.json
+2025-06-23 19:52:24 - Datos cargados desde turnos.json
+2025-06-23 19:52:24 - Datos cargados desde config.json
+2025-06-23 19:52:24 - Datos cargados desde config.json
+2025-06-23 19:52:36 - Sesión iniciada: Rol Médico, DNI 87654321
+2025-06-23 19:52:51 - Datos cargados desde pacientes.json
+2025-06-23 19:52:51 - Datos cargados desde medicos.json
+2025-06-23 19:52:51 - Datos cargados desde turnos.json
+2025-06-23 19:52:51 - Datos cargados desde config.json
+2025-06-23 19:52:51 - Datos cargados desde config.json
+2025-06-23 19:52:55 - Sesión iniciada: Rol Médico, DNI 76543210
+2025-06-23 19:52:58 - Datos cargados desde pacientes.json
+2025-06-23 19:52:58 - Datos cargados desde medicos.json
+2025-06-23 19:52:58 - Datos cargados desde turnos.json
+2025-06-23 19:52:58 - Datos cargados desde config.json
+2025-06-23 19:52:58 - Datos cargados desde config.json
+2025-06-23 19:53:07 - Sesión iniciada: Rol Médico, DNI 76543210
+2025-06-23 19:53:25 - Datos cargados desde pacientes.json
+2025-06-23 19:53:25 - Datos cargados desde medicos.json
+2025-06-23 19:53:25 - Datos cargados desde turnos.json
+2025-06-23 19:53:25 - Datos cargados desde config.json
+2025-06-23 19:53:25 - Datos cargados desde config.json
+2025-06-23 19:53:32 - Sesión iniciada: Rol Médico, DNI 76543210
+2025-06-23 19:53:34 - Datos cargados desde pacientes.json
+2025-06-23 19:53:34 - Datos cargados desde medicos.json
+2025-06-23 19:53:34 - Datos cargados desde turnos.json
+2025-06-23 19:53:34 - Datos cargados desde config.json
+2025-06-23 19:53:34 - Datos cargados desde config.json
+2025-06-23 19:53:35 - Sesión iniciada: Rol Médico, DNI 76543210
+2025-06-23 19:54:25 - Datos cargados desde pacientes.json
+2025-06-23 19:54:25 - Datos cargados desde medicos.json
+2025-06-23 19:54:25 - Datos cargados desde turnos.json
+2025-06-23 19:54:25 - Datos cargados desde config.json
+2025-06-23 19:54:25 - Datos cargados desde config.json
+2025-06-23 19:54:33 - Sesión iniciada: Rol Médico, DNI 76543210
+2025-06-23 19:56:25 - Datos cargados desde pacientes.json
+2025-06-23 19:56:25 - Datos cargados desde medicos.json
+2025-06-23 19:56:25 - Datos cargados desde turnos.json
+2025-06-23 19:56:25 - Datos cargados desde config.json
+2025-06-23 19:56:25 - Datos cargados desde config.json
+2025-06-23 19:56:33 - Sesión iniciada: Rol Médico, DNI 76543210
+2025-06-23 19:58:22 - Datos cargados desde pacientes.json
+2025-06-23 19:58:22 - Datos cargados desde medicos.json
+2025-06-23 19:58:22 - Datos cargados desde turnos.json
+2025-06-23 19:58:22 - Datos cargados desde config.json
+2025-06-23 19:58:22 - Datos cargados desde config.json
+2025-06-23 19:58:29 - Sesión iniciada: Rol Médico, DNI 76543210
+2025-06-23 19:59:11 - Datos cargados desde pacientes.json
+2025-06-23 19:59:11 - Datos cargados desde medicos.json
+2025-06-23 19:59:11 - Datos cargados desde turnos.json
+2025-06-23 19:59:11 - Datos cargados desde config.json
+2025-06-23 19:59:11 - Datos cargados desde config.json
+2025-06-23 19:59:13 - Sesión iniciada: Rol Médico, DNI 76543210
+2025-06-23 20:00:18 - Datos cargados desde pacientes.json
+2025-06-23 20:00:18 - Datos cargados desde medicos.json
+2025-06-23 20:00:18 - Datos cargados desde turnos.json
+2025-06-23 20:00:18 - Datos cargados desde config.json
+2025-06-23 20:00:18 - Datos cargados desde config.json
+2025-06-23 20:00:25 - Sesión iniciada: Rol Médico, DNI 76543210
+2025-06-23 20:01:42 - Datos cargados desde pacientes.json
+2025-06-23 20:01:42 - Datos cargados desde medicos.json
+2025-06-23 20:01:42 - Datos cargados desde turnos.json
+2025-06-23 20:01:42 - Datos cargados desde config.json
+2025-06-23 20:01:42 - Datos cargados desde config.json
+2025-06-23 20:01:43 - Sesión iniciada: Rol Médico, DNI 76543210
+2025-06-23 20:03:30 - Datos cargados desde pacientes.json
+2025-06-23 20:03:30 - Datos cargados desde medicos.json
+2025-06-23 20:03:30 - Datos cargados desde turnos.json
+2025-06-23 20:03:30 - Datos cargados desde config.json
+2025-06-23 20:03:30 - Datos cargados desde config.json
+2025-06-23 20:03:34 - Sesión iniciada: Rol Médico, DNI 76543210
+2025-06-23 20:03:42 - Datos cargados desde pacientes.json
+2025-06-23 20:03:42 - Datos cargados desde medicos.json
+2025-06-23 20:03:42 - Datos cargados desde turnos.json
+2025-06-23 20:03:42 - Datos cargados desde config.json
+2025-06-23 20:03:42 - Datos cargados desde config.json
+2025-06-23 20:03:44 - Sesión iniciada: Rol Médico, DNI 76543210
+2025-06-23 20:04:04 - Datos cargados desde pacientes.json
+2025-06-23 20:04:04 - Datos cargados desde medicos.json
+2025-06-23 20:04:04 - Datos cargados desde turnos.json
+2025-06-23 20:04:04 - Datos cargados desde config.json
+2025-06-23 20:04:04 - Datos cargados desde config.json
+2025-06-23 20:04:07 - Sesión iniciada: Rol Médico, DNI 76543210
+2025-06-23 20:05:12 - Datos cargados desde pacientes.json
+2025-06-23 20:05:12 - Datos cargados desde medicos.json
+2025-06-23 20:05:12 - Datos cargados desde turnos.json
+2025-06-23 20:05:12 - Datos cargados desde config.json
+2025-06-23 20:05:12 - Datos cargados desde config.json
+2025-06-23 20:05:21 - Sesión iniciada: Rol Médico, DNI 76543210
+2025-06-23 20:05:37 - Datos cargados desde pacientes.json
+2025-06-23 20:05:37 - Datos cargados desde medicos.json
+2025-06-23 20:05:37 - Datos cargados desde turnos.json
+2025-06-23 20:05:37 - Datos cargados desde config.json
+2025-06-23 20:05:37 - Datos cargados desde config.json
+2025-06-23 20:05:38 - Sesión iniciada: Rol Médico, DNI 76543210
+2025-06-23 20:05:43 - Datos cargados desde pacientes.json
+2025-06-23 20:05:43 - Datos cargados desde medicos.json
+2025-06-23 20:05:43 - Datos cargados desde turnos.json
+2025-06-23 20:05:43 - Datos cargados desde config.json
+2025-06-23 20:05:43 - Datos cargados desde config.json
+2025-06-23 20:05:46 - Datos cargados desde pacientes.json
+2025-06-23 20:05:46 - Datos cargados desde medicos.json
+2025-06-23 20:05:46 - Datos cargados desde turnos.json
+2025-06-23 20:05:46 - Datos cargados desde config.json
+2025-06-23 20:05:46 - Datos cargados desde config.json
+2025-06-23 20:05:47 - Datos cargados desde admins.json
+2025-06-23 20:05:49 - Inicio de sesión exitoso para el usuario admin.
+2025-06-23 20:07:06 - Datos cargados desde pacientes.json
+2025-06-23 20:07:06 - Datos cargados desde medicos.json
+2025-06-23 20:07:06 - Datos cargados desde turnos.json
+2025-06-23 20:07:06 - Datos cargados desde config.json
+2025-06-23 20:07:06 - Datos cargados desde config.json
+2025-06-23 20:07:13 - Datos cargados desde pacientes.json
+2025-06-23 20:07:13 - Datos cargados desde medicos.json
+2025-06-23 20:07:13 - Datos cargados desde turnos.json
+2025-06-23 20:07:13 - Datos cargados desde config.json
+2025-06-23 20:07:13 - Datos cargados desde config.json
+2025-06-23 20:07:14 - Sesión iniciada: Rol Médico, DNI 76543210
+2025-06-23 20:09:27 - Datos cargados desde pacientes.json
+2025-06-23 20:09:27 - Datos cargados desde medicos.json
+2025-06-23 20:09:27 - Datos cargados desde turnos.json
+2025-06-23 20:09:27 - Datos cargados desde config.json
+2025-06-23 20:09:27 - Datos cargados desde config.json
+2025-06-23 20:09:40 - Datos cargados desde pacientes.json
+2025-06-23 20:09:40 - Datos cargados desde medicos.json
+2025-06-23 20:09:40 - Datos cargados desde turnos.json
+2025-06-23 20:09:40 - Datos cargados desde config.json
+2025-06-23 20:09:40 - Datos cargados desde config.json
+2025-06-23 20:09:41 - Sesión iniciada: Rol Médico, DNI 76543210
+2025-06-23 20:09:51 - Datos cargados desde pacientes.json
+2025-06-23 20:09:51 - Datos cargados desde medicos.json
+2025-06-23 20:09:51 - Datos cargados desde turnos.json
+2025-06-23 20:09:51 - Datos cargados desde config.json
+2025-06-23 20:09:51 - Datos cargados desde config.json
+2025-06-23 20:09:53 - Sesión iniciada: Rol Médico, DNI 76543210
+2025-06-23 20:09:55 - Datos cargados desde pacientes.json
+2025-06-23 20:09:55 - Datos cargados desde medicos.json
+2025-06-23 20:09:55 - Datos cargados desde turnos.json
+2025-06-23 20:09:55 - Datos cargados desde config.json
+2025-06-23 20:09:55 - Datos cargados desde config.json
+2025-06-23 20:10:01 - Sesión iniciada: Rol Médico, DNI 78901987
+2025-06-23 20:10:07 - Datos cargados desde pacientes.json
+2025-06-23 20:10:07 - Datos cargados desde medicos.json
+2025-06-23 20:10:07 - Datos cargados desde turnos.json
+2025-06-23 20:10:07 - Datos cargados desde config.json
+2025-06-23 20:10:07 - Datos cargados desde config.json
+2025-06-23 20:10:08 - Sesión iniciada: Rol Médico, DNI 92345987
+2025-06-23 20:10:14 - Datos cargados desde pacientes.json
+2025-06-23 20:10:14 - Datos cargados desde medicos.json
+2025-06-23 20:10:14 - Datos cargados desde turnos.json
+2025-06-23 20:10:14 - Datos cargados desde config.json
+2025-06-23 20:10:14 - Datos cargados desde config.json
+2025-06-23 20:10:20 - Sesión iniciada: Rol Médico, DNI 87654321
+2025-06-23 20:11:21 - Turno editado: Paciente ID 4, Médico ID 1, Consultorio 203, Fecha 2003-11-11, Hora 12:15
+2025-06-23 20:11:21 - Datos guardados en turnos.json
+2025-06-23 20:11:21 - Turno modificado: ID 15, Paciente ID 4, Médico ID 1, Consultorio 203, Fecha 2003-11-11, Hora 12:15

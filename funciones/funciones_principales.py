@@ -294,7 +294,27 @@ def agregar_turno(turnos, medicos, pacientes):
         save_log(f"Turno agregado: Paciente ID {nuevo_turno['paciente']}, Médico ID {nuevo_turno['medico']}, Consultorio {nuevo_turno['consultorio']}, Fecha {nuevo_turno['fecha']}, Hora {nuevo_turno['hora']}")
         print(f"Turno agregado con éxito. ID: {nuevo_turno['id']}")
 
-def modificar_turno(turnos, medicos, pacientes):
+def modificar_turno(turnos, medicos, pacientes, rol):
+    if rol == "Médico":
+        dni_medico = dni_actual
+        medico = next((m for m in medicos if str(m["dni"]) == dni_medico and m.get("estado", "activo").lower() == "activo"), None)
+        if not medico:
+            print("No se encontró un médico activo con ese DNI.")
+            return
+        id_medico = medico["id"]
+
+        turnos_medico = [t for t in turnos if t["medico"] == id_medico]
+        if not turnos_medico:
+            print("No tiene turnos asignados.")
+            return
+        info_medicos = []
+        print("\nTurnos asignados:")
+        for t in turnos_medico:
+            paciente = next((p for p in pacientes if p["id"] == t["paciente"]), {})
+        info_medicos.append([t["id"], medico["nombre"], medico["apellido"], medico["especialidad"], t["hora"], paciente["nombre"], paciente["apellido"]])
+        print_tabla("Lista de Médicos", info_medicos, ["ID", "Nombre Del Doctor", "Apellido", "Especialidad", "Horario", "Paciente", "Apellido"], "horizontal")
+
+
     try:
         id_turno = mensajesTipoNumerico("Ingrese el ID del turno a modificar: ")
     except ValueError:
@@ -552,7 +572,7 @@ def eliminar_turnos(turnos, medicos, pacientes, rol):
 
     # Si el rol es Médico, pedimos su DNI asi solo te muestra los turno que tiene ese medico
     if rol == "Médico":
-        dni_medico = input("Ingrese su DNI: ").strip()
+        dni_medico = dni_actual
         medico = next((m for m in medicos if str(m["dni"]) == dni_medico and m.get("estado", "activo").lower() == "activo"), None)
         if not medico:
             print("No se encontró un médico activo con ese DNI.")

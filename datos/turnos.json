@@ -98,11 +98,11 @@
         },
         {
             "id": 15,
-            "paciente": 1,
+            "paciente": 4,
             "medico": 1,
-            "consultorio": "206",
-            "fecha": "2025-04-16",
-            "hora": "09:59"
+            "consultorio": "203",
+            "fecha": "2003-11-11",
+            "hora": "12:15"
         },
         {
             "id": 16,
@@ -155,7 +155,7 @@
         {
             "id": 24,
             "paciente": 19,
-            "medico": 20,
+            "medico": 2,
             "consultorio": "220",
             "fecha": "2025-07-09",
             "hora": "10:45"

@@ -97,7 +97,8 @@
                 "argumentos": [
                     "turnos",
                     "medicos",
-                    "pacientes"
+                    "pacientes",
+                    "rol"
                 ]
             },
             {
