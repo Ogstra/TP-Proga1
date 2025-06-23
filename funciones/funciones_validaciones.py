@@ -82,7 +82,7 @@ def validarTelefono(telefono):
     Valida si el número de teléfono tiene un formato básico.
     Permite números con o sin guiones, espacios o paréntesis.
     """
-    patron = r"^\d{2,4}-\d{4,6}$"
+    patron = r"^\d{2,4}-\d{4,8}$"
     return bool(re.fullmatch(patron, telefono.strip()))
     
 
