@@ -51,6 +51,7 @@ def establecer_sesion(rol, dni):
     global rol_actual, dni_actual
     rol_actual = rol
     dni_actual = dni
+    save_log(f"Sesión iniciada: Rol {rol_actual}, DNI {dni_actual}")
 
 def mostrar_menu(rol, opciones):
     """
@@ -92,6 +93,7 @@ def mostrar_menu(rol, opciones):
     
     if opcion == 0:
         print("Saliendo del programa...")
+        save_log("Sesión finalizada por {rol_actual} con DNI {dni_actual}")
         exit()
     if 1 <= opcion <= len(opciones_validas):
         seleccionada = opciones_validas[opcion - 1]

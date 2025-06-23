@@ -54,6 +54,7 @@ while True:
         mostrar_menu(rol, opciones_menu)
     elif continuar in ('n', '0'):
         print("Saliendo del sistema. ¡Hasta luego!")
+        save_log("Saliendo del sistema. {rol} con DNI {dni_ingresado} ha cerrado sesión.")
         break
     else:
         print("*** Opción no válida ***")
