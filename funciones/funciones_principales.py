@@ -608,7 +608,7 @@ def eliminar_turnos(turnos, medicos, pacientes, rol):
             paciente = next((p for p in pacientes if p["id"] == t["paciente"]), {})
             nombre_medico = f"{medico.get('nombre', '')} {medico.get('apellido', '')}"
             nombre_paciente = f"{paciente.get('nombre', '')} {paciente.get('apellido', '')}"
-            info_medicos.append([medico["id"], medico["nombre"], medico["apellido"], medico["especialidad"], t["hora"], paciente["nombre"], paciente["apellido"]])
+            info_medicos.append([t["id"], medico["nombre"], medico["apellido"], medico["especialidad"], t["hora"], paciente["nombre"], paciente["apellido"]])
         print_tabla("Lista de Médicos", info_medicos, ["ID", "Nombre Del Doctor", "Apellido", "Especialidad", "Horario", "Paciente", "Apellido"], "horizontal")
 
             
