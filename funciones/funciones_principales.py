@@ -33,7 +33,7 @@ def menu_roles(roles):
         opcion = mensajesTipoNumerico("\nSeleccione una opción: ")
         if opcion == 0:
             print("Saliendo del programa...")
-            return None
+            exit()
         elif 1 <= opcion <= len(roles):
             return roles[opcion - 1]
         else:
