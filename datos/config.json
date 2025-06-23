@@ -101,14 +101,16 @@
                 ]
             },
             {
-                "clave": "eliminar_turno",
-                "texto": "Eliminar turno",
+                "clave": "eliminar_turnos",
+                "texto": "Eliminar turnos",
                 "roles": [
                     "Admin",
                     "Médico"
                 ],
                 "argumentos": [
-                    "turnos"
+                    "turnos",
+                    "medicos",
+                    "pacientes"
                 ]
             },
             {
@@ -139,7 +141,7 @@
                     "Admin"
                 ],
                 "argumentos": [
-                    "pacientes"
+                    "pacientes", "turnos", "medicos"
                 ]
             },
             {

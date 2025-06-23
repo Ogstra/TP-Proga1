@@ -11,7 +11,8 @@
             "num_tel": "555-1234",
             "obra_social": "OSDE",
             "nacionalidad": "Argentina",
-            "grupo_sanguineo": "O+"
+            "grupo_sanguineo": "O+",
+            "estado": "Activo"
         },
         {
             "id": 2,
@@ -24,7 +25,8 @@
             "num_tel": "555-5678",
             "obra_social": "Swiss Medical",
             "nacionalidad": "Argentina",
-            "grupo_sanguineo": "A-"
+            "grupo_sanguineo": "A-",
+            "estado": "Activo"
         },
         {
             "id": 3,
@@ -37,7 +39,8 @@
             "num_tel": "555-5278",
             "obra_social": "Swiss Medical",
             "nacionalidad": "Argentina",
-            "grupo_sanguineo": "A+"
+            "grupo_sanguineo": "A+",
+            "estado": "Activo"
         },
         {
             "id": 4,
@@ -50,7 +53,8 @@
             "num_tel": "555-7890",
             "obra_social": "Galeno",
             "nacionalidad": "Argentina",
-            "grupo_sanguineo": "B+"
+            "grupo_sanguineo": "B+",
+            "estado": "Activo"
         },
         {
             "id": 5,
@@ -63,7 +67,8 @@
             "num_tel": "555-3210",
             "obra_social": "Medicus",
             "nacionalidad": "Argentina",
-            "grupo_sanguineo": "AB-"
+            "grupo_sanguineo": "AB-",
+            "estado": "Activo"
         },
         {
             "id": 6,
@@ -76,7 +81,8 @@
             "num_tel": "555-6543",
             "obra_social": "OSDE",
             "nacionalidad": "Argentina",
-            "grupo_sanguineo": "O-"
+            "grupo_sanguineo": "O-",
+            "estado": "Activo"
         },
         {
             "id": 7,
@@ -89,7 +95,8 @@
             "num_tel": "555-9876",
             "obra_social": "Swiss Medical",
             "nacionalidad": "Argentina",
-            "grupo_sanguineo": "B-"
+            "grupo_sanguineo": "B-",
+            "estado": "Activo"
         },
         {
             "id": 8,
@@ -102,7 +109,8 @@
             "num_tel": "42823337",
             "obra_social": "osde",
             "nacionalidad": "Argentina",
-            "grupo_sanguineo": "B+"
+            "grupo_sanguineo": "B+",
+            "estado": "Activo"
         },
         {
             "id": 9,
@@ -115,7 +123,8 @@
             "num_tel": "3378-6778",
             "obra_social": "odskd",
             "nacionalidad": "sdsds",
-            "grupo_sanguineo": "ui"
+            "grupo_sanguineo": "ui",
+            "estado": "Activo"
         }
     ]
 }

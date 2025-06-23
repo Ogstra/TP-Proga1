@@ -471,21 +471,118 @@ def crear_paciente(pacientes):
     print(f"Paciente agregado con éxito.")
     print(f"ID asignado: {nuevo_id_paciente}")
 
-def eliminar_paciente(pacientes):
-    dni_paciente = input("Ingrese el DNI del paciente que desea eliminar: ")
-    paciente_a_eliminar = None
-    for id_paciente, datos_paciente in pacientes.items():
-        if datos_paciente["dni"] == dni_paciente:
-            paciente_a_eliminar = id_paciente
-            break
+def eliminar_paciente(pacientes, turnos, medicos):
+    dni_paciente = input("Ingrese el DNI del paciente que desea eliminar: ").strip()
 
-    if paciente_a_eliminar:
-        del pacientes[paciente_a_eliminar]
-        print(f"Paciente con DNI {dni_paciente} eliminado con éxito.")
-    else:
-        print(f"No se encontró un paciente con DNI {dni_paciente}.")
-        
-        
+    # Buscar paciente activo
+    paciente = next((p for p in pacientes if p["dni"] == dni_paciente and p.get("estado", "activo").lower() == "activo"), None)
+    if not paciente:
+        print(f"No se encontró un paciente activo con DNI {dni_paciente}.")
+        return
+
+    # Verificar si tiene turnos
+    if tieneTurnosAsignados(dni_paciente, turnos, "dni_paciente"):
+        print("Este paciente tiene turnos asignados con médicos.")
+
+        # Mostrar médicos afectados
+        turnos_paciente = [t for t in turnos if t["dni_paciente"] == dni_paciente]
+        for turno in turnos_paciente:
+            medico = next((m for m in medicos if m["dni"] == turno["dni_medico"]), {})
+            nombre = f"{medico.get('nombre', 'Médico')} {medico.get('apellido', '')}"
+            print(f"- Turno con {nombre} | Fecha: {turno['fecha']} | Hora: {turno['hora']}")
+
+        confirmar = input("¿Deseás eliminar estos turnos y desactivar al paciente? (s/n): ").strip().lower()
+        if confirmar != "s":
+            print("Operación cancelada.")
+            return
+
+        # Eliminar turnos del paciente
+        turnos[:] = [t for t in turnos if t["dni_paciente"] != dni_paciente]
+        print("Turnos eliminados.")
+
+    # Marcar paciente como inactivo
+    paciente["estado"] = "Inactivo"
+    print("Paciente marcado como inactivo.")
+
+    # Guardar cambios
+    guardar_json("pacientes", pacientes)
+    guardar_json("turnos", turnos)
+
+def eliminar_turnos(turnos, medicos, pacientes):
+    print("\n--- Eliminar Turno ---")
+    # Mostrar lista de turnos con ID
+    print("Turnos disponibles:")
+    info_turno = []
+    for turno in turnos:
+        try:
+            id_turno = turno["id"]
+            id_medico = turno["medico"]
+            id_paciente = turno["paciente"]
+
+            # Obtener nombres de paciente y médico
+            paciente = next((p for p in pacientes if p["id"] == id_paciente), None)
+            paciente = paciente['nombre'] + " " + paciente['apellido'] if paciente else None
+
+            medico = next((m for m in medicos if m["id"] == id_medico), None)
+            medico = medico['nombre'] + " " + medico['apellido'] if medico else None
+
+            # Determinar estado del turno
+            fecha_hora_turno = f"{turno['fecha']} {turno['hora']}"
+            ahora = datetime.now().strftime("%Y-%m-%d %H:%M")
+            estado = "Atendido" if fecha_hora_turno < ahora else "Pendiente"
+
+            if paciente and medico:
+                # Agrega el ID como primer campo
+                info_turno.append([
+                    str(id_turno),
+                    turno['fecha'],
+                    turno['hora'],
+                    paciente,
+                    medico,
+                    turno['consultorio'],
+                    estado
+                ])
+            else:
+                print("Datos incompletos para mostrar el turno.")
+
+        except (ValueError, TypeError, KeyError) as e:
+            print(f"Error procesando turno: {e}")
+
+    # Ordenar por fecha y hora
+    info_turno.sort(key=lambda x: datetime.strptime(f"{x[1]} {x[2]}", "%Y-%m-%d %H:%M"))
+
+    # Mostrar tabla incluyendo el ID
+    print_tabla(
+        "Lista de Turnos",
+        info_turno,
+        ["ID", "Fecha", "Hora", "Paciente", "Medico", "Consultorio", "Estado"],
+        "horizontal"
+    )
+    try:
+        id_turno = int(input("Ingrese el ID del turno que desea eliminar: ").strip())
+    except ValueError:
+        print("ID inválido. Debe ser un número.")
+        return
+
+    turno = next((t for t in turnos if t["id"] == id_turno), None)
+
+    if not turno:
+        print(f"No se encontró un turno con ID {id_turno}.")
+        return
+
+    confirmar = input(f"¿Está seguro que desea eliminar el turno del día {turno['fecha']} a las {turno['hora']}? (s/n): ").strip().lower()
+    if confirmar != 's':
+        print("Operación cancelada.")
+        return
+
+    turnos.remove(turno)
+    guardar_json("turnos", turnos)
+    print("Turno eliminado correctamente.")
+
+
+
+
+    
 def eliminar_medico(medicos, turnos, pacientes):
     # La funcion busca primero el dni del medico y luego que si lo encuentra, verifica si tiene turnos asignados y si no lo elimina
     # Una vez que ve que tiene turno, lo eliminara, despues te preguntara si quieres eliminar los turnos y el medico lo marcara como inactivo
