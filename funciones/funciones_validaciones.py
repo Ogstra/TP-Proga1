@@ -2,7 +2,7 @@ import funciones.funciones_principales as funciones_principales
 import unicodedata
 from datetime import datetime, timedelta
 import re
-
+import funciones.funciones_generales as funciones_generales
 def ejecutar(nombre_funcion, *args, **kwargs):
     """
     Ejecuta dinámicamente una función por su nombre desde el módulo funciones_principales.
@@ -53,14 +53,16 @@ def validarFecha(fecha_nac):
     try:
         datetime.strptime(fecha_nac, "%Y-%m-%d")
         return True
-    except ValueError:
+    except ValueError as e:
+        funciones_generales.save_log(f"ERROR al validar fecha: {e}")
         return False
 
 def validarHora(hora):
     try:
         datetime.strptime(hora, "%H:%M")
         return True
-    except ValueError:
+    except ValueError as e:
+        funciones_generales.save_log(f"ERROR al validar hora: {e}")
         return False
 
 def validarDNI(dni):
@@ -131,7 +133,8 @@ def pedir_dos_horarios(turno_nombre):
 
             return f"{inicio_str.strip()}-{fin_str.strip()}"
 
-        except ValueError:
+        except ValueError as e:
+            funciones_generales.save_log(f"ERROR al validar horarios: {e}")
             print("Horas inválidas. Asegurate de usar el formato HH:MM.")
 
 def pedir_horarios_medico():

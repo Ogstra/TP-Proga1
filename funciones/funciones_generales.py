@@ -18,13 +18,17 @@ def cargar_json(file_path):
             data = data_json[file_path]
         save_log(f"Datos cargados desde {file_path}.json")
         return data
-    except FileNotFoundError:
+    except FileNotFoundError as e:
         mensaje = f"ERROR: El archivo {file_path}.json no se encuentra."
         save_log(f"ERROR al cargar datos desde {file_path}.json: Archivo no encontrado.")
         return mensaje
     except json.JSONDecodeError:
         mensaje = f"ERROR: El archivo {file_path}.json no es un JSON válido."
         save_log(f"ERROR al cargar datos desde {file_path}.json: JSON inválido.")
+        return mensaje
+    except Exception as e:
+        mensaje = f"ERROR inesperado al cargar {file_path}.json: {e}"
+        save_log(mensaje)
         return mensaje
 
 
@@ -42,6 +46,9 @@ def guardar_json(file_path, data):
     except IOError as e:
         print(f"ERROR al guardar datos en {file_path}.json: {e}")
         save_log(f"ERROR al guardar datos en {file_path}.json: {e}")
+    except Exception as e:
+        print(f"ERROR inesperado al guardar {file_path}.json: {e}")
+        save_log(f"ERROR inesperado al guardar {file_path}.json: {e}")
 
 def tieneTurnosAsignados(id, turnos, posicionDelId):
     """"Verifica si un ID tiene turnos asignados en la lista de turnos.

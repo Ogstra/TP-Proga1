@@ -39,8 +39,11 @@ def menu_roles(roles):
         else:
             print("Opción inválida. Intente nuevamente.")
             return menu_roles(roles)
-    except ValueError:
+    except ValueError as e:
+        save_log(f"ERROR al seleccionar rol: {e}")
         print("Debe ingresar un número válido.")
+    except Exception as e:
+        save_log(f"ERROR inesperado al seleccionar rol: {e}")
         return menu_roles(roles)
 
 rol_actual = None
@@ -183,10 +186,16 @@ def ver_turnos(turnos, pacientes, medicos):
         # Se captura cualquier error de tipo o clave que pueda ocurrir al procesar el turno
         except ValueError as e:
             print(f"VALUE Error al procesar el turno: {e}")
+            save_log(f"VALUE Error al procesar el turno: {e}")
         except TypeError as e:
             print(f"TYPE Error al procesar el turno: {e}")
+            save_log(f"TYPE Error al procesar el turno: {e}")
         except KeyError as e:
             print(f"KEY Turno inválido. Falta la clave: {e}")
+            save_log(f"KEY Error al procesar el turno: {e}")
+        except Exception as e:
+            print(f"ERROR inesperado al procesar el turno: {e}")
+            save_log(f"ERROR inesperado al procesar el turno: {e}")
             
     #ordenar la lista de turnos por fecha y hora
     info_turno.sort(key=lambda x: datetime.strptime(f"{x[0]} {x[1]}", "%Y-%m-%d %H:%M"))
@@ -208,8 +217,12 @@ def crear_o_editar_turno(turnos, medicos, pacientes, id_turno=None):
             id_paciente = int(input("Ingrese el ID del paciente: "))
             if verificarSiExiste(id_paciente, pacientes, "paciente"):
                 break
-        except ValueError:
+        except ValueError as e:
+            save_log(f"ERROR al ingresar ID de paciente: {e}")
             print("Debe ingresar un número entero válido.")
+        except Exception as e:
+            save_log(f"ERROR inesperado al ingresar ID de paciente: {e}")
+            print("Ocurrió un error inesperado. Intente nuevamente.")
 
     while True:
         try:
@@ -221,8 +234,12 @@ def crear_o_editar_turno(turnos, medicos, pacientes, id_turno=None):
                     continue
             if verificarSiExiste(id_medico, medicos, "médico"):
                 break
-        except ValueError:
+        except ValueError as e:
+            save_log(f"ERROR al ingresar ID de médico: {e}")
             print("Debe ingresar un número entero válido.")
+        except Exception as e:
+            save_log(f"ERROR inesperado al ingresar ID de médico: {e}")
+            print("Ocurrió un error inesperado. Intente nuevamente.")
             
     consultorio = input("Ingrese el número del consultorio: ").strip()
 
@@ -241,8 +258,12 @@ def crear_o_editar_turno(turnos, medicos, pacientes, id_turno=None):
 
         try:
             nueva_fecha_hora = datetime.strptime(f"{fecha} {hora}", "%Y-%m-%d %H:%M")
-        except ValueError:
+        except ValueError as e:
+            save_log(f"ERROR al crear o editar turno: {e}")
             print("Fecha y hora inválidas.")
+            continue
+        except Exception as e:
+            save_log(f"ERROR inesperado al crear o editar turno: {e}")
             continue
 
         conflicto = False
@@ -368,8 +389,13 @@ def modificar_turno(turnos, medicos, pacientes, rol):
         print_tabla("Lista de Médicos", info_medicos, ["ID", "Nombre", "Apellido", "Especialidad"], "horizontal")
         try:
             id_medico = int(input("Ingrese el ID del médico para ver su agenda: "))
-        except ValueError:
+        except ValueError as e:
+            save_log(f"ERROR al ingresar ID de médico: {e}")
             print("Debe ingresar un número válido.")
+            return
+        except Exception as e:
+            save_log(f"ERROR inesperado al ingresar ID de médico: {e}")
+            print("Ocurrió un error inesperado. Intente nuevamente.")
             return
         if not verificarSiExiste(id_medico, medicos, "médico"):
             return
@@ -399,8 +425,13 @@ def modificar_turno(turnos, medicos, pacientes, rol):
         print_tabla("Agenda del Médico", tabla_agenda, ["ID", "Fecha", "Hora", "Paciente", "Consultorio"], "horizontal")
     try:
         id_turno = mensajesTipoNumerico("Ingrese el ID del turno a modificar: ")
-    except ValueError:
+    except ValueError as e:
+        save_log(f"ERROR al ingresar ID de turno: {e}")
         print("ID inválido.")
+        return
+    except Exception as e:
+        save_log(f"ERROR inesperado al ingresar ID de turno: {e}")
+        print("Ocurrió un error inesperado. Intente nuevamente.")
         return
 
     for i, turno in enumerate(turnos):
@@ -508,8 +539,13 @@ def buscar_medico(medicos):
         opcion = int(input("Buscar por:\n1) Nombre\n2) Apellido\n3) DNI\n4) Mail\nOpción: "))
         while opcion < 1 or opcion > len(campos):
             opcion = int(input("Opción no válida\nBuscar por:\n1) Nombre\n2) Apellido\n3) DNI\n4) Mail\nOpción: "))
-    except ValueError:
+    except ValueError as e:
+        save_log(f"ERROR al seleccionar campo de búsqueda: {e}")
         print("Debe ingresar un número válido.")
+        return
+    except Exception as e:
+        save_log(f"ERROR inesperado al seleccionar campo de búsqueda: {e}")
+        print("Ocurrió un error inesperado. Intente nuevamente.")
         return
 
     campo_seleccionado = campos[opcion - 1]
@@ -688,8 +724,13 @@ def eliminar_turnos(turnos, medicos, pacientes, rol):
 
         try:
             id_turno = int(input("Ingrese el ID del turno que desea eliminar: "))
-        except ValueError:
+        except ValueError as e:
+            save_log(f"ERROR al ingresar ID de turno: {e}")
             print("ID del inválido.")
+            return
+        except Exception as e:
+            save_log(f"ERROR inesperado al ingresar ID de turno: {e}")
+            print("Ocurrió un error inesperado. Intente nuevamente.")
             return
 
         turno_a_eliminar = next((t for t in turnos_medico if t["id"] == id_turno), None)
@@ -735,8 +776,13 @@ def eliminar_turnos(turnos, medicos, pacientes, rol):
 
         try:
             id_turno = int(input("Ingrese el ID del turno que desea eliminar: "))
-        except ValueError:
+        except ValueError as e:
+            save_log(f"ERROR al ingresar ID de turno: {e}")
             print("ID inválido.")
+            return
+        except Exception as e:  
+            save_log(f"ERROR inesperado al ingresar ID de turno: {e}")
+            print("Ocurrió un error inesperado. Intente nuevamente.")
             return
 
         turno_a_eliminar = next((t for t in turnos if t["id"] == id_turno), None)
@@ -846,8 +892,12 @@ def agenda_medico(medicos, turnos, pacientes):
         print_tabla("Lista de Médicos", info_medicos, ["ID", "Nombre", "Apellido", "Especialidad"], "horizontal")
         try:
             id_medico = int(input("Ingrese el ID del médico para ver su agenda: "))
-        except ValueError:
+        except ValueError as e:
             print("Debe ingresar un número válido.")
+            return
+        except Exception as e:
+            save_log(f"ERROR inesperado al ingresar ID de médico: {e}")
+            print("Ocurrió un error inesperado. Intente nuevamente.")
             return
         if not verificarSiExiste(id_medico, medicos, "médico"):
             return
@@ -939,8 +989,12 @@ def editar_config_menu():
                                 f"No se puede eliminar el rol '{rol_eliminado}'.")
                     else:
                         print("Número de rol inválido.")
-                except ValueError:
+                except ValueError as e:
+                    save_log(f"ERROR al eliminar rol: {e}")
                     print("Debe ingresar un número válido.")
+                except Exception as e:
+                    save_log(f"ERROR inesperado al eliminar rol: {e}")
+                    print("Ocurrió un error inesperado. Intente nuevamente.")
 
         elif opcion == "4":
             print("\n--- Permisos por opción ---")
@@ -1011,9 +1065,12 @@ def editar_config_menu():
                                                     "El rol ya existe en la función.")
                                         else:
                                             print("Número de rol inválido.")
-                                    except ValueError:
-                                        save_log("ERROR al agregar rol: Debe ingresar un número válido.")
+                                    except ValueError as e:
+                                        save_log(f"ERROR al agregar rol: {e}")
                                         print("Debe ingresar un número válido.")
+                                    except Exception as e:
+                                        save_log(f"ERROR inesperado al agregar rol: {e}")
+                                        print("Ocurrió un error inesperado. Intente nuevamente.")
 
                             elif rol_opcion == "2":
                                 if not funcion_seleccionada["roles"]:
@@ -1043,8 +1100,12 @@ def editar_config_menu():
                                                     f"No se puede eliminar el rol '{rol_eliminado}'.")
                                         else:
                                             print("Número de rol inválido.")
-                                    except ValueError:
+                                    except ValueError as e:
+                                        save_log(f"ERROR al eliminar rol: {e}")
                                         print("Debe ingresar un número válido.")
+                                    except Exception as e:
+                                        save_log(f"ERROR inesperado al eliminar rol: {e}")
+                                        print("Ocurrió un error inesperado. Intente nuevamente.")
 
                             elif rol_opcion == "0":
                                 break
@@ -1052,8 +1113,12 @@ def editar_config_menu():
                                 print("Opción inválida.")
                     else:
                         print("Número de opción inválido.")
-                except ValueError:
+                except ValueError as e:
+                    save_log(f"ERROR al seleccionar opción: {e}")
                     print("Debe ingresar un número válido.")
+                except Exception as e:
+                    save_log(f"ERROR inesperado al seleccionar opción: {e}")
+                    print("Ocurrió un error inesperado. Intente nuevamente.")
         
         elif opcion == "0":
             break

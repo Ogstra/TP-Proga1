@@ -32,8 +32,9 @@ config = archivos_vitales["config"]
 try:
     roles = config["roles"]
     opciones_menu = config["opciones_menu"]
-except FileNotFoundError:
+except FileNotFoundError as e:
     print("ERROR: El archivo de configuración no se encuentra.")
+    save_log(f"ERROR: Archivo de configuración no encontrado: {e}")
     exit()
 except KeyError as e:
     print(f"ERROR: Falta la clave {e} en el archivo de configuración.")
@@ -49,8 +50,9 @@ rol = menu_roles(roles)
 if rol.lower() == "admin":
     try:
         admins = cargar_json("admins")
-    except FileNotFoundError:
+    except FileNotFoundError as e:
         print("Error: No se encontró el archivo de administradores.")
+        save_log(f"ERROR: Archivo de administradores no encontrado: {e}")
         exit()
 
     if not login_admin(admins):
