@@ -1,6 +1,7 @@
 from funciones.funciones_generales import *
 from funciones.funciones_principales import *
 
+# Cargar los datos desde los archivos JSON
 archivos_vitales = {
     "pacientes": cargar_json("pacientes"),
     "medicos": cargar_json("medicos"),
@@ -10,7 +11,7 @@ archivos_vitales = {
 
 try:
     errores = list(filter(lambda item: "ERROR" in str(item[1]), archivos_vitales.items()))
-    #errores devuelve algo asi [('medicos', 'ERROR: El archivo medicos.json no se encuentra.')]
+    # errores devuelve algo asi:[('medicos', 'ERROR: El archivo medicos.json no se encuentra.')]
     if errores:
         nombre = errores[0][0]
         print("ERROR al cargar los datos. Asegúrese de que los archivos JSON existan y sean válidos.")
@@ -21,10 +22,14 @@ except Exception as e:
     save_log(f"ERROR inesperado al cargar archivos JSON: {e}")
     exit()
 
+# Extrae los datos correctamente cargados
+pacientes = archivos_vitales["pacientes"]
+medicos = archivos_vitales["medicos"]
+turnos = archivos_vitales["turnos"]
+config = archivos_vitales["config"]
 
-# Cargar los datos desde los archivos JSON
+# Cargar roles y menú desde config.json
 try:
-    config = cargar_json("config")
     roles = config["roles"]
     opciones_menu = config["opciones_menu"]
 except FileNotFoundError:
@@ -37,12 +42,10 @@ except Exception as e:
     print(f"ERROR inesperado: {e}")
     exit()
 
-roles = config["roles"]
-opciones_menu = config["opciones_menu"]
-
 # Mostrar el menú y manejar las opciones
 print("Bienvenido al sistema de gestión de turnos médicos\n")
 rol = menu_roles(roles)
+
 if rol.lower() == "admin":
     try:
         admins = cargar_json("admins")
@@ -53,8 +56,9 @@ if rol.lower() == "admin":
     if not login_admin(admins):
         print("No autorizado. Saliendo del sistema.")
         exit()
-        
+
     mostrar_menu(rol, opciones_menu)
+
 elif rol.lower() in ["médico", "medico", "paciente"]:
     # Solicitar DNI para médicos y pacientes
     if rol.lower() in ("médico", "medico"):
@@ -67,18 +71,19 @@ elif rol.lower() in ["médico", "medico", "paciente"]:
         dni_ingresado = input("Ingrese su DNI: ").strip()
     establecer_sesion(rol, dni_ingresado)
     mostrar_menu(rol, opciones_menu)
-else:
-        establecer_sesion(rol, dni=None)
-        mostrar_menu(rol, opciones_menu)
 
-# Bucle principal para mantener el programa en ejecución
-while True:
-    continuar = input("\n¿Desea continuar? (Enter / s = sí, n / 0 = no): ").strip().lower()  
-    if continuar in ('', 's'):
-        mostrar_menu(rol, opciones_menu)
-    elif continuar in ('n', '0'):
+else:
+    establecer_sesion(rol, dni=None)
+    mostrar_menu(rol, opciones_menu)
+
+# Bucle principal para mantener el programa en ejecucion
+continuar = 's'
+while continuar in ('', 's'):
+    mostrar_menu(rol, opciones_menu)
+    continuar = input("\n¿Desea continuar? (Enter / s = sí, n / 0 = no): ").strip().lower()
+    if continuar in ('n', '0'):
         print("Saliendo del sistema. ¡Hasta luego!")
         save_log(f"Saliendo del sistema. {rol} con DNI {dni_actual} ha cerrado sesión.")
-        break
-    else:
+    elif continuar not in ('', 's'):
         print("*** Opción no válida ***")
+        continuar = 's'  # vuelve a mostrar menú

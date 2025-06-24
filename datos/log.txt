@@ -1381,3 +1381,48 @@
 2025-06-24 00:07:34 - Datos cargados desde turnos.json
 2025-06-24 00:07:34 - Datos cargados desde config.json
 2025-06-24 00:07:34 - Datos cargados desde config.json
+2025-06-24 04:14:27 - Datos cargados desde pacientes.json
+2025-06-24 04:14:27 - Datos cargados desde medicos.json
+2025-06-24 04:14:27 - Datos cargados desde turnos.json
+2025-06-24 04:14:27 - Datos cargados desde config.json
+2025-06-24 04:14:27 - Datos cargados desde pacientes.json
+2025-06-24 04:14:27 - Datos cargados desde medicos.json
+2025-06-24 04:14:27 - Datos cargados desde turnos.json
+2025-06-24 04:14:27 - Datos cargados desde config.json
+2025-06-24 04:14:27 - Datos cargados desde config.json
+2025-06-24 04:14:28 - Datos cargados desde admins.json
+2025-06-24 04:14:37 - Inicio de sesión exitoso para el usuario admin.
+2025-06-24 04:14:42 - Saliendo del sistema. Admin con DNI None ha cerrado sesión.
+2025-06-24 04:15:29 - Datos cargados desde pacientes.json
+2025-06-24 04:15:29 - Datos cargados desde medicos.json
+2025-06-24 04:15:29 - Datos cargados desde turnos.json
+2025-06-24 04:15:29 - Datos cargados desde config.json
+2025-06-24 04:15:29 - Datos cargados desde pacientes.json
+2025-06-24 04:15:29 - Datos cargados desde medicos.json
+2025-06-24 04:15:29 - Datos cargados desde turnos.json
+2025-06-24 04:15:29 - Datos cargados desde config.json
+2025-06-24 04:15:29 - Datos cargados desde config.json
+2025-06-24 04:15:30 - Datos cargados desde admins.json
+2025-06-24 04:15:33 - Inicio de sesión exitoso para el usuario admin.
+2025-06-24 04:15:35 - Sesión finalizada por el Administrador
+2025-06-24 04:15:43 - Datos cargados desde pacientes.json
+2025-06-24 04:15:43 - Datos cargados desde medicos.json
+2025-06-24 04:15:43 - Datos cargados desde turnos.json
+2025-06-24 04:15:43 - Datos cargados desde config.json
+2025-06-24 04:15:43 - Datos cargados desde pacientes.json
+2025-06-24 04:15:43 - Datos cargados desde medicos.json
+2025-06-24 04:15:43 - Datos cargados desde turnos.json
+2025-06-24 04:15:43 - Datos cargados desde config.json
+2025-06-24 04:15:43 - Datos cargados desde config.json
+2025-06-24 04:15:44 - Datos cargados desde admins.json
+2025-06-24 04:15:47 - Inicio de sesión exitoso para el usuario admin.
+2025-06-24 04:16:03 - Datos cargados desde pacientes.json
+2025-06-24 04:16:03 - Datos cargados desde medicos.json
+2025-06-24 04:16:03 - Datos cargados desde turnos.json
+2025-06-24 04:16:03 - Datos cargados desde config.json
+2025-06-24 04:16:03 - Datos cargados desde pacientes.json
+2025-06-24 04:16:03 - Datos cargados desde medicos.json
+2025-06-24 04:16:03 - Datos cargados desde turnos.json
+2025-06-24 04:16:03 - Datos cargados desde config.json
+2025-06-24 04:16:03 - Datos cargados desde config.json
+2025-06-24 04:16:04 - Datos cargados desde admins.json
