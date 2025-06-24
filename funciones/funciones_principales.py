@@ -857,22 +857,7 @@ def agregar_medico(medicos):
     print(f"Médico agregado con éxito.")
     print(f"ID asignado: {nuevo_id}")
 
-def agenda_medico(medicos, turnos):
-    """Función que muestra la agenda de un médico específico.	
-    Args:
-        medicos (list): Lista de médicos.
-        turnos (list): Lista de turnos médicos.
-    Returns:
-        None
-    Logica:
-    - Imprime la lista de médicos disponibles.
-    - Solicita al usuario que ingrese el ID del médico cuya agenda desea ver.
-    - Verifica si el ID del médico existe.
-    - Si el médico existe, filtra los turnos asignados a ese médico.
-    - Si no hay turnos asignados, muestra un mensaje indicando que no hay turnos para ese médico.
-    - Si hay turnos, ordena la agenda por fecha y hora.
-    - Imprime la agenda del médico en formato tabular.
-    """
+def agenda_medico(medicos, turnos, pacientes):
     global rol_actual, dni_actual
     print("Agenda Médica:")
     if not medicos:
@@ -897,30 +882,30 @@ def agenda_medico(medicos, turnos):
             return
         if not verificarSiExiste(id_medico, medicos, "médico"):
             return
-    print(f"\nAgenda del Médico {medicos[id_medico]['nombre']} {medicos[id_medico]['apellido']}:")
-    agenda = []
-    for turno in turnos:
-        if turno["medico"] == id_medico:
-            #sacar el id del medico del turno para no mostrarlo en la agenda
-            agenda.append({
-                "fecha": turno["fecha"],
-                "hora": turno["hora"],
-                "paciente": turno["paciente"],
-                "consultorio": turno["consultorio"]
-            })
-    # Si no hay turnos asignados, se muestra un mensaje indicando que no hay turnos para ese médico
+    medico_ref = next((m for m in medicos if m["id"] == id_medico), None)
+    print(f"\nAgenda del Médico {medico_ref['nombre']} {medico_ref['apellido']}:")
+    
+    agenda = list(filter(lambda t: t["medico"] == id_medico, turnos))
     if not agenda:
         print("No hay turnos asignados para este médico.")
         return
-    # Ordenar la agenda por fecha y hora
+
     agenda.sort(key=lambda x: (x["fecha"], x["hora"]))
     tabla_agenda = []
     for item in agenda:
-        paciente = item["paciente"]
-        tabla_agenda.append([item["fecha"], item["hora"], paciente, item["consultorio"]])
+        id_paciente = item["paciente"]
+        paciente_ref = next((p for p in pacientes if p["id"] == id_paciente), None)
+        if paciente_ref:
+            nombre_paciente = f'{paciente_ref["nombre"]} {paciente_ref["apellido"]}'
+        else:
+            nombre_paciente = f'ID {id_paciente} (No encontrado)'
+        tabla_agenda.append([item["fecha"], item["hora"], nombre_paciente, item["consultorio"]])
 
     print_tabla("Agenda del Médico", tabla_agenda, ["Fecha", "Hora", "Paciente", "Consultorio"], "horizontal")
-  
+
+
+
+
 def editar_config_menu(): 
     roles_no_eliminables = ["Admin", "Paciente", "Médico"]
     config = cargar_json("config")

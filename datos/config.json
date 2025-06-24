@@ -191,7 +191,8 @@
                 ],
                 "argumentos": [
                     "medicos",
-                    "turnos"
+                    "turnos",
+                    "pacientes"
                 ]
             }
         ]
