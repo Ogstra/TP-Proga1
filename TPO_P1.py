@@ -1,19 +1,40 @@
 from funciones.funciones_generales import *
 from funciones.funciones_principales import *
 
+archivos_vitales = {
+    "pacientes": cargar_json("pacientes"),
+    "medicos": cargar_json("medicos"),
+    "turnos": cargar_json("turnos"),
+    "config": cargar_json("config"),
+}
+
+try:
+    errores = list(filter(lambda item: "ERROR" in str(item[1]), archivos_vitales.items()))
+    #errores devuelve algo asi [('medicos', 'ERROR: El archivo medicos.json no se encuentra.')]
+    if errores:
+        nombre = errores[0][0]
+        print("ERROR al cargar los datos. Asegúrese de que los archivos JSON existan y sean válidos.")
+        save_log(f"ERROR al cargar datos desde {nombre}.json: Archivo no encontrado o inválido.")
+        exit()
+except Exception as e:
+    print(f"Ocurrió un ERROR inesperado al verificar los datos: {e}")
+    save_log(f"ERROR inesperado al cargar archivos JSON: {e}")
+    exit()
+
+
 # Cargar los datos desde los archivos JSON
 try:
     config = cargar_json("config")
     roles = config["roles"]
     opciones_menu = config["opciones_menu"]
 except FileNotFoundError:
-    print("Error: El archivo de configuración no se encuentra.")
+    print("ERROR: El archivo de configuración no se encuentra.")
     exit()
 except KeyError as e:
-    print(f"Error: Falta la clave {e} en el archivo de configuración.")
+    print(f"ERROR: Falta la clave {e} en el archivo de configuración.")
     exit()
 except Exception as e:
-    print(f"Error inesperado: {e}")
+    print(f"ERROR inesperado: {e}")
     exit()
 
 roles = config["roles"]

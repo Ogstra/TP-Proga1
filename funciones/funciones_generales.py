@@ -9,23 +9,24 @@ def cargar_json(file_path):
     Carga datos desde un archivo JSON.
     Args:
         file_path (str): Ruta del archivo JSON sin la extensión.
-        Returns:
-        dict: Datos cargados desde el archivo JSON.
+    Returns:
+        dict o str: Datos cargados o string con "ERROR"
     """
     try:
-        with open("./datos/"+file_path+".json", 'r', encoding='utf-8') as file:
+        with open("./datos/" + file_path + ".json", 'r', encoding='utf-8') as file:
             data_json = json.load(file)
             data = data_json[file_path]
         save_log(f"Datos cargados desde {file_path}.json")
         return data
     except FileNotFoundError:
-        print(f"Error: El archivo {file_path}.json no se encuentra.")
-        save_log(f"Error al cargar datos desde {file_path}.json: Archivo no encontrado.")
-        return {}
+        mensaje = f"ERROR: El archivo {file_path}.json no se encuentra."
+        save_log(f"ERROR al cargar datos desde {file_path}.json: Archivo no encontrado.")
+        return mensaje
     except json.JSONDecodeError:
-        print(f"Error: El archivo {file_path}.json no es un JSON válido.")
-        save_log(f"Error al cargar datos desde {file_path}.json: JSON inválido.")
-        return {}
+        mensaje = f"ERROR: El archivo {file_path}.json no es un JSON válido."
+        save_log(f"ERROR al cargar datos desde {file_path}.json: JSON inválido.")
+        return mensaje
+
 
 def guardar_json(file_path, data):
     """
@@ -39,8 +40,8 @@ def guardar_json(file_path, data):
             json.dump({file_path: data}, file, indent=4, ensure_ascii=False)
             save_log(f"Datos guardados en {file_path}.json")
     except IOError as e:
-        print(f"Error al guardar datos en {file_path}.json: {e}")
-        save_log(f"Error al guardar datos en {file_path}.json: {e}")
+        print(f"ERROR al guardar datos en {file_path}.json: {e}")
+        save_log(f"ERROR al guardar datos en {file_path}.json: {e}")
 
 def tieneTurnosAsignados(id, turnos, posicionDelId):
     """"Verifica si un ID tiene turnos asignados en la lista de turnos.

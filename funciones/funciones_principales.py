@@ -9,7 +9,6 @@ turnos = cargar_json("turnos")
 config = cargar_json("config")
 consultorios = config["consultorios"]
 
-
 def menu_roles(roles):
     """
     Función que muestra un menú para seleccionar un rol utilizando recursividad.
@@ -1059,7 +1058,7 @@ def editar_config_menu():
                                         else:
                                             print("Número de rol inválido.")
                                     except ValueError:
-                                        save_log("Error al agregar rol: Debe ingresar un número válido.")
+                                        save_log("ERROR al agregar rol: Debe ingresar un número válido.")
                                         print("Debe ingresar un número válido.")
 
                             elif rol_opcion == "2":

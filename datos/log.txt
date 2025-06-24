@@ -884,3 +884,182 @@
 2025-06-23 22:04:45 - Datos cargados desde turnos.json
 2025-06-23 22:04:45 - Datos cargados desde config.json
 2025-06-23 22:04:45 - Datos cargados desde config.json
+2025-06-23 22:58:57 - Datos cargados desde pacientes.json
+2025-06-23 22:58:57 - Datos cargados desde medicos.json
+2025-06-23 22:58:57 - Datos cargados desde turnos.json
+2025-06-23 22:58:57 - Datos cargados desde config.json
+2025-06-23 22:58:57 - Datos cargados desde config.json
+2025-06-23 22:58:57 - Datos cargados desde admins.json
+2025-06-23 22:59:10 - Datos cargados desde pacientes.json
+2025-06-23 22:59:10 - Datos cargados desde medicos.json
+2025-06-23 22:59:10 - Datos cargados desde turnos.json
+2025-06-23 22:59:10 - Datos cargados desde config.json
+2025-06-23 22:59:10 - Datos cargados desde config.json
+2025-06-23 22:59:11 - Datos cargados desde admins.json
+2025-06-23 22:59:16 - Inicio de sesión exitoso para el usuario admin.
+2025-06-23 22:59:32 - Datos cargados desde pacientes.json
+2025-06-23 22:59:32 - Error al cargar datos desde medicos.json: Archivo no encontrado.
+2025-06-23 22:59:32 - Datos cargados desde turnos.json
+2025-06-23 22:59:32 - Datos cargados desde config.json
+2025-06-23 22:59:32 - Datos cargados desde config.json
+2025-06-23 22:59:34 - Datos cargados desde admins.json
+2025-06-23 22:59:36 - Inicio de sesión exitoso para el usuario admin.
+2025-06-23 23:07:41 - Datos cargados desde pacientes.json
+2025-06-23 23:07:41 - Datos cargados desde medicos.json
+2025-06-23 23:07:41 - Datos cargados desde turnos.json
+2025-06-23 23:07:41 - Datos cargados desde config.json
+2025-06-23 23:07:41 - Datos cargados desde config.json
+2025-06-23 23:08:05 - Datos cargados desde pacientes.json
+2025-06-23 23:08:05 - Error al cargar datos desde medicos.json: Archivo no encontrado.
+2025-06-23 23:08:05 - Datos cargados desde turnos.json
+2025-06-23 23:08:05 - Datos cargados desde config.json
+2025-06-23 23:08:05 - Datos cargados desde config.json
+2025-06-23 23:08:05 - Datos cargados desde admins.json
+2025-06-23 23:08:08 - Inicio de sesión exitoso para el usuario admin.
+2025-06-23 23:10:33 - Datos cargados desde pacientes.json
+2025-06-23 23:10:33 - Error al cargar datos desde medicos.json: Archivo no encontrado.
+2025-06-23 23:10:33 - Datos cargados desde turnos.json
+2025-06-23 23:10:33 - Datos cargados desde config.json
+2025-06-23 23:10:33 - Datos cargados desde config.json
+2025-06-23 23:10:34 - Datos cargados desde admins.json
+2025-06-23 23:10:37 - Inicio de sesión exitoso para el usuario admin.
+2025-06-23 23:13:07 - Datos cargados desde pacientes.json
+2025-06-23 23:13:07 - Error al cargar datos desde medicos.json: Archivo no encontrado.
+2025-06-23 23:13:07 - Datos cargados desde turnos.json
+2025-06-23 23:13:07 - Datos cargados desde config.json
+2025-06-23 23:13:07 - Datos cargados desde config.json
+2025-06-23 23:13:57 - Datos cargados desde pacientes.json
+2025-06-23 23:13:57 - Error al cargar datos desde medicos.json: Archivo no encontrado.
+2025-06-23 23:13:57 - Datos cargados desde turnos.json
+2025-06-23 23:13:57 - Datos cargados desde config.json
+2025-06-23 23:13:57 - Datos cargados desde config.json
+2025-06-23 23:13:59 - Datos cargados desde admins.json
+2025-06-23 23:14:09 - Inicio de sesión exitoso para el usuario admin.
+2025-06-23 23:22:00 - Datos cargados desde pacientes.json
+2025-06-23 23:22:00 - ERROR al cargar datos desde medicos.json: Archivo no encontrado.
+2025-06-23 23:22:00 - Datos cargados desde turnos.json
+2025-06-23 23:22:00 - Datos cargados desde config.json
+2025-06-23 23:22:00 - Datos cargados desde config.json
+2025-06-23 23:22:01 - Datos cargados desde admins.json
+2025-06-23 23:22:08 - Inicio de sesión exitoso para el usuario admin.
+2025-06-23 23:22:30 - Datos cargados desde pacientes.json
+2025-06-23 23:22:30 - ERROR al cargar datos desde medicos.json: Archivo no encontrado.
+2025-06-23 23:22:30 - Datos cargados desde turnos.json
+2025-06-23 23:22:30 - Datos cargados desde config.json
+2025-06-23 23:22:30 - Datos cargados desde config.json
+2025-06-23 23:23:37 - Datos cargados desde pacientes.json
+2025-06-23 23:23:37 - ERROR al cargar datos desde medicos.json: Archivo no encontrado.
+2025-06-23 23:23:37 - Datos cargados desde turnos.json
+2025-06-23 23:23:37 - Datos cargados desde config.json
+2025-06-23 23:23:37 - Datos cargados desde config.json
+2025-06-23 23:23:44 - Datos cargados desde admins.json
+2025-06-23 23:23:46 - Inicio de sesión exitoso para el usuario admin.
+2025-06-23 23:24:10 - Datos cargados desde pacientes.json
+2025-06-23 23:24:10 - ERROR al cargar datos desde medicos.json: Archivo no encontrado.
+2025-06-23 23:24:10 - Datos cargados desde turnos.json
+2025-06-23 23:24:10 - Datos cargados desde config.json
+2025-06-23 23:24:10 - Datos cargados desde config.json
+2025-06-23 23:25:01 - Datos cargados desde pacientes.json
+2025-06-23 23:25:01 - ERROR al cargar datos desde medicos.json: Archivo no encontrado.
+2025-06-23 23:25:01 - Datos cargados desde turnos.json
+2025-06-23 23:25:01 - Datos cargados desde config.json
+2025-06-23 23:25:01 - Datos cargados desde config.json
+2025-06-23 23:25:22 - Datos cargados desde pacientes.json
+2025-06-23 23:25:22 - ERROR al cargar datos desde medicos.json: Archivo no encontrado.
+2025-06-23 23:25:22 - Datos cargados desde turnos.json
+2025-06-23 23:25:22 - Datos cargados desde config.json
+2025-06-23 23:25:22 - Datos cargados desde config.json
+2025-06-23 23:25:24 - Datos cargados desde admins.json
+2025-06-23 23:25:26 - Inicio de sesión exitoso para el usuario admin.
+2025-06-23 23:25:35 - Datos cargados desde pacientes.json
+2025-06-23 23:25:35 - ERROR al cargar datos desde medicos.json: Archivo no encontrado.
+2025-06-23 23:25:35 - Datos cargados desde turnos.json
+2025-06-23 23:25:35 - Datos cargados desde config.json
+2025-06-23 23:25:35 - Datos cargados desde config.json
+2025-06-23 23:27:31 - Datos cargados desde pacientes.json
+2025-06-23 23:27:31 - ERROR al cargar datos desde medicos.json: Archivo no encontrado.
+2025-06-23 23:27:31 - Datos cargados desde turnos.json
+2025-06-23 23:27:31 - Datos cargados desde config.json
+2025-06-23 23:27:31 - Datos cargados desde config.json
+2025-06-23 23:27:51 - Datos cargados desde pacientes.json
+2025-06-23 23:27:51 - ERROR al cargar datos desde medicos.json: Archivo no encontrado.
+2025-06-23 23:27:51 - Datos cargados desde turnos.json
+2025-06-23 23:27:51 - Datos cargados desde config.json
+2025-06-23 23:27:51 - Datos cargados desde config.json
+2025-06-23 23:28:14 - Datos cargados desde pacientes.json
+2025-06-23 23:28:14 - ERROR al cargar datos desde medicos.json: Archivo no encontrado.
+2025-06-23 23:28:14 - Datos cargados desde turnos.json
+2025-06-23 23:28:14 - Datos cargados desde config.json
+2025-06-23 23:28:14 - Datos cargados desde config.json
+2025-06-23 23:29:10 - Datos cargados desde pacientes.json
+2025-06-23 23:29:10 - ERROR al cargar datos desde medicos.json: Archivo no encontrado.
+2025-06-23 23:29:10 - Datos cargados desde turnos.json
+2025-06-23 23:29:10 - Datos cargados desde config.json
+2025-06-23 23:29:10 - Datos cargados desde config.json
+2025-06-23 23:31:14 - Datos cargados desde pacientes.json
+2025-06-23 23:31:14 - ERROR al cargar datos desde medicos.json: Archivo no encontrado.
+2025-06-23 23:31:14 - Datos cargados desde turnos.json
+2025-06-23 23:31:14 - Datos cargados desde config.json
+2025-06-23 23:31:14 - Datos cargados desde pacientes.json
+2025-06-23 23:31:14 - ERROR al cargar datos desde medicos.json: Archivo no encontrado.
+2025-06-23 23:31:14 - Datos cargados desde turnos.json
+2025-06-23 23:31:14 - Datos cargados desde config.json
+2025-06-23 23:31:14 - ERROR al cargar datos desde consultorios.json: Archivo no encontrado.
+2025-06-23 23:31:14 - ERROR al cargar datos desde medicos.json: Archivo no encontrado o inválido.
+2025-06-23 23:31:27 - Datos cargados desde pacientes.json
+2025-06-23 23:31:27 - Datos cargados desde medicos.json
+2025-06-23 23:31:27 - Datos cargados desde turnos.json
+2025-06-23 23:31:27 - Datos cargados desde config.json
+2025-06-23 23:31:27 - Datos cargados desde pacientes.json
+2025-06-23 23:31:27 - Datos cargados desde medicos.json
+2025-06-23 23:31:27 - Datos cargados desde turnos.json
+2025-06-23 23:31:27 - Datos cargados desde config.json
+2025-06-23 23:31:27 - ERROR al cargar datos desde consultorios.json: Archivo no encontrado.
+2025-06-23 23:31:27 - ERROR al cargar datos desde consultorios.json: Archivo no encontrado o inválido.
+2025-06-23 23:31:29 - Datos cargados desde pacientes.json
+2025-06-23 23:31:29 - Datos cargados desde medicos.json
+2025-06-23 23:31:29 - Datos cargados desde turnos.json
+2025-06-23 23:31:29 - Datos cargados desde config.json
+2025-06-23 23:31:29 - Datos cargados desde pacientes.json
+2025-06-23 23:31:29 - Datos cargados desde medicos.json
+2025-06-23 23:31:29 - Datos cargados desde turnos.json
+2025-06-23 23:31:29 - Datos cargados desde config.json
+2025-06-23 23:31:29 - ERROR al cargar datos desde consultorios.json: Archivo no encontrado.
+2025-06-23 23:31:29 - ERROR al cargar datos desde consultorios.json: Archivo no encontrado o inválido.
+2025-06-23 23:31:40 - Datos cargados desde pacientes.json
+2025-06-23 23:31:40 - Datos cargados desde medicos.json
+2025-06-23 23:31:40 - Datos cargados desde turnos.json
+2025-06-23 23:31:40 - Datos cargados desde config.json
+2025-06-23 23:31:40 - Datos cargados desde pacientes.json
+2025-06-23 23:31:40 - Datos cargados desde medicos.json
+2025-06-23 23:31:40 - Datos cargados desde turnos.json
+2025-06-23 23:31:40 - Datos cargados desde config.json
+2025-06-23 23:31:40 - ERROR al cargar datos desde consultorios.json: Archivo no encontrado.
+2025-06-23 23:31:40 - ERROR al cargar datos desde consultorios.json: Archivo no encontrado o inválido.
+2025-06-23 23:31:54 - Datos cargados desde pacientes.json
+2025-06-23 23:31:54 - Datos cargados desde medicos.json
+2025-06-23 23:31:54 - Datos cargados desde turnos.json
+2025-06-23 23:31:54 - Datos cargados desde config.json
+2025-06-23 23:31:54 - Datos cargados desde pacientes.json
+2025-06-23 23:31:54 - Datos cargados desde medicos.json
+2025-06-23 23:31:54 - Datos cargados desde turnos.json
+2025-06-23 23:31:54 - Datos cargados desde config.json
+2025-06-23 23:31:54 - Datos cargados desde config.json
+2025-06-23 23:32:01 - Datos cargados desde pacientes.json
+2025-06-23 23:32:01 - ERROR al cargar datos desde medicos.json: Archivo no encontrado.
+2025-06-23 23:32:01 - Datos cargados desde turnos.json
+2025-06-23 23:32:01 - Datos cargados desde config.json
+2025-06-23 23:32:01 - Datos cargados desde pacientes.json
+2025-06-23 23:32:01 - ERROR al cargar datos desde medicos.json: Archivo no encontrado.
+2025-06-23 23:32:01 - Datos cargados desde turnos.json
+2025-06-23 23:32:01 - Datos cargados desde config.json
+2025-06-23 23:32:01 - ERROR al cargar datos desde medicos.json: Archivo no encontrado o inválido.
+2025-06-23 23:32:24 - Datos cargados desde pacientes.json
+2025-06-23 23:32:24 - ERROR al cargar datos desde medicos.json: Archivo no encontrado.
+2025-06-23 23:32:24 - Datos cargados desde turnos.json
+2025-06-23 23:32:24 - Datos cargados desde config.json
+2025-06-23 23:32:24 - Datos cargados desde pacientes.json
+2025-06-23 23:32:24 - ERROR al cargar datos desde medicos.json: Archivo no encontrado.
+2025-06-23 23:32:24 - Datos cargados desde turnos.json
+2025-06-23 23:32:24 - Datos cargados desde config.json
+2025-06-23 23:32:24 - ERROR al cargar datos desde medicos.json: Archivo no encontrado o inválido.
