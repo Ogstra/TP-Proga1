@@ -51,7 +51,27 @@ def establecer_sesion(rol, dni):
     global rol_actual, dni_actual
     rol_actual = rol
     dni_actual = dni
+    
+    contrasenia = input("Ingrese su contraseña: ")
+    if rol.lower() == "paciente":
+        paciente = next((p for p in pacientes if p["dni"] == dni_actual), None)
+        if paciente and paciente["password"] == contrasenia:
+            save_log(f"Sesión iniciada: Rol {rol_actual}, DNI {dni_actual}")
+        else:
+            print("Contraseña incorrecta. Intente nuevamente.")
+            return establecer_sesion(rol, dni)
+    elif rol.lower() in ("médico", "medico"):
+        medico = next((m for m in medicos if m["dni"] == dni_actual), None)
+        if medico and medico["password"] == contrasenia:
+            save_log(f"Sesión iniciada: Rol {rol_actual}, DNI {dni_actual}")
+        else:
+            print("Contraseña incorrecta. Intente nuevamente.")
+            return establecer_sesion(rol, dni)
+    else:
+        print("Rol no reconocido.")
+        return None
     save_log(f"Sesión iniciada: Rol {rol_actual}, DNI {dni_actual}")
+
 
 def mostrar_menu(rol, opciones):
     """
@@ -542,6 +562,7 @@ def crear_paciente(pacientes):
     """
     nombre = validar_campo_vacio("Nombre: ")
     apellido = validar_campo_vacio("Apellido: ")
+    password =  validar_campo_vacio("Contraseña: ")
     while True:
         dni = validar_campo_vacio("DNI: ")
         if validarDNI(dni):
@@ -564,7 +585,6 @@ def crear_paciente(pacientes):
         if validarTelefono(num_tel):
             break
         print("Teléfono inválido. Use el formato XXXX-XXXX.")
-
     obra_social = validar_campo_vacio("Obra Social: ")
     nacionalidad = validar_campo_vacio("Nacionalidad: ")
     grupo_sanguineo = validar_campo_vacio("Grupo Sanguíneo: ")
@@ -580,7 +600,8 @@ def crear_paciente(pacientes):
         "num_tel": num_tel,
         "obra_social": obra_social,
         "nacionalidad": nacionalidad,
-        "grupo_sanguineo": grupo_sanguineo 
+        "grupo_sanguineo": grupo_sanguineo,
+        "password": password 
     }
     pacientes.append(paciente)  # Agregar el nuevo paciente a la lista de pacientes
     guardar_json("pacientes", pacientes)  # Guardar los cambios en el archivo JSON
@@ -650,7 +671,8 @@ def eliminar_turnos(turnos, medicos, pacientes, rol):
         for t in turnos_medico:
             paciente = next((p for p in pacientes if p["id"] == t["paciente"]), {})
             nombre_paciente = f"{paciente.get('nombre', '')} {paciente.get('apellido', '')}"
-            print(f"ID: {t['id']} | Fecha: {t['fecha']} | Hora: {t['hora']} | Paciente: {nombre_paciente} | Consultorio: {t['consultorio']}")
+            info_medicos.append([t["id"], medico["nombre"], medico["apellido"], medico["especialidad"], t["hora"], paciente["nombre"], paciente["apellido"]])
+        print_tabla("Lista de Médicos", info_medicos, ["ID", "Nombre Del Doctor", "Apellido", "Especialidad", "Horario", "Paciente", "Apellido"], "horizontal")
 
         try:
             id_turno = int(input("Ingrese el ID del turno que desea eliminar: "))
@@ -662,6 +684,7 @@ def eliminar_turnos(turnos, medicos, pacientes, rol):
         if not turno_a_eliminar:
             print("Turno no encontrado.")
             return
+
     elif rol == "Paciente":
         # Si es Paciente, muestra los turnos que tiene ese paciente
         dni = input("Ingrese su DNI: ").strip()
@@ -681,8 +704,8 @@ def eliminar_turnos(turnos, medicos, pacientes, rol):
         for t in turnos_filtrados:
             medico = next((m for m in medicos if m["id"] == t["medico"]), {"nombre": "Desconocido", "apellido": ""})
             nombre_medico = f"{medico['nombre']} {medico['apellido']}"
-            print(f"ID: {t['id']} | Fecha: {t['fecha']} | Hora: {t['hora']} | Médico: {nombre_medico} | Consultorio: {t['consultorio']}")
-        
+        print_tabla("Lista de Médicos", info_medicos, ["ID", "Nombre Del Doctor", "Apellido", "Especialidad", "Horario", "Paciente", "Apellido"], "horizontal")
+
     # Si es Admin, muestra todos los turnos
     else:
         for t in turnos:
@@ -776,9 +799,9 @@ def agregar_medico(medicos):
     - Crea un diccionario con los datos del médico y lo agrega a la lista de médicos.
     """
     print(f"Agregar Médico: ")
-
     nombre = validar_campo_vacio("Nombre: ")
     apellido = validar_campo_vacio("Apellido: ")
+    password = validar_campo_vacio("Contraseña: ")
     especialidad = validar_campo_vacio("Especialidad: ")
     while True:
         mail = validar_campo_vacio("Mail: ")
@@ -823,7 +846,8 @@ def agregar_medico(medicos):
         "titulo": titulo,
         "matricula": matricula,
         "horario": horarios,
-        "estado": "Activo"
+        "estado": "Activo",
+        "password": password
     }
 
     medicos.append(medico)  # Agregar el nuevo médico a la lista de médicos

@@ -67,8 +67,7 @@
                 "roles": [
                     "Admin",
                     "Médico",
-                    "Paciente",
-                    "Enfermero"
+                    "Paciente"
                 ],
                 "argumentos": [
                     "turnos",
