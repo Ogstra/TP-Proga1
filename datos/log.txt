@@ -1355,3 +1355,14 @@
 2025-06-24 00:01:34 - Médico eliminado: DNI 00000001, Estado cambiado a inactivo.
 2025-06-24 00:01:34 - Datos guardados en medicos.json
 2025-06-24 00:01:34 - Datos guardados en turnos.json
+2025-06-24 00:02:14 - Datos cargados desde pacientes.json
+2025-06-24 00:02:14 - Datos cargados desde medicos.json
+2025-06-24 00:02:14 - Datos cargados desde turnos.json
+2025-06-24 00:02:14 - Datos cargados desde config.json
+2025-06-24 00:02:14 - Datos cargados desde pacientes.json
+2025-06-24 00:02:14 - Datos cargados desde medicos.json
+2025-06-24 00:02:14 - Datos cargados desde turnos.json
+2025-06-24 00:02:14 - Datos cargados desde config.json
+2025-06-24 00:02:14 - Datos cargados desde config.json
+2025-06-24 00:02:24 - Sesión iniciada: Rol Médico, DNI 00000001
+2025-06-24 00:02:24 - Sesión iniciada: Rol Médico, DNI 00000001
