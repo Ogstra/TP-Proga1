@@ -1434,3 +1434,18 @@
 2025-06-24 15:09:57 - Datos cargados desde medicos.json
 2025-06-24 15:09:57 - Datos cargados desde turnos.json
 2025-06-24 15:09:57 - Datos cargados desde config.json
+2025-06-24 17:04:32 - Datos cargados desde pacientes.json
+2025-06-24 17:04:32 - Datos cargados desde medicos.json
+2025-06-24 17:04:32 - Datos cargados desde turnos.json
+2025-06-24 17:04:32 - Datos cargados desde config.json
+2025-06-24 17:04:32 - Datos cargados desde pacientes.json
+2025-06-24 17:04:32 - Datos cargados desde medicos.json
+2025-06-24 17:04:32 - Datos cargados desde turnos.json
+2025-06-24 17:04:32 - Datos cargados desde config.json
+2025-06-24 17:04:35 - Datos cargados desde admins.json
+2025-06-24 17:04:38 - Inicio de sesión exitoso para el usuario admin.
+2025-06-24 17:06:50 - Datos guardados en pacientes.json
+2025-06-24 17:06:51 - Paciente creado: ID 26, Nombre 221, Apellido 3313, DNI 12345677, Fecha Nac. 2000-02-02, Domicilio aaaaaaaaaaa, Mail aaaaaaaaa@aa.com, Teléfono 1234-1234, Obra Social rrrr, Nacionalidad argentina, Grupo Sanguíneo a+
+2025-06-24 17:08:53 - ERROR al ingresar ID de médico: invalid literal for int() with base 10: '3.5'
+2025-06-24 17:10:29 - ERROR al ingresar ID de turno: invalid literal for int() with base 10: 'r'
+2025-06-24 17:11:08 - ERROR al ingresar ID de médico: invalid literal for int() with base 10: 'r'
