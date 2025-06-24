@@ -34,7 +34,7 @@ if rol.lower() == "admin":
         exit()
         
     mostrar_menu(rol, opciones_menu)
-else:
+elif rol.lower() in ["médico", "medico", "paciente"]:
     # Solicitar DNI para médicos y pacientes
     if rol.lower() in ("médico", "medico"):
         lista = medicos
@@ -46,6 +46,9 @@ else:
         dni_ingresado = input("Ingrese su DNI: ").strip()
     establecer_sesion(rol, dni_ingresado)
     mostrar_menu(rol, opciones_menu)
+else:
+        establecer_sesion(rol, dni=None)
+        mostrar_menu(rol, opciones_menu)
 
 # Bucle principal para mantener el programa en ejecución
 while True:

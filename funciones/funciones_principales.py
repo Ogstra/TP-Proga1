@@ -309,12 +309,74 @@ def modificar_turno(turnos, medicos, pacientes, rol):
             return
         info_medicos = []
         print("\nTurnos asignados:")
-        for t in turnos_medico:
-            paciente = next((p for p in pacientes if p["id"] == t["paciente"]), {})
-        info_medicos.append([t["id"], medico["nombre"], medico["apellido"], medico["especialidad"], t["hora"], paciente["nombre"], paciente["apellido"]])
-        print_tabla("Lista de Médicos", info_medicos, ["ID", "Nombre Del Doctor", "Apellido", "Especialidad", "Horario", "Paciente", "Apellido"], "horizontal")
+        agenda = []
+        for turno in turnos:
+            if turno["medico"] == id_medico:
+                id_paciente = turno["paciente"]
+                # Obtener el nombre del paciente
+                paciente = next((p for p in pacientes if p["id"] == id_paciente), None)
+                paciente = paciente['nombre'] + " " + paciente['apellido'] if paciente else None
+                # Obtener el nombre del médico
+                medico = next((m for m in medicos if m["id"] == id_medico), None)
+                medico = medico['nombre'] + " " + medico['apellido'] if medico else None
+                #sacar el id del medico del turno para no mostrarlo en la agenda
+                agenda.append({
+                    "id": turno["id"],
+                    "fecha": turno["fecha"],
+                    "hora": turno["hora"],
+                    "paciente": paciente,
+                    "consultorio": turno["consultorio"]
+                })
+        # Si no hay turnos asignados, se muestra un mensaje indicando que no hay turnos para ese médico
+        if not agenda:
+            print("No hay turnos asignados para este médico.")
+            return
+        # Ordenar la agenda por fecha y hora
+        agenda.sort(key=lambda x: (x["fecha"], x["hora"]))
+        tabla_agenda = []
+        for item in agenda:
+            paciente = item["paciente"]
+            tabla_agenda.append([item["id"], item["fecha"], item["hora"], paciente, item["consultorio"]])
 
+        print_tabla("Agenda del Médico", tabla_agenda, ["ID", "Fecha", "Hora", "Paciente", "Consultorio"], "horizontal")
+   
+    if rol == "Admin":
+        print("Médicos disponibles:")
+        info_medicos = []
+        for medico in medicos:
+            info_medicos.append([medico["id"], medico["nombre"], medico["apellido"], medico["especialidad"]])
+        print_tabla("Lista de Médicos", info_medicos, ["ID", "Nombre", "Apellido", "Especialidad"], "horizontal")
+        try:
+            id_medico = int(input("Ingrese el ID del médico para ver su agenda: "))
+        except ValueError:
+            print("Debe ingresar un número válido.")
+            return
+        if not verificarSiExiste(id_medico, medicos, "médico"):
+            return
+        print(f"\nAgenda del Médico {medicos[id_medico]['nombre']} {medicos[id_medico]['apellido']}:")
+        agenda = []
+        for turno in turnos:
+            if turno["medico"] == id_medico:
+                #sacar el id del medico del turno para no mostrarlo en la agenda
+                agenda.append({
+                    "id": turno["id"],
+                    "fecha": turno["fecha"],
+                    "hora": turno["hora"],
+                    "paciente": turno["paciente"],
+                    "consultorio": turno["consultorio"]
+                })
+        # Si no hay turnos asignados, se muestra un mensaje indicando que no hay turnos para ese médico
+        if not agenda:
+            print("No hay turnos asignados para este médico.")
+            return
+        # Ordenar la agenda por fecha y hora
+        agenda.sort(key=lambda x: (x["fecha"], x["hora"]))
+        tabla_agenda = []
+        for item in agenda:
+            paciente = item["paciente"]
+            tabla_agenda.append([item["id"], item["fecha"], item["hora"], paciente, item["consultorio"]])
 
+        print_tabla("Agenda del Médico", tabla_agenda, ["ID", "Fecha", "Hora", "Paciente", "Consultorio"], "horizontal")
     try:
         id_turno = mensajesTipoNumerico("Ingrese el ID del turno a modificar: ")
     except ValueError:

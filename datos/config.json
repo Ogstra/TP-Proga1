@@ -3,7 +3,8 @@
         "roles": [
             "Admin",
             "Médico",
-            "Paciente"
+            "Paciente",
+            "Enfermero"
         ],
         "consultorios": [
             "101",
@@ -66,7 +67,8 @@
                 "roles": [
                     "Admin",
                     "Médico",
-                    "Paciente"
+                    "Paciente",
+                    "Enfermero"
                 ],
                 "argumentos": [
                     "turnos",
@@ -143,7 +145,9 @@
                     "Admin"
                 ],
                 "argumentos": [
-                    "pacientes", "turnos", "medicos"
+                    "pacientes",
+                    "turnos",
+                    "medicos"
                 ]
             },
             {
