@@ -1,5 +1,6 @@
 from funciones.funciones_validaciones import *
 from funciones.funciones_generales import *
+from functools import reduce
 
 # Cargar los datos desde los archivos JSON
 pacientes = cargar_json("pacientes")
@@ -291,7 +292,9 @@ def crear_o_editar_turno(turnos, medicos, pacientes, id_turno=None):
     save_log(f"Turno {'editado' if id_turno else 'creado'}: Paciente ID {id_paciente}, Médico ID {id_medico}, Consultorio {consultorio}, Fecha {fecha}, Hora {hora}")
     
     return {
-        "id": id_turno if id_turno is not None else (max([t["id"] for t in turnos], default=0) + 1),
+        "id": id_turno if id_turno is not None else (
+            reduce(lambda acc, t: acc if acc > t["id"] else t["id"], turnos, 0) + 1
+        ),
         "paciente": id_paciente,
         "medico": id_medico,
         "consultorio": consultorio,
@@ -476,11 +479,10 @@ def buscar_paciente(pacientes):
     campo_seleccionado = campos[opcion - 1]
     valor_buscado = quitar_acentos(input(f"Ingrese {campo_seleccionado}: ").lower())
 
-    resultados = []
-    for paciente in pacientes:
-        valor_actual = quitar_acentos(str(paciente.get(campo_seleccionado, "")).lower())
-        if valor_actual == valor_buscado:
-            resultados.append(paciente)
+    resultados = list(filter(
+        lambda p: quitar_acentos(str(p.get(campo_seleccionado, "")).lower()) == valor_buscado,
+        pacientes
+    ))
 
     if resultados:
         columnas = ["ID", "Nombre", "Apellido", "DNI", "Fecha Nac.", "Domicilio", "Mail", "Teléfono", "Obra Social", "Nacionalidad", "Grupo Sanguíneo"]
@@ -519,11 +521,10 @@ def buscar_medico(medicos):
     else:
         valor_buscado = quitar_acentos(input(f"Ingrese {campo_seleccionado}: ").lower())
 
-    resultados = []
-    for medico in medicos:
-        valor_actual = quitar_acentos(str(medico.get(campo_seleccionado, "")).lower())
-        if valor_actual == valor_buscado:
-            resultados.append(medico)
+    resultados = list(filter(
+        lambda m: quitar_acentos(str(m.get(campo_seleccionado, "")).lower()) == valor_buscado,
+        medicos
+    ))
     if resultados:
         columnas = ["ID", "Nombre", "Apellido", "Especialidad", "DNI", "Fecha Nac.", "Domicilio", "Mail", "Teléfono", "Nacionalidad", "Título", "Matrícula", "Horario", "Estado"]
         filas = [
@@ -588,7 +589,7 @@ def crear_paciente(pacientes):
     obra_social = validar_campo_vacio("Obra Social: ")
     nacionalidad = validar_campo_vacio("Nacionalidad: ")
     grupo_sanguineo = validar_campo_vacio("Grupo Sanguíneo: ")
-    nuevo_id_paciente = max(pacientes, key=lambda x: x["id"])["id"] + 1 if pacientes else 1
+    nuevo_id_paciente = reduce(lambda acc, p: acc if acc > p["id"] else p["id"], pacientes, 0) + 1
     paciente = {
         "id": nuevo_id_paciente,
         "nombre": nombre,
@@ -828,7 +829,7 @@ def agregar_medico(medicos):
     titulo = validar_campo_vacio("Título: ")
     matricula = validar_campo_vacio("Matrícula: ")
     # Generar un nuevo ID para el médico
-    nuevo_id = max(medicos, key=lambda x: x["id"])["id"] + 1 if medicos else 1
+    nuevo_id = reduce(lambda acc, m: acc if acc > m["id"] else m["id"], medicos, 0) + 1
     horarios = pedir_horarios_medico()
 
     
