@@ -126,3 +126,17 @@ def save_log(message):
     with open("./datos/log.txt", 'a', encoding='utf-8') as file:
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         file.write(f"{timestamp} - {message}\n")
+        
+def buscar_por_campo(lista, campo, valor):
+    """Busca en una lista de diccionarios por un valor de un campo.
+
+    Devuelve el primer elemento que coincida o None si no hay.
+    """
+    return next((item for item in lista if str(item.get(campo)) == str(valor)), None)
+
+
+def nombre_completo(persona):
+    """Devuelve el nombre completo de un registro si existe."""
+    if persona:
+        return f"{persona.get('nombre', '')} {persona.get('apellido', '')}".strip()
+    return None

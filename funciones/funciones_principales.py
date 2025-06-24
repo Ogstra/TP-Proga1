@@ -54,14 +54,14 @@ def establecer_sesion(rol, dni):
     
     contrasenia = input("Ingrese su contraseña: ")
     if rol.lower() == "paciente":
-        paciente = next((p for p in pacientes if p["dni"] == dni_actual), None)
+        paciente = buscar_por_campo(pacientes, "dni", dni_actual)
         if paciente and paciente["password"] == contrasenia:
             save_log(f"Sesión iniciada: Rol {rol_actual}, DNI {dni_actual}")
         else:
             print("Contraseña incorrecta. Intente nuevamente.")
             return establecer_sesion(rol, dni)
     elif rol.lower() in ("médico", "medico"):
-        medico = next((m for m in medicos if m["dni"] == dni_actual), None)
+        medico = buscar_por_campo(medicos, "dni", dni_actual)
         if medico and medico["password"] == contrasenia:
             save_log(f"Sesión iniciada: Rol {rol_actual}, DNI {dni_actual}")
         else:
@@ -152,22 +152,22 @@ def ver_turnos(turnos, pacientes, medicos):
         # Filtrar por DNI segun rol medico o paciente
         if rol_actual and dni_actual:
             if rol_actual.lower() in ("paciente",):
-                paciente_ref = next((p for p in pacientes if p["dni"] == dni_actual), None)
+                paciente_ref = buscar_por_campo(pacientes, "dni", dni_actual)
                 if not paciente_ref or turno["paciente"] != paciente_ref["id"]:
                     continue
             elif rol_actual.lower() in ("médico", "medico"):
-                medico_ref = next((m for m in medicos if m["dni"] == dni_actual), None)
+                medico_ref = buscar_por_campo(medicos, "dni", dni_actual)
                 if not medico_ref or turno["medico"] != medico_ref["id"]:
                     continue
         try:
             id_medico = turno["medico"]
             id_paciente = turno["paciente"]
             # Obtener el nombre del paciente
-            paciente = next((p for p in pacientes if p["id"] == id_paciente), None)
-            paciente = paciente['nombre'] + " " + paciente['apellido'] if paciente else None
+            paciente = buscar_por_campo(pacientes, "id", id_paciente)
+            paciente = nombre_completo(paciente)
             # Obtener el nombre del médico
-            medico = next((m for m in medicos if m["id"] == id_medico), None)
-            medico = medico['nombre'] + " " + medico['apellido'] if medico else None
+            medico = buscar_por_campo(medicos, "id", id_medico)
+            medico = nombre_completo(medico)
             # Agregar la información del turno a la lista
             # Agregar estado de turno como "Pendiente" o "Atendido" comparando fecha y hora actual
             if turno['fecha'] < datetime.now().strftime("%Y-%m-%d") or (turno['fecha'] == datetime.now().strftime("%Y-%m-%d") and turno['hora'] < datetime.now().strftime("%H:%M")):
@@ -319,7 +319,9 @@ def agregar_turno(turnos, medicos, pacientes):
 def modificar_turno(turnos, medicos, pacientes, rol):
     if rol == "Médico":
         dni_medico = dni_actual
-        medico = next((m for m in medicos if str(m["dni"]) == dni_medico and m.get("estado", "activo").lower() == "activo"), None)
+        medico = buscar_por_campo(medicos, "dni", dni_medico)
+        if medico and medico.get("estado", "activo").lower() != "activo":
+            medico = None
         if not medico:
             print("No se encontró un médico activo con ese DNI.")
             return
@@ -335,10 +337,8 @@ def modificar_turno(turnos, medicos, pacientes, rol):
         for turno in turnos:
             if turno["medico"] == id_medico:
                 id_paciente = turno["paciente"]
-                paciente = next((p for p in pacientes if p["id"] == id_paciente), None)
-                paciente = paciente['nombre'] + " " + paciente['apellido'] if paciente else None
-                medico = next((m for m in medicos if m["id"] == id_medico), None)
-                medico = medico['nombre'] + " " + medico['apellido'] if medico else None
+                paciente = nombre_completo(buscar_por_campo(pacientes, "id", id_paciente))
+                medico = nombre_completo(buscar_por_campo(medicos, "id", id_medico))
                 #sacar el id del medico del turno para no mostrarlo en la agenda
                 agenda.append({
                     "id": turno["id"],
@@ -433,7 +433,9 @@ def eliminar_medico(medicos, turnos, pacientes):
     dni_medico = input("Ingrese el DNI del médico que desea eliminar: ").strip()
 
     # Buscar médico activo
-    medico = next((m for m in medicos if m["dni"] == dni_medico and m.get("estado", "activo").lower() == "activo"), None)
+    medico = buscar_por_campo(medicos, "dni", dni_medico)
+    if medico and medico.get("estado", "activo").lower() != "activo":
+        medico = None
 
     if not medico:
         print(f"No se encontró un médico activo con DNI {dni_medico}.")
@@ -446,8 +448,8 @@ def eliminar_medico(medicos, turnos, pacientes):
 
         turnos_medico = [t for t in turnos if t["medico"] == id_medico]
         for turno in turnos_medico:
-            paciente = next((p for p in pacientes if p["id"] == turno["paciente"]), {})
-            nombre = f"{paciente.get('nombre', 'Paciente')} {paciente.get('apellido', '')}"
+            paciente = buscar_por_campo(pacientes, "id", turno["paciente"])
+            nombre = nombre_completo(paciente) or "Paciente"
             print(f"- Turno con {nombre} | Fecha: {turno['fecha']} | Hora: {turno['hora']}")
 
         confirmar = input("¿Deseás eliminar estos turnos y desactivar al médico? (s/n): ").strip().lower()
@@ -620,7 +622,9 @@ def eliminar_paciente(pacientes, turnos, medicos):
     dni_paciente = input("Ingrese el DNI del paciente que desea eliminar: ").strip()
 
     # Buscar paciente activo
-    paciente = next((p for p in pacientes if p["dni"] == dni_paciente and p.get("estado", "activo").lower() == "activo"), None)
+    paciente = buscar_por_campo(pacientes, "dni", dni_paciente)
+    if paciente and paciente.get("estado", "activo").lower() != "activo":
+        paciente = None
     if not paciente:
         print(f"No se encontró un paciente activo con DNI {dni_paciente}.")
         return
@@ -632,8 +636,8 @@ def eliminar_paciente(pacientes, turnos, medicos):
         # Mostrar médicos afectados
         turnos_paciente = [t for t in turnos if t["dni_paciente"] == dni_paciente]
         for turno in turnos_paciente:
-            medico = next((m for m in medicos if m["dni"] == turno["dni_medico"]), {})
-            nombre = f"{medico.get('nombre', 'Médico')} {medico.get('apellido', '')}"
+            medico = buscar_por_campo(medicos, "dni", turno["dni_medico"])
+            nombre = nombre_completo(medico) or "Médico"
             print(f"- Turno con {nombre} | Fecha: {turno['fecha']} | Hora: {turno['hora']}")
 
         confirmar = input("¿Deseás eliminar estos turnos y desactivar al paciente? (s/n): ").strip().lower()
@@ -662,7 +666,9 @@ def eliminar_turnos(turnos, medicos, pacientes, rol):
     # Si el rol es Médico, pedimos su DNI asi solo te muestra los turno que tiene ese medico
     if rol == "Médico":
         dni_medico = dni_actual
-        medico = next((m for m in medicos if str(m["dni"]) == dni_medico and m.get("estado", "activo").lower() == "activo"), None)
+        medico = buscar_por_campo(medicos, "dni", dni_medico)
+        if medico and medico.get("estado", "activo").lower() != "activo":
+            medico = None
         if not medico:
             print("No se encontró un médico activo con ese DNI.")
             return
@@ -675,8 +681,8 @@ def eliminar_turnos(turnos, medicos, pacientes, rol):
 
         print("\nTurnos asignados:")
         for t in turnos_medico:
-            paciente = next((p for p in pacientes if p["id"] == t["paciente"]), {})
-            nombre_paciente = f"{paciente.get('nombre', '')} {paciente.get('apellido', '')}"
+            paciente = buscar_por_campo(pacientes, "id", t["paciente"])
+            nombre_paciente = nombre_completo(paciente) or ""
             info_medicos.append([t["id"], medico["nombre"], medico["apellido"], medico["especialidad"], t["hora"], paciente["nombre"], paciente["apellido"]])
         print_tabla("Lista de Médicos", info_medicos, ["ID", "Nombre Del Doctor", "Apellido", "Especialidad", "Horario", "Paciente", "Apellido"], "horizontal")
 
@@ -694,7 +700,9 @@ def eliminar_turnos(turnos, medicos, pacientes, rol):
     elif rol == "Paciente":
         # Si es Paciente, muestra los turnos que tiene ese paciente
         dni = input("Ingrese su DNI: ").strip()
-        paciente = next((p for p in pacientes if str(p["dni"]) == dni and p.get("estado", "activo").lower() == "activo"), None)
+        paciente = buscar_por_campo(pacientes, "dni", dni)
+        if paciente and paciente.get("estado", "activo").lower() != "activo":
+            paciente = None
         if not paciente:
             print("No se encontró un paciente activo con ese DNI.")
             return
@@ -708,17 +716,17 @@ def eliminar_turnos(turnos, medicos, pacientes, rol):
 
         print("\nSus turnos asignados:")
         for t in turnos_filtrados:
-            medico = next((m for m in medicos if m["id"] == t["medico"]), {"nombre": "Desconocido", "apellido": ""})
-            nombre_medico = f"{medico['nombre']} {medico['apellido']}"
+            medico = buscar_por_campo(medicos, "id", t["medico"])
+            nombre_medico = nombre_completo(medico) or "Desconocido"
         print_tabla("Lista de Médicos", info_medicos, ["ID", "Nombre Del Doctor", "Apellido", "Especialidad", "Horario", "Paciente", "Apellido"], "horizontal")
 
     # Si es Admin, muestra todos los turnos
     else:
         for t in turnos:
-            medico = next((m for m in medicos if m["id"] == t["medico"]), {})
-            paciente = next((p for p in pacientes if p["id"] == t["paciente"]), {})
-            nombre_medico = f"{medico.get('nombre', '')} {medico.get('apellido', '')}"
-            nombre_paciente = f"{paciente.get('nombre', '')} {paciente.get('apellido', '')}"
+            medico = buscar_por_campo(medicos, "id", t["medico"])
+            paciente = buscar_por_campo(pacientes, "id", t["paciente"])
+            nombre_medico = nombre_completo(medico) or ""
+            nombre_paciente = nombre_completo(paciente) or ""
             info_medicos.append([t["id"], medico["nombre"], medico["apellido"], medico["especialidad"], t["hora"], paciente["nombre"], paciente["apellido"]])
         print_tabla("Lista de Médicos", info_medicos, ["ID", "Nombre Del Doctor", "Apellido", "Especialidad", "Horario", "Paciente", "Apellido"], "horizontal")
 
@@ -825,7 +833,7 @@ def agenda_medico(medicos, turnos, pacientes):
         print("No hay médicos registrados.")
         return
     if rol_actual and rol_actual.lower() in ("médico", "medico") and dni_actual:
-        medico_ref = next((m for m in medicos if m["dni"] == dni_actual), None)
+        medico_ref = buscar_por_campo(medicos, "dni", dni_actual)
         if not medico_ref:
             print("DNI no encontrado.")
             return
@@ -843,7 +851,7 @@ def agenda_medico(medicos, turnos, pacientes):
             return
         if not verificarSiExiste(id_medico, medicos, "médico"):
             return
-    medico_ref = next((m for m in medicos if m["id"] == id_medico), None)
+    medico_ref = buscar_por_campo(medicos, "id", id_medico)
     print(f"\nAgenda del Médico {medico_ref['nombre']} {medico_ref['apellido']}:")
     
     agenda = list(filter(lambda t: t["medico"] == id_medico, turnos))
@@ -855,9 +863,9 @@ def agenda_medico(medicos, turnos, pacientes):
     tabla_agenda = []
     for item in agenda:
         id_paciente = item["paciente"]
-        paciente_ref = next((p for p in pacientes if p["id"] == id_paciente), None)
+        paciente_ref = buscar_por_campo(pacientes, "id", id_paciente)
         if paciente_ref:
-            nombre_paciente = f'{paciente_ref["nombre"]} {paciente_ref["apellido"]}'
+            nombre_paciente = nombre_completo(paciente_ref)
         else:
             nombre_paciente = f'ID {id_paciente} (No encontrado)'
         tabla_agenda.append([item["fecha"], item["hora"], nombre_paciente, item["consultorio"]])
