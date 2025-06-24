@@ -1063,3 +1063,298 @@
 2025-06-23 23:32:24 - Datos cargados desde turnos.json
 2025-06-23 23:32:24 - Datos cargados desde config.json
 2025-06-23 23:32:24 - ERROR al cargar datos desde medicos.json: Archivo no encontrado o inválido.
+<<<<<<< HEAD
+=======
+2025-06-23 23:35:27 - Datos cargados desde pacientes.json
+2025-06-23 23:35:27 - Datos cargados desde medicos.json
+2025-06-23 23:35:27 - Datos cargados desde turnos.json
+2025-06-23 23:35:27 - Datos cargados desde config.json
+2025-06-23 23:35:27 - Datos cargados desde pacientes.json
+2025-06-23 23:35:27 - Datos cargados desde medicos.json
+2025-06-23 23:35:27 - Datos cargados desde turnos.json
+2025-06-23 23:35:27 - Datos cargados desde config.json
+2025-06-23 23:35:27 - Datos cargados desde config.json
+2025-06-23 23:35:28 - Datos cargados desde admins.json
+2025-06-23 23:35:34 - Inicio de sesión exitoso para el usuario admin.
+2025-06-23 23:36:01 - Datos cargados desde pacientes.json
+2025-06-23 23:36:01 - Datos cargados desde medicos.json
+2025-06-23 23:36:01 - Datos cargados desde turnos.json
+2025-06-23 23:36:01 - Datos cargados desde config.json
+2025-06-23 23:36:01 - Datos cargados desde pacientes.json
+2025-06-23 23:36:01 - Datos cargados desde medicos.json
+2025-06-23 23:36:01 - Datos cargados desde turnos.json
+2025-06-23 23:36:01 - Datos cargados desde config.json
+2025-06-23 23:36:01 - Datos cargados desde config.json
+2025-06-23 23:36:01 - Datos cargados desde admins.json
+2025-06-23 23:36:04 - Inicio de sesión exitoso para el usuario admin.
+2025-06-23 23:36:19 - Datos cargados desde pacientes.json
+2025-06-23 23:36:19 - Datos cargados desde medicos.json
+2025-06-23 23:36:19 - Datos cargados desde turnos.json
+2025-06-23 23:36:19 - Datos cargados desde config.json
+2025-06-23 23:36:19 - Datos cargados desde pacientes.json
+2025-06-23 23:36:19 - Datos cargados desde medicos.json
+2025-06-23 23:36:19 - Datos cargados desde turnos.json
+2025-06-23 23:36:19 - Datos cargados desde config.json
+2025-06-23 23:36:19 - Datos cargados desde config.json
+2025-06-23 23:36:20 - Datos cargados desde admins.json
+2025-06-23 23:36:22 - Inicio de sesión exitoso para el usuario admin.
+2025-06-23 23:36:39 - Datos cargados desde pacientes.json
+2025-06-23 23:36:39 - Datos cargados desde medicos.json
+2025-06-23 23:36:39 - Datos cargados desde turnos.json
+2025-06-23 23:36:39 - Datos cargados desde config.json
+2025-06-23 23:36:39 - Datos cargados desde pacientes.json
+2025-06-23 23:36:39 - Datos cargados desde medicos.json
+2025-06-23 23:36:39 - Datos cargados desde turnos.json
+2025-06-23 23:36:39 - Datos cargados desde config.json
+2025-06-23 23:36:39 - Datos cargados desde config.json
+2025-06-23 23:36:40 - Datos cargados desde admins.json
+2025-06-23 23:36:42 - Inicio de sesión exitoso para el usuario admin.
+2025-06-23 23:36:56 - Datos cargados desde pacientes.json
+2025-06-23 23:36:56 - Datos cargados desde medicos.json
+2025-06-23 23:36:56 - Datos cargados desde turnos.json
+2025-06-23 23:36:56 - Datos cargados desde config.json
+2025-06-23 23:36:56 - Datos cargados desde pacientes.json
+2025-06-23 23:36:56 - Datos cargados desde medicos.json
+2025-06-23 23:36:56 - Datos cargados desde turnos.json
+2025-06-23 23:36:56 - Datos cargados desde config.json
+2025-06-23 23:36:56 - Datos cargados desde config.json
+2025-06-23 23:37:02 - Datos cargados desde admins.json
+2025-06-23 23:37:04 - Inicio de sesión exitoso para el usuario admin.
+2025-06-23 23:37:40 - Médico eliminado: DNI 00000012, Estado cambiado a inactivo.
+2025-06-23 23:37:40 - Datos guardados en medicos.json
+2025-06-23 23:37:40 - Datos guardados en turnos.json
+2025-06-23 23:40:34 - Datos cargados desde pacientes.json
+2025-06-23 23:40:34 - Datos cargados desde medicos.json
+2025-06-23 23:40:34 - Datos cargados desde turnos.json
+2025-06-23 23:40:34 - Datos cargados desde config.json
+2025-06-23 23:40:34 - Datos cargados desde pacientes.json
+2025-06-23 23:40:34 - Datos cargados desde medicos.json
+2025-06-23 23:40:34 - Datos cargados desde turnos.json
+2025-06-23 23:40:34 - Datos cargados desde config.json
+2025-06-23 23:40:34 - Datos cargados desde config.json
+2025-06-23 23:40:35 - Datos cargados desde admins.json
+2025-06-23 23:40:38 - Inicio de sesión exitoso para el usuario admin.
+2025-06-23 23:40:44 - Médico eliminado: DNI 00000012, Estado cambiado a inactivo.
+2025-06-23 23:40:44 - Datos guardados en medicos.json
+2025-06-23 23:40:44 - Datos guardados en turnos.json
+2025-06-23 23:41:55 - Datos cargados desde pacientes.json
+2025-06-23 23:41:55 - Datos cargados desde medicos.json
+2025-06-23 23:41:55 - Datos cargados desde turnos.json
+2025-06-23 23:41:55 - Datos cargados desde config.json
+2025-06-23 23:41:55 - Datos cargados desde pacientes.json
+2025-06-23 23:41:55 - Datos cargados desde medicos.json
+2025-06-23 23:41:55 - Datos cargados desde turnos.json
+2025-06-23 23:41:55 - Datos cargados desde config.json
+2025-06-23 23:41:55 - Datos cargados desde config.json
+2025-06-23 23:41:55 - Datos cargados desde admins.json
+2025-06-23 23:42:01 - Inicio de sesión exitoso para el usuario admin.
+2025-06-23 23:42:09 - Médico eliminado: DNI 00000012, Estado cambiado a inactivo.
+2025-06-23 23:42:09 - Datos guardados en medicos.json
+2025-06-23 23:42:09 - Datos guardados en turnos.json
+2025-06-23 23:43:32 - Datos cargados desde pacientes.json
+2025-06-23 23:43:32 - Datos cargados desde medicos.json
+2025-06-23 23:43:32 - Datos cargados desde turnos.json
+2025-06-23 23:43:32 - Datos cargados desde config.json
+2025-06-23 23:43:32 - Datos cargados desde pacientes.json
+2025-06-23 23:43:32 - Datos cargados desde medicos.json
+2025-06-23 23:43:32 - Datos cargados desde turnos.json
+2025-06-23 23:43:32 - Datos cargados desde config.json
+2025-06-23 23:43:32 - Datos cargados desde config.json
+2025-06-23 23:43:32 - Datos cargados desde admins.json
+2025-06-23 23:43:35 - Inicio de sesión exitoso para el usuario admin.
+2025-06-23 23:43:39 - Datos cargados desde pacientes.json
+2025-06-23 23:43:39 - Datos cargados desde medicos.json
+2025-06-23 23:43:39 - Datos cargados desde turnos.json
+2025-06-23 23:43:39 - Datos cargados desde config.json
+2025-06-23 23:43:39 - Datos cargados desde pacientes.json
+2025-06-23 23:43:39 - Datos cargados desde medicos.json
+2025-06-23 23:43:39 - Datos cargados desde turnos.json
+2025-06-23 23:43:39 - Datos cargados desde config.json
+2025-06-23 23:43:39 - Datos cargados desde config.json
+2025-06-23 23:43:39 - Datos cargados desde admins.json
+2025-06-23 23:43:47 - Inicio de sesión exitoso para el usuario admin.
+2025-06-23 23:44:03 - Médico eliminado: DNI 00000012, Estado cambiado a inactivo.
+2025-06-23 23:44:03 - Datos guardados en medicos.json
+2025-06-23 23:44:03 - Datos guardados en turnos.json
+2025-06-23 23:48:15 - Datos cargados desde pacientes.json
+2025-06-23 23:48:15 - Datos cargados desde medicos.json
+2025-06-23 23:48:15 - Datos cargados desde turnos.json
+2025-06-23 23:48:15 - Datos cargados desde config.json
+2025-06-23 23:48:15 - Datos cargados desde pacientes.json
+2025-06-23 23:48:15 - Datos cargados desde medicos.json
+2025-06-23 23:48:15 - Datos cargados desde turnos.json
+2025-06-23 23:48:15 - Datos cargados desde config.json
+2025-06-23 23:48:15 - Datos cargados desde config.json
+2025-06-23 23:48:15 - Datos cargados desde admins.json
+2025-06-23 23:48:17 - Inicio de sesión exitoso para el usuario admin.
+2025-06-23 23:48:29 - Médico eliminado: DNI 00000012, Estado cambiado a inactivo.
+2025-06-23 23:48:29 - Datos guardados en medicos.json
+2025-06-23 23:48:29 - Datos guardados en turnos.json
+2025-06-23 23:49:49 - Datos cargados desde pacientes.json
+2025-06-23 23:49:49 - Datos cargados desde medicos.json
+2025-06-23 23:49:49 - Datos cargados desde turnos.json
+2025-06-23 23:49:49 - Datos cargados desde config.json
+2025-06-23 23:49:49 - Datos cargados desde pacientes.json
+2025-06-23 23:49:49 - Datos cargados desde medicos.json
+2025-06-23 23:49:49 - Datos cargados desde turnos.json
+2025-06-23 23:49:49 - Datos cargados desde config.json
+2025-06-23 23:49:49 - Datos cargados desde config.json
+2025-06-23 23:49:49 - Datos cargados desde admins.json
+2025-06-23 23:50:20 - Datos cargados desde pacientes.json
+2025-06-23 23:50:20 - Datos cargados desde medicos.json
+2025-06-23 23:50:20 - Datos cargados desde turnos.json
+2025-06-23 23:50:20 - Datos cargados desde config.json
+2025-06-23 23:50:20 - Datos cargados desde pacientes.json
+2025-06-23 23:50:20 - Datos cargados desde medicos.json
+2025-06-23 23:50:20 - Datos cargados desde turnos.json
+2025-06-23 23:50:20 - Datos cargados desde config.json
+2025-06-23 23:50:20 - Datos cargados desde config.json
+2025-06-23 23:50:20 - Datos cargados desde admins.json
+2025-06-23 23:50:23 - Inicio de sesión exitoso para el usuario admin.
+2025-06-23 23:50:25 - Médico eliminado: DNI 00000012, Estado cambiado a inactivo.
+2025-06-23 23:50:25 - Datos guardados en medicos.json
+2025-06-23 23:50:25 - Datos guardados en turnos.json
+2025-06-23 23:50:48 - Datos cargados desde pacientes.json
+2025-06-23 23:50:48 - Datos cargados desde medicos.json
+2025-06-23 23:50:48 - Datos cargados desde turnos.json
+2025-06-23 23:50:48 - Datos cargados desde config.json
+2025-06-23 23:50:48 - Datos cargados desde pacientes.json
+2025-06-23 23:50:48 - Datos cargados desde medicos.json
+2025-06-23 23:50:48 - Datos cargados desde turnos.json
+2025-06-23 23:50:48 - Datos cargados desde config.json
+2025-06-23 23:50:48 - Datos cargados desde config.json
+2025-06-23 23:50:50 - Datos cargados desde admins.json
+2025-06-23 23:50:58 - Inicio de sesión exitoso para el usuario admin.
+2025-06-23 23:51:44 - Datos cargados desde pacientes.json
+2025-06-23 23:51:44 - Datos cargados desde medicos.json
+2025-06-23 23:51:44 - Datos cargados desde turnos.json
+2025-06-23 23:51:44 - Datos cargados desde config.json
+2025-06-23 23:51:44 - Datos cargados desde pacientes.json
+2025-06-23 23:51:44 - Datos cargados desde medicos.json
+2025-06-23 23:51:44 - Datos cargados desde turnos.json
+2025-06-23 23:51:44 - Datos cargados desde config.json
+2025-06-23 23:51:44 - Datos cargados desde config.json
+2025-06-23 23:51:46 - Datos cargados desde admins.json
+2025-06-23 23:51:47 - Inicio de sesión exitoso para el usuario admin.
+2025-06-23 23:51:51 - Médico eliminado: DNI 00000012, Estado cambiado a inactivo.
+2025-06-23 23:51:51 - Datos guardados en medicos.json
+2025-06-23 23:51:51 - Datos guardados en turnos.json
+2025-06-23 23:52:08 - Datos cargados desde pacientes.json
+2025-06-23 23:52:08 - Datos cargados desde medicos.json
+2025-06-23 23:52:08 - Datos cargados desde turnos.json
+2025-06-23 23:52:08 - Datos cargados desde config.json
+2025-06-23 23:52:08 - Datos cargados desde pacientes.json
+2025-06-23 23:52:08 - Datos cargados desde medicos.json
+2025-06-23 23:52:08 - Datos cargados desde turnos.json
+2025-06-23 23:52:08 - Datos cargados desde config.json
+2025-06-23 23:52:08 - Datos cargados desde config.json
+2025-06-23 23:52:08 - Datos cargados desde admins.json
+2025-06-23 23:52:11 - Inicio de sesión exitoso para el usuario admin.
+2025-06-23 23:52:14 - Médico eliminado: DNI 00000012, Estado cambiado a inactivo.
+2025-06-23 23:52:14 - Datos guardados en medicos.json
+2025-06-23 23:52:14 - Datos guardados en turnos.json
+2025-06-23 23:52:47 - Datos cargados desde pacientes.json
+2025-06-23 23:52:47 - Datos cargados desde medicos.json
+2025-06-23 23:52:47 - Datos cargados desde turnos.json
+2025-06-23 23:52:47 - Datos cargados desde config.json
+2025-06-23 23:52:47 - Datos cargados desde pacientes.json
+2025-06-23 23:52:47 - Datos cargados desde medicos.json
+2025-06-23 23:52:47 - Datos cargados desde turnos.json
+2025-06-23 23:52:47 - Datos cargados desde config.json
+2025-06-23 23:52:47 - Datos cargados desde config.json
+2025-06-23 23:52:48 - Datos cargados desde admins.json
+2025-06-23 23:52:51 - Inicio de sesión exitoso para el usuario admin.
+2025-06-23 23:52:55 - Médico eliminado: DNI 00000012, Estado cambiado a inactivo.
+2025-06-23 23:52:55 - Datos guardados en medicos.json
+2025-06-23 23:52:55 - Datos guardados en turnos.json
+2025-06-23 23:54:35 - Datos cargados desde pacientes.json
+2025-06-23 23:54:35 - Datos cargados desde medicos.json
+2025-06-23 23:54:35 - Datos cargados desde turnos.json
+2025-06-23 23:54:35 - Datos cargados desde config.json
+2025-06-23 23:54:35 - Datos cargados desde pacientes.json
+2025-06-23 23:54:35 - Datos cargados desde medicos.json
+2025-06-23 23:54:35 - Datos cargados desde turnos.json
+2025-06-23 23:54:35 - Datos cargados desde config.json
+2025-06-23 23:54:35 - Datos cargados desde config.json
+2025-06-23 23:54:35 - Datos cargados desde admins.json
+2025-06-23 23:54:38 - Inicio de sesión exitoso para el usuario admin.
+2025-06-23 23:54:42 - Médico eliminado: DNI 00000012, Estado cambiado a inactivo.
+2025-06-23 23:54:42 - Datos guardados en medicos.json
+2025-06-23 23:54:42 - Datos guardados en turnos.json
+2025-06-23 23:55:25 - Datos cargados desde pacientes.json
+2025-06-23 23:55:25 - Datos cargados desde medicos.json
+2025-06-23 23:55:25 - Datos cargados desde turnos.json
+2025-06-23 23:55:25 - Datos cargados desde config.json
+2025-06-23 23:55:25 - Datos cargados desde pacientes.json
+2025-06-23 23:55:25 - Datos cargados desde medicos.json
+2025-06-23 23:55:25 - Datos cargados desde turnos.json
+2025-06-23 23:55:25 - Datos cargados desde config.json
+2025-06-23 23:55:25 - Datos cargados desde config.json
+2025-06-23 23:55:25 - Datos cargados desde admins.json
+2025-06-23 23:55:27 - Inicio de sesión exitoso para el usuario admin.
+2025-06-23 23:55:31 - Médico eliminado: DNI 00000012, Estado cambiado a inactivo.
+2025-06-23 23:55:31 - Datos guardados en medicos.json
+2025-06-23 23:55:31 - Datos guardados en turnos.json
+2025-06-23 23:57:59 - Datos cargados desde pacientes.json
+2025-06-23 23:57:59 - Datos cargados desde medicos.json
+2025-06-23 23:57:59 - Datos cargados desde turnos.json
+2025-06-23 23:57:59 - Datos cargados desde config.json
+2025-06-23 23:57:59 - Datos cargados desde pacientes.json
+2025-06-23 23:57:59 - Datos cargados desde medicos.json
+2025-06-23 23:57:59 - Datos cargados desde turnos.json
+2025-06-23 23:57:59 - Datos cargados desde config.json
+2025-06-23 23:57:59 - Datos cargados desde config.json
+2025-06-23 23:58:00 - Datos cargados desde admins.json
+2025-06-23 23:58:02 - Inicio de sesión exitoso para el usuario admin.
+2025-06-23 23:58:17 - Datos cargados desde pacientes.json
+2025-06-23 23:58:17 - Datos cargados desde medicos.json
+2025-06-23 23:58:17 - Datos cargados desde turnos.json
+2025-06-23 23:58:17 - Datos cargados desde config.json
+2025-06-23 23:58:17 - Datos cargados desde pacientes.json
+2025-06-23 23:58:17 - Datos cargados desde medicos.json
+2025-06-23 23:58:17 - Datos cargados desde turnos.json
+2025-06-23 23:58:17 - Datos cargados desde config.json
+2025-06-23 23:58:17 - Datos cargados desde config.json
+2025-06-23 23:58:17 - Datos cargados desde admins.json
+2025-06-23 23:58:20 - Inicio de sesión exitoso para el usuario admin.
+2025-06-23 23:58:58 - Datos cargados desde pacientes.json
+2025-06-23 23:58:58 - Datos cargados desde medicos.json
+2025-06-23 23:58:58 - Datos cargados desde turnos.json
+2025-06-23 23:58:58 - Datos cargados desde config.json
+2025-06-23 23:58:58 - Datos cargados desde pacientes.json
+2025-06-23 23:58:58 - Datos cargados desde medicos.json
+2025-06-23 23:58:58 - Datos cargados desde turnos.json
+2025-06-23 23:58:58 - Datos cargados desde config.json
+2025-06-23 23:58:58 - Datos cargados desde config.json
+2025-06-23 23:59:09 - Datos cargados desde admins.json
+2025-06-23 23:59:11 - Inicio de sesión exitoso para el usuario admin.
+2025-06-23 23:59:36 - Datos cargados desde pacientes.json
+2025-06-23 23:59:36 - Datos cargados desde medicos.json
+2025-06-23 23:59:36 - Datos cargados desde turnos.json
+2025-06-23 23:59:36 - Datos cargados desde config.json
+2025-06-23 23:59:36 - Datos cargados desde pacientes.json
+2025-06-23 23:59:36 - Datos cargados desde medicos.json
+2025-06-23 23:59:36 - Datos cargados desde turnos.json
+2025-06-23 23:59:36 - Datos cargados desde config.json
+2025-06-23 23:59:36 - Datos cargados desde config.json
+2025-06-23 23:59:36 - Datos cargados desde admins.json
+2025-06-23 23:59:39 - Inicio de sesión exitoso para el usuario admin.
+2025-06-23 23:59:43 - Médico eliminado: DNI 00000001, Estado cambiado a inactivo.
+2025-06-23 23:59:43 - Datos guardados en medicos.json
+2025-06-23 23:59:43 - Datos guardados en turnos.json
+2025-06-24 00:01:07 - Datos cargados desde pacientes.json
+2025-06-24 00:01:07 - Datos cargados desde medicos.json
+2025-06-24 00:01:07 - Datos cargados desde turnos.json
+2025-06-24 00:01:07 - Datos cargados desde config.json
+2025-06-24 00:01:07 - Datos cargados desde pacientes.json
+2025-06-24 00:01:07 - Datos cargados desde medicos.json
+2025-06-24 00:01:07 - Datos cargados desde turnos.json
+2025-06-24 00:01:07 - Datos cargados desde config.json
+2025-06-24 00:01:07 - Datos cargados desde config.json
+2025-06-24 00:01:08 - Datos cargados desde admins.json
+2025-06-24 00:01:10 - Inicio de sesión exitoso para el usuario admin.
+2025-06-24 00:01:34 - Turnos eliminados para médico: DNI 00000001
+2025-06-24 00:01:34 - Médico eliminado: DNI 00000001, Estado cambiado a inactivo.
+2025-06-24 00:01:34 - Datos guardados en medicos.json
+2025-06-24 00:01:34 - Datos guardados en turnos.json
+>>>>>>> 5c9fbb3333b398de507229305ed0ce76f5b98b98
