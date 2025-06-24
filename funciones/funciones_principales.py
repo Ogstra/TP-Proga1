@@ -335,10 +335,8 @@ def modificar_turno(turnos, medicos, pacientes, rol):
         for turno in turnos:
             if turno["medico"] == id_medico:
                 id_paciente = turno["paciente"]
-                # Obtener el nombre del paciente
                 paciente = next((p for p in pacientes if p["id"] == id_paciente), None)
                 paciente = paciente['nombre'] + " " + paciente['apellido'] if paciente else None
-                # Obtener el nombre del médico
                 medico = next((m for m in medicos if m["id"] == id_medico), None)
                 medico = medico['nombre'] + " " + medico['apellido'] if medico else None
                 #sacar el id del medico del turno para no mostrarlo en la agenda
@@ -349,7 +347,7 @@ def modificar_turno(turnos, medicos, pacientes, rol):
                     "paciente": paciente,
                     "consultorio": turno["consultorio"]
                 })
-        # Si no hay turnos asignados, se muestra un mensaje indicando que no hay turnos para ese médico
+                
         if not agenda:
             print("No hay turnos asignados para este médico.")
             return
@@ -391,7 +389,7 @@ def modificar_turno(turnos, medicos, pacientes, rol):
         if not agenda:
             print("No hay turnos asignados para este médico.")
             return
-        # Ordenar la agenda por fecha y hora
+        # ordenar la agenda por fecha y hora
         agenda.sort(key=lambda x: (x["fecha"], x["hora"]))
         tabla_agenda = []
         for item in agenda:
@@ -441,7 +439,7 @@ def eliminar_medico(medicos, turnos, pacientes):
         print(f"No se encontró un médico activo con DNI {dni_medico}.")
         return
 
-    id_medico = medico["id"]  # 🔁 CORREGIDO: usar ID real
+    id_medico = medico["id"]
 
     if tieneTurnosAsignados(id_medico, turnos, "medico"):
         print("Este médico tiene turnos asignados con pacientes.")
